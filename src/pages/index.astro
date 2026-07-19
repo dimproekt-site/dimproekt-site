@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const sadybni = allProjects.filter((p) => p.data.projectType === 'sadybny');
+const bagatokvartyrni = allProjects.filter((p) => p.data.projectType === 'bagatokvartyrny');
+---
+
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <title>Дімпроект — тимчасова сторінка</title>
+  </head>
+  <body>
+    <h1>Дімпроект</h1>
+    <p>
+      Це тимчасова сторінка для перевірки структури контенту.
+      Дизайн ще не розроблявся — це наступний крок.
+    </p>
+
+    <h2>Садибні будинки ({sadybni.length})</h2>
+    <ul>
+      {sadybni.map((p) => (
+        <li>
+          {p.data.title} — {p.data.stage === 'robochyi' ? 'робочий проект' : 'ескізний проект'}
+          {p.data.forSale ? ' · для продажу' : ''}
+        </li>
+      ))}
+    </ul>
+
+    <h2>Багатоквартирні будинки ({bagatokvartyrni.length})</h2>
+    <ul>
+      {bagatokvartyrni.map((p) => (
+        <li>{p.data.title}</li>
+      ))}
+    </ul>
+  </body>
+</html>

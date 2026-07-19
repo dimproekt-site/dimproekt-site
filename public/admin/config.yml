@@ -1,0 +1,54 @@
+backend:
+  name: github
+  repo: dimproekt-site/dimproekt-site # заміни OWNER на свій GitHub-логін
+  branch: main
+  # base_url потрібно буде вказати після налаштування OAuth-Worker (окремий крок)
+  # base_url: https://dimproekt-cms-auth.<твій-субдомен>.workers.dev
+
+media_folder: "src/assets/projects"
+public_folder: "/src/assets/projects"
+
+collections:
+  - name: "projects"
+    label: "Проекти"
+    label_singular: "Проект"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: title
+    fields:
+      - { label: "Назва проекту", name: "title", widget: "string" }
+
+      - label: "Категорія"
+        name: "projectType"
+        widget: "select"
+        options:
+          - { label: "Садибний (котеджний) будинок", value: "sadybny" }
+          - { label: "Багатоквартирний житловий будинок", value: "bagatokvartyrny" }
+
+      - label: "Стадія проекту (тільки для садибних)"
+        name: "stage"
+        widget: "select"
+        required: false
+        options:
+          - { label: "Робочий проект (готовий, для будівництва)", value: "robochyi" }
+          - { label: "Ескізний проект (на замовлення клієнта)", value: "eskizny" }
+
+      - label: "Доступний для продажу"
+        name: "forSale"
+        widget: "boolean"
+        default: false
+
+      - { label: "Показувати на головній (featured)", name: "featured", widget: "boolean", default: false }
+
+      - { label: "Площа, м²", name: "area", widget: "number", required: false, value_type: "float" }
+      - { label: "Поверховість", name: "floors", widget: "number", required: false, value_type: "int" }
+      - { label: "Локація об'єкта", name: "location", widget: "string", required: false }
+      - { label: "Рік", name: "year", widget: "number", required: false, value_type: "int" }
+
+      - { label: "Головне фото", name: "coverImage", widget: "image", required: false }
+      - { label: "Галерея", name: "gallery", widget: "list", field: { label: "Фото", name: "image", widget: "image" }, required: false }
+
+      - { label: "Короткий опис (для картки проекту)", name: "description", widget: "text" }
+      - { label: "Дата публікації", name: "publishDate", widget: "datetime" }
+      - { label: "Текст сторінки", name: "body", widget: "markdown" }
