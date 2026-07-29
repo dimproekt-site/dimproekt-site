@@ -1,5 +1,10 @@
 import { defineConfig } from 'astro/config';
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
-  site: 'https://dimproekt-site.pages.dev', // заміниш на власний домен пізніше
+  // заміниш на власний домен пізніше
+  site: 'https://dimproekt-site.pages.dev',
+
+  adapter: cloudflare()
 });
