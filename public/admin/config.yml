@@ -1,9 +1,9 @@
 backend:
   name: github
-  repo: dimproekt-site/dimproekt-site # заміни OWNER на свій GitHub-логін
+  repo: dimproekt-site/dimproekt-site
   branch: main
-  # base_url потрібно буде вказати після налаштування OAuth-Worker (окремий крок)
-  # base_url: https://dimproekt-cms-auth.<твій-субдомен>.workers.dev
+  base_url: https://decap-proxy.dimproekt-am.workers.dev
+  auth_endpoint: /auth
 
 media_folder: "src/assets/projects"
 public_folder: "/src/assets/projects"
