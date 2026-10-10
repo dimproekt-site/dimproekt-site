@@ -1,0 +1,26 @@
+---
+import Breadcrumbs from './Breadcrumbs.astro';
+interface Props { crumbs: { label: string; href?: string }[]; eyebrow?: string; title: string; lead?: string; narrow?: boolean }
+const { crumbs, eyebrow, title, lead, narrow = false } = Astro.props;
+---
+<section class="pi" data-screen-label="Вступ">
+  <img class="pi-mark" src="/assets/mark-dark.svg" alt="" />
+  <div class="pi-in">
+    <Breadcrumbs items={crumbs} />
+    {eyebrow && <div class="pi-eyebrow"><span class="eb-line" data-draw="x"></span>{eyebrow}</div>}
+    <h1 class:list={['pi-h1', { narrow }]}>{title}</h1>
+    {lead && <p class="pi-lead">{lead}</p>}
+    <div class="pi-actions"><slot /></div>
+  </div>
+</section>
+<style>
+  .pi { position: relative; overflow: hidden; border-bottom: 1px solid var(--border-hairline); }
+  .pi-mark { position: absolute; right: -60px; top: 40px; width: 520px; max-width: 90vw; opacity: .06; pointer-events: none; }
+  .pi-in { position: relative; padding: 48px 32px 80px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .pi-eyebrow { display: flex; align-items: center; gap: 12px; margin-top: 56px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .pi-h1 { margin: 20px 0 0; font-family: var(--font-display); font-weight: 400; font-size: 56px; line-height: 1.08; letter-spacing: -.01em; color: var(--text-heading); text-wrap: balance; }
+  .pi-h1.narrow { max-width: 20ch; }
+  .pi-lead { margin: 24px 0 0; font-size: 19px; line-height: 1.6; color: var(--text-body); max-width: 60ch; text-wrap: pretty; }
+  .pi-actions:not(:empty) { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
+  @media (max-width: 768px) { .pi-in { padding: 32px 20px 56px; } .pi-eyebrow { margin-top: 36px; } .pi-h1 { font-size: 38px; } .pi-lead { font-size: 17px; } }
+</style>

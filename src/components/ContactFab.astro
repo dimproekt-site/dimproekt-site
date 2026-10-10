@@ -1,0 +1,54 @@
+---
+import Icon from './Icon.astro';
+import { CONTACTS } from '../i18n/site';
+import whatsappSvg from '../assets/icons/whatsapp.svg?raw';
+import telegramSvg from '../assets/icons/telegram.svg?raw';
+interface Props { projectTitle?: string }
+const { projectTitle } = Astro.props;
+const wa = CONTACTS.whatsapp + (projectTitle ? '?text=' + encodeURIComponent(`Доброго дня! Цікавить проект «${projectTitle}»`) : '');
+---
+<div class="fab" data-fab>
+  <div class="fab-panel" id="dp-fab-panel" role="dialog" aria-label="Напишіть нам" hidden>
+    <div class="fab-t">Напишіть нам</div>
+    <div class="fab-s">Відповідаємо протягом робочого дня</div>
+    <div class="fab-list">
+      <a href={wa} target="_blank" rel="noopener"><span class="fi" set:html={whatsappSvg} />WhatsApp</a>
+      <a href={CONTACTS.telegram} target="_blank" rel="noopener"><span class="fi" set:html={telegramSvg} />Telegram</a>
+      <a href={CONTACTS.phoneHref} class="fab-tel"><span class="fi"><Icon name="phone" size={24} /></span>Подзвонити</a>
+    </div>
+  </div>
+  <button type="button" class="fab-btn" aria-label="Написати нам" aria-expanded="false" aria-controls="dp-fab-panel">
+    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+    <span class="fab-lbl">Написати</span>
+  </button>
+</div>
+<style is:global>
+  .fab { position: fixed; right: 24px; bottom: 24px; z-index: 900; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; font-family: var(--font-sans); opacity: 0; animation: fabin 420ms var(--ease-out) 40ms forwards; }
+  @keyframes fabin { to { opacity: 1; } }
+  body:has(#consult-dialog[open]) .fab { display: none; }
+  .fab-panel { width: min(300px, calc(100vw - 32px)); box-sizing: border-box; padding: 20px 20px 12px; background: var(--surface-card); border: 1px solid var(--border-hairline); border-top: 2px solid var(--brand-ochre); border-radius: 4px; box-shadow: var(--shadow-3); }
+  .fab-panel[hidden] { display: none; }
+  .fab-t { font-family: var(--font-display); font-weight: 500; font-size: 22px; line-height: 1.2; color: var(--text-heading); }
+  .fab-s { margin-top: 4px; font-size: 14px; line-height: 1.5; color: #4A3927; }
+  .fab-list { margin-top: 12px; display: flex; flex-direction: column; border-top: 1px solid var(--border-hairline); }
+  .fab-list a { display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 4px 0; border-bottom: 1px solid var(--border-hairline); font-size: 15px; font-weight: 500; color: var(--text-heading); text-decoration: none; }
+  .fab-list a:hover { color: var(--ochre-600); }
+  .fab-list a:last-child { border-bottom: 0; }
+  .fi { width: 24px; height: 24px; flex: 0 0 auto; color: var(--ochre-600); display: flex; } .fi svg { width: 24px; height: 24px; fill: currentColor; }
+  .fab-list .fab-tel { display: none; } .fab-list .fab-tel .fi svg { fill: none; }
+  .fab-btn { display: flex; align-items: center; justify-content: center; gap: 10px; height: 56px; min-width: 56px; padding: 0 22px 0 18px; border: 0; border-radius: 28px; background: var(--brand-ochre); color: #2A1C10; font-family: var(--font-sans); font-size: 14px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; box-shadow: 0 6px 20px rgba(42,28,16,.28); transition: background 140ms; }
+  .fab-btn:hover { background: var(--ochre-600); color: var(--brand-parchment); }
+  @media (max-width: 767px) { .fab { right: 16px; bottom: 16px; } .fab-btn { padding: 0; } .fab-lbl { display: none; } .fab-list .fab-tel { display: flex; } }
+  @media (prefers-reduced-motion: reduce) { .fab { animation: none; opacity: 1; } }
+</style>
+<script>
+  const fab = document.querySelector<HTMLElement>('[data-fab]');
+  if (fab) {
+    const btn = fab.querySelector<HTMLButtonElement>('.fab-btn')!, panel = fab.querySelector<HTMLElement>('.fab-panel')!;
+    const set = (o: boolean) => { panel.hidden = !o; btn.setAttribute('aria-expanded', String(o)); };
+    btn.addEventListener('click', () => set(panel.hidden));
+    fab.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => set(false)));
+    document.addEventListener('mousedown', (e) => { if (!panel.hidden && !fab.contains(e.target as Node)) set(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !panel.hidden) { set(false); btn.focus(); } });
+  }
+</script>

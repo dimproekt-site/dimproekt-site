@@ -1,0 +1,20 @@
+---
+import Icon from './Icon.astro';
+interface Props { items: { label: string; href?: string }[] }
+const { items } = Astro.props;
+---
+<nav aria-label="Навігація" class="bc">
+  {items.map((it, i) => (
+    <>
+      {i === items.length - 1 ? <span class="bc-cur" aria-current="page">{it.label}</span> : <a href={it.href}>{it.label}</a>}
+      {i < items.length - 1 && <span class="bc-sep"><Icon name="chevron-right" size={13} /></span>}
+    </>
+  ))}
+</nav>
+<style>
+  .bc { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; }
+  .bc a { color: var(--text-muted); text-decoration: none; }
+  .bc a:hover { color: var(--brand-espresso); }
+  .bc-cur { color: var(--text-heading); font-weight: 500; }
+  .bc-sep { color: var(--neutral-400); display: inline-flex; }
+</style>

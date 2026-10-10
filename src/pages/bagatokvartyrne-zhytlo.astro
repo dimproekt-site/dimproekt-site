@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import CopyrightNote from '../components/CopyrightNote.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { ROUTES } from '../i18n/site';
+import { getCommercial, nf } from '../lib/projects';
+
+const projects = await getCommercial();
+const steps = [
+  ['Ескіз', 'Обʼємно-планувальне рішення, техніко-економічні показники.'],
+  ['Інженерні розділи', 'Конструктивні рішення та інженерні мережі.'],
+  ['Експертиза', 'Супровід проекту до позитивного висновку.'],
+  ['Робочий проект', 'Повний комплект документації для будівництва.'],
+];
+---
+<Layout title="Проектування багатоквартирного житла та комерційної нерухомості | ДІМПРОЕКТ"
+  description="Проектування житлових комплексів, офісно-торговельних будівель і закладів громадського призначення: від ескізу до робочого проекту, супровід експертизи."
+  active="projects" uaOnly enHref={ROUTES.homeEn}>
+  <PageIntro crumbs={[{ label: 'Головна', href: ROUTES.home }, { label: 'Багатоквартирне житло та комерційна нерухомість' }]} narrow
+    eyebrow="Для забудовників та інвесторів" title="Багатоквартирне житло та комерційна нерухомість"
+    lead="Житлові комплекси, офісно-торговельні будівлі, заклади громадського призначення — проектування під потреби забудовника чи інвестора." />
+
+  <section class="cyc" data-reveal data-screen-label="Повний цикл">
+    <div class="eyebrow"><span class="num">01</span><span class="eb-line" data-draw="x"></span>Повний цикл</div>
+    <h2 class="h2 mb48">Від ескізу до робочого проекту</h2>
+    <ol class="steps">
+      {steps.map((s, i) => (
+        <li class:list={{ on: i === 3 }}>
+          <div class="st-n">{String(i + 1).padStart(2, '0')}</div>
+          <div class="st-t">{s[0]}</div>
+          <div class="st-d">{s[1]}</div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="sec sec-card" data-reveal data-screen-label="Проекти">
+    <div class="wrap">
+      <div class="eyebrow"><span class="num">02</span><span class="eb-line" data-draw="x"></span>Наші проекти</div>
+      <h2 class="h2 mb48">Приклади наших робіт</h2>
+      <div class="grid3">
+        {projects.map((p) => (
+          <ProjectCard href={`/proekty/${p.id}/`} title={p.data.title} image={p.data.cover}
+            stageLabel="Комерційна нерухомість" location={p.data.city} description={p.data.card_text}
+            specs={[...(p.data.area ? [{ k: 'Площа', v: `${nf(p.data.area)} м²` }] : []), ...(p.data.floors ? [{ k: 'Поверхи', v: p.data.floors }] : []), ...(p.data.year ? [{ k: 'Рік', v: p.data.year }] : [])]} />
+        ))}
+      </div>
+      <CopyrightNote />
+    </div>
+  </section>
+
+  <ContactCta card={false} eyebrow="Консультація" title="Обговоримо ваш обʼєкт" text="Розкажіть про ділянку та задум — підготуємо пропозицію щодо складу та термінів проектування." btn="Отримати консультацію" />
+</Layout>
+
+<style is:global>
+  .cyc { padding: 96px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .steps li { border-top: 2px solid var(--brand-ochre); padding-top: 16px; }
+  .st-n { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .steps li.on .st-n { color: var(--brand-ochre); }
+  .st-t { margin-top: 8px; font-family: var(--font-display); font-size: 24px; line-height: 1.25; color: var(--text-heading); }
+  .st-d { margin-top: 8px; font-size: 14px; line-height: 1.5; color: var(--text-muted); }
+  @media (max-width: 900px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 768px) { .cyc { padding: 64px 20px; } }
+  @media (max-width: 480px) { .steps { grid-template-columns: 1fr; } }
+</style>

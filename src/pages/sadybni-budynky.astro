@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import CopyrightNote from '../components/CopyrightNote.astro';
+import ContactCta from '../components/ContactCta.astro';
+import ContactFab from '../components/ContactFab.astro';
+import { ROUTES } from '../i18n/site';
+import { getSadybni, STAGE_LABEL, floorsText, nf } from '../lib/projects';
+
+const projects = await getSadybni();
+---
+<Layout title="Садибні будинки: проекти та індивідуальне проектування | ДІМПРОЕКТ"
+  description="Каталог проектів садибних будинків з робочою документацією та індивідуальне проектування під вашу ділянку. Ескізні й робочі проекти, фіксована ціна, швидка передача документації."
+  active="projects" uaOnly enHref={ROUTES.homeEn}>
+  <PageIntro crumbs={[{ label: 'Головна', href: ROUTES.home }, { label: 'Садибні будинки' }]}
+    eyebrow="Індивідуальне проектування та готові проекти" title="Садибні будинки"
+    lead="Проектуємо садибні будинки під конкретну ділянку, родину та бюджет. Або оберіть готовий проект з каталогу — адаптуємо його під вашу ділянку.">
+    <Button variant="primary" size="lg" href={ROUTES.start}>Як почати проектування<span class="arrow"><Icon name="arrow-right" size={16} /></span></Button>
+  </PageIntro>
+
+  <section class="cat-sec" data-reveal data-screen-label="Каталог">
+    <div class="filters">
+      <div class="frow">
+        <span class="flbl">Стадія</span>
+        <button class="ftag on" data-fk="stage" data-fv="all">Будь-яка</button>
+        <button class="ftag" data-fk="stage" data-fv="robochyi">Робочий</button>
+        <button class="ftag" data-fk="stage" data-fv="eskizny">Ескізний</button>
+      </div>
+      <div class="frow">
+        <span class="flbl">Продаж</span>
+        <button class="ftag on" data-fk="sale" data-fv="all">Усі</button>
+        <button class="ftag" data-fk="sale" data-fv="yes">Тільки для продажу</button>
+      </div>
+      <div class="found">Знайдено проектів: <span data-count>{projects.length}</span></div>
+    </div>
+    <div class="grid3">
+      {projects.map((p) => (
+        <div class="cw" data-stage={p.data.stage} data-sale={p.data.for_sale ? 'yes' : 'no'}>
+          <ProjectCard href={`/proekty/${p.id}/`} title={p.data.title} image={p.data.cover}
+            stageLabel={STAGE_LABEL[p.data.stage]} forSale={p.data.for_sale} description={p.data.card_text}
+            specs={[{ k: 'Площа', v: `${nf(p.data.area)} м²` }, { k: 'Поверхи', v: floorsText(p.data) }]} />
+        </div>
+      ))}
+    </div>
+    <p class="empty" hidden>За цими умовами проектів немає. Змініть фільтри або зверніться до нас — спроектуємо під вашу ділянку.</p>
+    <CopyrightNote />
+  </section>
+
+  <ContactCta eyebrow="Індивідуальний проект" title="Не знайшли свій варіант? Спроектуємо під вашу ділянку" btn="Отримати консультацію" />
+  <ContactFab />
+</Layout>
+
+<style is:global>
+  .cat-sec { padding: 64px 32px 96px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .filters { display: flex; flex-direction: column; gap: 16px; padding-bottom: 24px; border-bottom: 1px solid var(--border-hairline); margin-bottom: 40px; }
+  .frow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .flbl { flex: 0 0 auto; min-width: 92px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .ftag { font: inherit; font-size: var(--text-body-sm, 14px); padding: 7px 14px; line-height: 1.2; border: 1px solid var(--border-hairline); border-radius: 999px; background: transparent; color: var(--text-body); cursor: pointer; transition: all 140ms var(--ease-standard); }
+  .ftag:hover { background: var(--neutral-200); }
+  .ftag.on { background: var(--brand-espresso); border-color: var(--brand-espresso); color: var(--brand-parchment); }
+  .found { font-size: 13px; color: var(--text-muted); }
+  .cw { height: 100%; } .cw[hidden] { display: none; }
+  .empty { margin: 0; padding: 48px 0; font-size: 17px; color: var(--text-muted); }
+  @media (max-width: 768px) { .cat-sec { padding: 40px 20px 64px; } .flbl { min-width: 100%; } }
+</style>
+<script>
+  const state: Record<string, string> = { stage: 'all', sale: 'all' };
+  const cards = [...document.querySelectorAll<HTMLElement>('.cw')];
+  const count = document.querySelector('[data-count]')!, empty = document.querySelector<HTMLElement>('.empty')!;
+  document.querySelectorAll<HTMLElement>('.ftag').forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.fk!; state[k] = b.dataset.fv!;
+    document.querySelectorAll<HTMLElement>(`.ftag[data-fk="${k}"]`).forEach((x) => x.classList.toggle('on', x === b));
+    let n = 0;
+    cards.forEach((c) => {
+      const ok = (state.stage === 'all' || c.dataset.stage === state.stage) && (state.sale === 'all' || c.dataset.sale === 'yes');
+      c.hidden = !ok; if (ok) n++;
+    });
+    count.textContent = String(n); empty.hidden = n > 0;
+  }));
+</script>

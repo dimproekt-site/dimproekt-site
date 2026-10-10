@@ -1,0 +1,37 @@
+---
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import { CONTACTS } from '../i18n/site';
+import whatsappSvg from '../assets/icons/whatsapp.svg?raw';
+import telegramSvg from '../assets/icons/telegram.svg?raw';
+interface Props { eyebrow: string; title: string; text?: string; btn: string; card?: boolean }
+const { eyebrow, title, text, btn, card = true } = Astro.props;
+---
+<section class:list={['cta', { card }]} data-reveal data-screen-label="Консультація">
+  <div class="cta-in">
+    <div class="cta-l">
+      <div class="eyebrow"><span class="eb-line" data-draw="x"></span>{eyebrow}</div>
+      <h2 class="h2">{title}</h2>
+      {text && <p class="cta-text">{text}</p>}
+      <a class="cta-phone" href={CONTACTS.phoneHref}>{CONTACTS.phone}</a>
+      <div class="cta-links">
+        <a href={CONTACTS.whatsapp} target="_blank" rel="noopener"><span class="mi" set:html={whatsappSvg} />WhatsApp</a>
+        <a href={CONTACTS.telegram} target="_blank" rel="noopener"><span class="mi" set:html={telegramSvg} />Telegram</a>
+        <a href={`mailto:${CONTACTS.email}`}><Icon name="mail" size={20} />{CONTACTS.email}</a>
+      </div>
+    </div>
+    <Button variant="primary" size="lg" data-consult-open>{btn}</Button>
+  </div>
+</section>
+<style>
+  .cta.card { background: var(--surface-card); border-top: 1px solid var(--border-hairline); }
+  .cta-in { padding: 96px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px; }
+  .cta-l { max-width: 640px; }
+  .cta-text { margin: 16px 0 0; font-size: 17px; line-height: 1.6; color: var(--text-body); }
+  .cta-phone { display: inline-block; margin-top: 20px; font-family: var(--font-display); font-size: 34px; color: var(--text-heading); text-decoration: none; }
+  .cta-phone:hover { color: var(--ochre-600); }
+  .cta-links { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 16px; }
+  .cta-links a { display: flex; align-items: center; gap: 10px; color: var(--text-heading); text-decoration: none; font-size: 15px; }
+  .cta-links a:hover { color: var(--ochre-600); }
+  @media (max-width: 768px) { .cta-in { padding: 64px 20px; } .cta-phone { font-size: 28px; } }
+</style>
