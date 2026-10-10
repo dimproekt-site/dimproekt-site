@@ -6,5 +6,5 @@ export default defineConfig({
   // заміниш на власний домен пізніше
   site: 'https://dimproekt-site.pages.dev',
 
-  adapter: cloudflare()
+  adapter: cloudflare({ imageService: 'compile' })
 });
