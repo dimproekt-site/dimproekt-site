@@ -1,0 +1,67 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Badge from '../../components/Badge.astro';
+import Icon from '../../components/Icon.astro';
+import { ROUTES } from '../../i18n/site';
+import { getArticles } from '../../lib/projects';
+
+const articles = await getArticles();
+const [first, ...rest] = articles;
+const fmt = (d: Date) => d.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+---
+<Layout title="Статті про проектування й будівництво будинків | ДІМПРОЕКТ"
+  description="Матеріали архітекторів ДІМПРОЕКТ: вартість проектування, вибір фундаменту, газоблоку й утеплювача для садибного будинку."
+  uaOnly enHref={ROUTES.homeEn}>
+  <section class="al">
+    <Breadcrumbs items={[{ label: 'Головна', href: ROUTES.home }, { label: 'Статті' }]} />
+    <div class="pi-eyebrow" style="margin-top:56px;display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--text-muted)"><span class="eb-line"></span>Матеріали та технології</div>
+    <h1 class="al-h1">Статті</h1>
+    <div class="al-wrap">
+      {first && (
+        <a class="al-first" href={`/statti/${first.id}/`}>
+          <Image src={first.data.cover} alt={first.data.cover_alt} widths={[640, 960, 1280]} sizes="(max-width: 900px) 100vw, 560px" loading="eager" class="al-img" />
+          <div class="al-fb">
+            <div class="al-meta"><Badge tone="accent">{first.data.rubric}</Badge><span><time datetime={iso(first.data.date)}>{fmt(first.data.date)}</time>&nbsp;·&nbsp;{first.data.read_time} хв читання</span></div>
+            <h2 class="al-ft">{first.data.title}</h2>
+            <div class="al-more">Читати статтю<Icon name="arrow-right" size={16} /></div>
+          </div>
+        </a>
+      )}
+      <div class="al-grid">
+        {rest.map((a) => (
+          <a class="al-card" href={`/statti/${a.id}/`}>
+            <Image src={a.data.cover} alt={a.data.cover_alt} widths={[360, 640, 960]} sizes="(max-width: 700px) 100vw, 380px" loading="lazy" class="al-cimg" />
+            <div class="al-cb">
+              <div class="al-meta"><Badge tone="accent">{a.data.rubric}</Badge><span><time datetime={iso(a.data.date)}>{fmt(a.data.date)}</time>&nbsp;·&nbsp;{a.data.read_time} хв читання</span></div>
+              <h2 class="al-ct">{a.data.title}</h2>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  .al { width: 100%; padding: 48px clamp(16px, 4vw, 32px) 96px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .al-h1 { margin: 20px 0 56px; font-family: var(--font-display); font-weight: 400; font-size: 56px; line-height: 1.08; letter-spacing: -.01em; color: var(--text-heading); }
+  .al-wrap { display: flex; flex-direction: column; gap: 32px; }
+  .al-first, .al-card { text-decoration: none; color: inherit; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-1); transition: transform 240ms var(--ease-standard), box-shadow 240ms var(--ease-standard); }
+  .al-first:hover, .al-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-3); color: inherit; }
+  .al-first { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); }
+  .al-img { display: block; width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover; min-width: 0; }
+  .al-fb { padding: clamp(24px, 4vw, 40px); display: flex; flex-direction: column; justify-content: center; }
+  .al-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 13px; color: #4A3927; }
+  .al-meta span:last-child { white-space: nowrap; }
+  .al-ft { margin: 16px 0 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(26px, 3.4vw, 34px); line-height: 1.2; color: var(--text-heading); text-wrap: balance; }
+  .al-more { display: flex; align-items: center; gap: 8px; margin-top: 24px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: var(--ochre-600); }
+  .al-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 32px; }
+  .al-card { display: flex; flex-direction: column; }
+  .al-cimg { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .al-cb { flex: 1; padding: 24px 24px 28px; display: flex; flex-direction: column; }
+  .al-ct { margin: 14px 0 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(22px, 2.4vw, 26px); line-height: 1.25; color: var(--text-heading); text-wrap: balance; }
+  @media (max-width: 768px) { .al-h1 { font-size: 40px; margin-bottom: 32px; } }
+</style>
