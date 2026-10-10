@@ -1,4 +1,13 @@
-/* Шрифти EB Garamond і Noto Sans підключаються через <link> у Layout.astro */
+/* Шрифти розміщені на самому сайті (public/fonts), без запитів до Google.
+   EB Garamond: 400/500/600 · Noto Sans: 400/500/600/700. Курсивів у наборі немає,
+   тому курсив у статтях браузер імітує. Символу ₴ у цих файлах немає. */
+@font-face { font-family: 'EB Garamond'; font-weight: 400; font-style: normal; font-display: swap; src: url('/fonts/EBGaramond-Regular.woff2') format('woff2'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 500; font-style: normal; font-display: swap; src: url('/fonts/EBGaramond-Medium.woff2') format('woff2'); }
+@font-face { font-family: 'EB Garamond'; font-weight: 600; font-style: normal; font-display: swap; src: url('/fonts/EBGaramond-SemiBold.woff2') format('woff2'); }
+@font-face { font-family: 'Noto Sans'; font-weight: 400; font-style: normal; font-display: swap; src: url('/fonts/NotoSans-Regular.woff2') format('woff2'); }
+@font-face { font-family: 'Noto Sans'; font-weight: 500; font-style: normal; font-display: swap; src: url('/fonts/NotoSans-Medium.woff2') format('woff2'); }
+@font-face { font-family: 'Noto Sans'; font-weight: 600; font-style: normal; font-display: swap; src: url('/fonts/NotoSans-SemiBold.woff2') format('woff2'); }
+@font-face { font-family: 'Noto Sans'; font-weight: 700; font-style: normal; font-display: swap; src: url('/fonts/NotoSans-Bold.woff2') format('woff2'); }
 
 :root {
   --font-display: 'EB Garamond', 'Times New Roman', serif;
