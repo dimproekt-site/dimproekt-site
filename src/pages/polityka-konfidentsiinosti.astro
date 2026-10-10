@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { ROUTES } from '../i18n/site';
+
+const updated = '11 жовтня 2026';
+const sections: [string, string][] = [
+  ['Хто збирає дані', 'ТОВ «Архітектурна майстерня «Дімпроект», e-mail: dimproekt.am@gmail.com.'],
+  ['Які дані ми збираємо', "Коли ви надсилаєте форму: ім'я, телефон або контакт у месенджері, текст повідомлення. Якщо ви пишете нам у месенджері чи на пошту, ми отримуємо дані, які ви самі вказали. Сайт не використовує cookies для відстеження та аналітики."],
+  ['Навіщо', "Щоб зв'язатися з вами щодо проектування, відповісти на запитання та підготувати пропозицію."],
+  ['Кому передаємо', 'Дані не продаються і не передаються третім особам для реклами. Сайт працює на інфраструктурі Cloudflare, а повідомлення з форми надходять нам через сервіс Telegram. Листування в месенджерах і на пошті обробляють відповідні сервіси.'],
+  ['Скільки зберігаємо', 'До завершення співпраці та протягом 3 років після неї. Якщо співпраці не було, дані видаляємо після завершення листування.'],
+  ['Ваші права', 'Ви можете запитати, які дані ми зберігаємо, виправити їх, вимагати видалення або відкликати згоду, написавши на нашу пошту. Ми виконуємо такі запити незалежно від країни проживання.'],
+  ['Зміни', 'Ми можемо оновлювати цей текст, актуальну дату вказано вгорі.'],
+];
+---
+<Layout title="Політика конфіденційності | ДІМПРОЕКТ" description="Які дані збирає сайт ДІМПРОЕКТ, навіщо, кому передаються і як довго зберігаються." uaOnly enHref={ROUTES.homeEn}>
+  <PageIntro crumbs={[{ label: 'Головна', href: ROUTES.home }, { label: 'Політика конфіденційності' }]} title="Політика конфіденційності">
+  </PageIntro>
+  <div class="pp">
+    <nav aria-label="Зміст" class="pp-toc">
+      <div class="pp-tl">Зміст</div>
+      <ol>
+        {sections.map((s, i) => <li><a href={`#s${i + 1}`}><span>{i + 1}</span>{s[0]}</a></li>)}
+      </ol>
+    </nav>
+    <article data-reveal class="pp-art">
+      <p class="pp-upd">Оновлено: {updated}</p>
+      {sections.map((s, i) => (
+        <section id={`s${i + 1}`}>
+          <h2><span>{i + 1}.</span>{s[0]}</h2>
+          <p>{s[1]}</p>
+        </section>
+      ))}
+    </article>
+  </div>
+</Layout>
+<style>
+  .pp { padding: 64px 32px 120px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 48px 80px; }
+  .pp-toc { flex: 1 1 240px; max-width: 300px; position: sticky; top: 24px; }
+  .pp-tl { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .pp-toc ol { list-style: none; margin: 16px 0 0; padding: 0; border-left: 1px solid var(--border-hairline); }
+  .pp-toc a { display: flex; gap: 12px; padding: 8px 0 8px 16px; margin-left: -1px; border-left: 2px solid transparent; font-size: 15px; line-height: 1.4; color: var(--text-heading); text-decoration: none; transition: border-color 140ms, color 140ms; }
+  .pp-toc a:hover { border-left-color: var(--brand-ochre); color: var(--ochre-600); }
+  .pp-toc a span, .pp-art h2 span { font-family: var(--font-display); color: var(--brand-ochre); }
+  .pp-art { flex: 999 1 520px; min-width: 0; max-width: 68ch; }
+  .pp-upd { margin: 0 0 16px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .pp-art section { scroll-margin-top: 24px; padding: 32px 0; border-top: 1px solid var(--border-hairline); }
+  .pp-art h2 { margin: 0; display: flex; gap: 14px; font-family: var(--font-display); font-weight: 500; font-size: 26px; line-height: 1.25; color: var(--text-heading); }
+  .pp-art p:not(.pp-upd) { margin: 14px 0 0; font-size: 17px; line-height: 1.7; text-wrap: pretty; }
+  @media (max-width: 768px) { .pp { padding: 40px 20px 72px; } .pp-toc { position: static; max-width: none; } }
+</style>

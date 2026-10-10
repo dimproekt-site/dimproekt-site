@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { ROUTES } from '../i18n/site';
+
+const body = [
+  'Архітектурна майстерня «Дімпроект» проектує садибні житлові будинки під конкретну ділянку, родину та бюджет, комерційну нерухомість, багатоквартирне житло.',
+  'До 2022 року майстерня працювала командою і проектувала житло в Ірпінському регіоні. Наші роботи це десятки втілених мрій у Ірпені, Бучі, Ворзелі, Гостомелі, Вишневому та Крюківщині. Серед них: ЖК Карат, Капітал, Like Home, Viking Home, Hygge Home, Лісова мелодія, Джерело. Багато проектів приватних будинків по всій Київській області та в Україні.',
+  'Попри виклики війни ми продовжуємо працювати віддалено, зберігаючи головне: любов до архітектури та безкомпромісну якість. Працюємо дистанційно по всій Україні та за кордоном.',
+];
+const stats = [['з 2005', 'року у практиці'], ['десятки', 'спроектованих будинків'], ['інженерні', 'розділи проекту']];
+---
+<Layout title="Про нас: архітектурна майстерня ДІМПРОЕКТ" description="Архітектурна майстерня «Дімпроект»: садибні будинки, комерційна нерухомість і багатоквартирне житло. Працюємо дистанційно по всій Україні та за кордоном." active="about" uaOnly enHref={ROUTES.homeEn}>
+  <PageIntro crumbs={[{ label: 'Головна', href: ROUTES.home }, { label: 'Про нас' }]} eyebrow="Про нас" title="Проектуємо будинки, у яких зручно жити" narrow />
+  <section class="ab" style="padding:0">
+    <div class="ab-in ab-body">
+      {body.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+  <section class="stats" data-reveal data-screen-label="Цифри">
+    <div class="stats-in">
+      {stats.map((s) => <div><div class="sv">{s[0]}</div><div class="sl">{s[1]}</div></div>)}
+    </div>
+  </section>
+  <section class="ab ab-ap" data-reveal data-screen-label="Підхід">
+    <div class="ab-in">
+      <div class="eyebrow"><span class="eb-line" data-draw="x"></span>Підхід</div>
+      <h2 class="h2">Різні об'єкти: один підхід</h2>
+      <p class="ab-p">Для когось головне виразний фасад, для когось продумане планування та економічність. Ми не нав'язуємо один стиль: проектуємо під ваші задачі, ділянку та бюджет, чи це родинний будинок, чи комерційна будівля.</p>
+      <p class="ab-cert">Усі фахівці, які працюють над проектами, мають кваліфікаційні сертифікати. Підтвердні документи та презентацію майстерні надсилаємо за запитом.</p>
+    </div>
+  </section>
+  <ContactCta eyebrow="Контакти" title="Обговоримо ваш будинок?" btn="Отримати консультацію" />
+</Layout>
+<style>
+  .ab-in { max-width: 1200px; margin: 0 auto; padding: 0 32px; box-sizing: border-box; }
+  .ab-body { padding-top: 56px; padding-bottom: 96px; display: grid; gap: 20px; }
+  .ab-body p, .ab-p { margin: 0; font-size: 19px; line-height: 1.65; max-width: 68ch; text-wrap: pretty; }
+  .ab-body { grid-template-columns: minmax(0, 68ch); }
+  .stats { background: var(--surface-card); border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); }
+  .stats-in { max-width: 1200px; margin: 0 auto; padding: 72px 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 40px 32px; box-sizing: border-box; }
+  .sv { font-family: var(--font-display); font-size: 56px; line-height: 1.05; color: var(--brand-ochre); }
+  .sl { margin-top: 8px; font-size: 15px; color: var(--text-muted); }
+  .ab-ap { padding: 96px 0; }
+  .ab-ap .ab-p { margin-top: 24px; }
+  .ab-cert { margin: 48px 0 0; padding-top: 24px; border-top: 1px solid var(--border-hairline); font-size: 15px; line-height: 1.6; color: var(--text-muted); max-width: 68ch; }
+  @media (max-width: 768px) { .ab-in { padding: 0 20px; } .ab-body { padding-bottom: 56px; } .ab-body p, .ab-p { font-size: 17px; } .stats-in { padding: 48px 20px; } .sv { font-size: 40px; } .ab-ap { padding: 56px 0; } }
+</style>

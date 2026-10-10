@@ -1,0 +1,281 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import ContactCta from '../components/ContactCta.astro';
+import ContactFab from '../components/ContactFab.astro';
+import Icon from '../components/Icon.astro';
+import Badge from '../components/Badge.astro';
+import Button from '../components/Button.astro';
+import { ROUTES } from '../i18n/site';
+import overview from '../assets/start/rp-overview.webp';
+import detail from '../assets/start/rp-detail.webp';
+
+const toc = ['Етапи', 'Інженер-конструктор', 'Дозвільні документи', 'Що потрібно для старту'];
+const secIds = ['stages', 'engineer', 'permits', 'start'];
+const overviewItems = [['Ескізний проект', 'планування, фасади, схема розміщення на ділянці'], ['3D-візуалізація', '3D-модель та візуалізації будинку'], ['Робочий проект', 'креслення АР і КР для будівництва']];
+const s1List = ['Завдання на проектування: ваші побажання: кімнати, гараж, тераса, бюджет', 'Варіанти планування: кілька рішень, з яких обираємо найкраще', 'Розміщення на ділянці: за даними кадастрової карти, з дотриманням відступів і будівельних норм', 'Фасади', 'Площі та показники: підрахунок згідно з ДБН'].map((s) => { const i = s.indexOf(': '); return i < 0 ? { term: s, desc: '' } : { term: s.slice(0, i), desc: s.slice(i + 2) }; });
+const eng = [['Фундамент', 'Тип, глибина і армування за результатами геології.', 'layers'], ['Перекриття', 'Переріз балок і армування плит під проліт і навантаження.', 'ruler'], ['Стіни та перемички', 'Несуча здатність кладки, перемички над прорізами.', 'building-2'], ['Покрівля', 'Кроквяна система з урахуванням снігового та вітрового навантаження.', 'home']];
+const permits = [['Схема намірів забудови (до 200 м²)', 'У період воєнного стану створюється і реєструється в ЄДЕССБ сертифікованим архітектором. Робимо це самі, з кваліфікованим електронним підписом.', 'file-text'], ['Будівельний паспорт (до 500 м²)', 'Ескізні наміри забудови готуємо як частину пакета документів, що подається через ЦНАП або «Дію».', 'key']];
+const reqCols = [{ title: 'Документи', items: ['Один із документів на ділянку: акт купівлі-продажу, витяг з ДРРП або витяг з ДЗК', 'Копія паспорта власника ділянки', 'Ідентифікаційний код'] }, { title: 'Готуємо ми разом із фахівцями', items: ['Ескізний проект: розробляємо ми', 'Топографічна зйомка 1:500: виконує геодезист, порадимо перевіреного'] }];
+const steps = [
+  ['Документи на ділянку', 'Для ескізу', 'Один із документів на ділянку: акт купівлі-продажу, витяг з ДРРП (Державного реєстру речових прав) або витяг з ДЗК (Державного земельного кадастру). Для ескізу достатньо кадастрового номера: межі ділянки беремо з документів на землю або з кадастрової карти.', [], 'file-text'],
+  ['Завдання на проектування', 'Для ескізу', 'Надсилаємо вам анкету у форматі Word. Ви заповнюєте її самі або просто пишете побажання в месенджері та надсилаєте свої малюнки й референси. Ми збираємо все в підсумковий документ і відправляємо на затвердження.', ['Склад родини і кількість спалень', 'Площа, поверховість, матеріал стін', 'Орієнтовний бюджет будівництва'], 'pencil-ruler'],
+  ['Топографічна зйомка 1:500', 'Наступний етап', 'Для ескізу не потрібна. Знадобиться для Схеми намірів забудови, для геологічних робіт і для робочого проекту. Зйомка з інженерними мережами, межами ділянки та сусідніми будівлями. Порадимо перевіреного геодезиста.', [], 'map-pin'],
+  ['Геологічні дослідження', 'Тільки для робочого проекту', 'Потрібні, якщо ви замовляєте робочий проект на будівництво: від результатів залежать тип і глибина фундаменту в розділі КР. Буріння свердловин у плямі забудови та лабораторний аналіз ґрунту.', [], 'layers'],
+] as [string, string, string, string[], string][];
+---
+<Layout title="Як почати проектування будинку: етапи, документи, що потрібно | ДІМПРОЕКТ"
+  description="Індивідуальне проектування садибного будинку: ескізний проект, 3D-візуалізація, робочий проект, дозвільні документи та що потрібно від вас для старту."
+  active="design" uaOnly enHref={ROUTES.homeEn}>
+  <PageIntro crumbs={[{ label: 'Головна', href: ROUTES.home }, { label: 'Як почати проектування будинку' }]}
+    eyebrow="Індивідуальне проектування садибних будинків" title="Як почати проектування будинку" narrow
+    lead="Проектування складається з трьох етапів: ескізний проект, 3D-візуалізація та робочий проект. Нижче показано, як вони влаштовані і що потрібно від вас на кожному етапі.">
+  </PageIntro>
+  <nav class="toc" aria-label="Зміст сторінки">
+    {toc.map((c, k) => <a href={`#${secIds[k]}`}><span>0{k + 1}</span>{c}</a>)}
+  </nav>
+
+  <section id="stages" class="sec" data-reveal data-screen-label="Етапи">
+    <div class="eyebrow"><span class="num">01</span><span class="eb-line" data-draw="x"></span>Як ми працюємо</div>
+    <h2 class="h2 mw22">Три етапи: від ідеї до креслень для будівельників</h2>
+    <div class="ov">
+      {overviewItems.map((o, k) => (
+        <a href={`#stage-${k + 1}`} class="ov-i">
+          <div class="ov-dot"><span>0{k + 1}</span></div>
+          <div class="ov-bar" data-draw="x" style={`--d:${k * 120}ms`}></div>
+          <div class="ov-h"><h3>{o[0]}</h3><span class="ov-ar"><Icon name="arrow-right" size={20} /></span></div>
+          <p>{o[1]}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section id="stage-1" class="sec st" data-reveal data-screen-label="Етап 1">
+    <div class="st-in">
+      <div>
+        <div class="st-l">Етап 1 · Ескізний проект</div>
+        <h3 class="st-h">Яким буде ваш дім</h3>
+        <p class="st-p">Визначаємо головне: планування, зовнішній вигляд і розміщення будинку на ділянці. Варіанти надсилаємо вам у форматі PDF, обираємо й погоджуємо остаточний разом.</p>
+        <div class="boxes">
+          <div class="box"><div class="box-l">Результат</div><div class="box-t">планування, фасади, схема розміщення на ділянці</div></div>
+          <div class="box warm"><span class="box-i"><Icon name="file-text" size={18} /></span><div class="box-t"><strong>Потрібно від вас:</strong> документи на ділянку і завдання на проектування</div></div>
+        </div>
+      </div>
+      <ul class="tl">
+        {s1List.map((li, k) => (
+          <li><span class="tl-n">{k + 1}</span><div><span class="tl-t">{li.term}</span>{li.desc}</div></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section id="stage-2" class="sec st" data-reveal data-screen-label="Етап 2">
+    <div class="st-in">
+      <div><div class="st-l">Етап 2</div><h3 class="st-h">3D-візуалізація</h3></div>
+      <div>
+        <p class="st-p">Ви бачите будинок до початку будівництва: матеріали, кольори, вигляд з усіх боків. Зміни на цьому етапі нічого не коштують на будмайданчику.</p>
+        <div class="box" style="margin-top:24px;max-width:52ch"><div class="box-l">Результат</div><div class="box-t">3D-модель та візуалізації будинку</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stage-3" class="sec st last" data-screen-label="Етап 3">
+    <div class="st-in" data-reveal>
+      <div><div class="st-l">Етап 3 · Робочий проект</div><h3 class="st-h">Десятки аркушів креслень, щоб будували точно</h3></div>
+      <p class="st-p">Плани з розмірами, фасади, розрізи, вузли, склад підлог і стін, специфікації вікон і дверей (АР) та фундаменти, перекриття, армування й конструкції даху (КР).</p>
+    </div>
+    <figure data-reveal class="fig">
+      <div class="fig-f contain"><Image src={overview} alt="Повний комплект аркушів робочого проекту" widths={[640, 1000, 1400]} sizes="(max-width: 1200px) 100vw, 1136px" loading="lazy" /></div>
+      <figcaption>Повний комплект аркушів одного з наших проектів</figcaption>
+    </figure>
+    <figure data-reveal class="fig" style="margin-top:32px">
+      <div class="fig-f"><Image src={detail} alt="Плани, детальні розрізи, вузли та специфікації" widths={[640, 1000, 1400]} sizes="(max-width: 1200px) 100vw, 1136px" loading="lazy" /></div>
+      <figcaption>Плани, детальні розрізи, вузли та специфікації</figcaption>
+    </figure>
+  </section>
+
+  <section id="engineer" class="eng" data-reveal data-screen-label="Інженер-конструктор">
+    <div class="eng-in">
+      <div>
+        <div class="eyebrow"><span class="num">02</span><span class="eb-line" data-draw="x"></span>Інженер-конструктор</div>
+        <h2 class="h2">Чому в проекті є інженер-конструктор</h2>
+        <h3 class="eng-h3">Розрахунок, а не на око</h3>
+        <p class="st-p" style="margin-top:12px;max-width:46ch">Конструктивний розділ виконує інженер-конструктор. Кожен несучий елемент розраховується під реальні навантаження вашого будинку та дані геології — без запасу «про всяк випадок» і без ризику тріщин.</p>
+        <div class="dim"><span class="dim-line" data-draw="x"></span><i class="t l"></i><i class="t r"></i><span class="dim-t">під ваші навантаження</span></div>
+      </div>
+      <div>
+        <div class="eng-g">
+          {eng.map((e) => (
+            <div class="eng-c"><div class="eng-ch"><Icon name={e[2]} size={24} /><h4>{e[0]}</h4></div><p>{e[1]}</p></div>
+          ))}
+        </div>
+        <p class="eng-x">За бажанням замовника, окрім конструктивних рішень, у проекті можуть бути розроблені додаткові розділи: ВК (водопровід і каналізація), ОВ (опалення та вентиляція), ЕТР (електротехнічні рішення), газопостачання. Розділ КР є базовим і обов'язковим при замовленні робочого проекту на будівництво.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="permits" class="sec" data-reveal data-screen-label="Дозвільні документи">
+    <div class="eyebrow"><span class="num">03</span><span class="eb-line" data-draw="x"></span>Дозвільні документи</div>
+    <h2 class="h2 mw22" style="margin-bottom:48px">Готуємо документи для початку будівництва</h2>
+    <div class="pm-g">
+      {permits.map((p) => (
+        <div class="pm-c"><div class="pm-h"><Icon name={p[2]} size={24} /><h3>{p[0]}</h3></div><p>{p[1]}</p></div>
+      ))}
+    </div>
+    <div class="req" data-reveal>
+      <h3>Що потрібно для оформлення</h3>
+      <div class="req-g">
+        {reqCols.map((c) => (
+          <div>
+            <div class="req-t">{c.title}</div>
+            <div class="req-line" data-draw="x"></div>
+            <ul class="chk">{c.items.map((li) => <li><span><Icon name="check" size={16} /></span>{li}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="start" class="start" data-reveal data-screen-label="Що потрібно для старту">
+    <div class="start-in">
+      <div class="eyebrow"><span class="num">04</span><span class="eb-line" data-draw="x"></span>Підготовка</div>
+      <h2 class="h2">Що потрібно для старту</h2>
+      <div class="steps">
+        {steps.map((s, k) => (
+          <div class="step">
+            <div class="ov-dot"><span>{k + 1}</span></div>
+            <div class="ov-bar" data-draw="x" style={`--d:${k * 120}ms`}></div>
+            <div class="step-h">
+              <div><Badge tone={k < 2 ? 'accent' : 'neutral'}>{s[1]}</Badge><h3>{s[0]}</h3></div>
+              <span class="step-i"><Icon name={s[4]} size={32} strokeWidth={1.5} /></span>
+            </div>
+            <p>{s[2]}</p>
+            {s[3].length > 0 && <ul class="chk">{s[3].map((li) => <li><span><Icon name="check" size={16} /></span>{li}</li>)}</ul>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ContactCta card={false} eyebrow="Консультація" title="Почнемо з консультації" text="Розкажіть про ділянку — підкажемо, яких документів бракує, і передзвонимо протягом робочого дня." btn="Отримати консультацію" />
+
+  <nav class="axes" aria-label="Розділи сторінки" data-axes>
+    {['А', 'Б', 'В', 'Г'].map((l, k) => (
+      <>
+        {k > 0 && <div class="ax-gap"></div>}
+        <button class="ax" data-go={secIds[k]} title={`${l} · ${toc[k]}`} aria-label={`${l} · ${toc[k]}`}>{l}</button>
+      </>
+    ))}
+  </nav>
+  <ContactFab />
+</Layout>
+
+<style>
+  .sec { padding: 96px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; scroll-margin-top: 24px; }
+  .num { font-family: var(--font-display); font-size: 21px; letter-spacing: 0; color: var(--brand-ochre); }
+  .mw22 { max-width: 22ch; text-wrap: balance; }
+  .eyebrow + .h2 { margin-top: 16px; }
+  .toc { max-width: 1200px; margin: 0 auto; padding: 20px 32px 0; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 8px 32px; }
+  .toc a { display: flex; align-items: baseline; gap: 10px; padding: 8px 0; color: var(--text-heading); text-decoration: none; font-size: 15px; font-weight: 500; }
+  .toc a:hover { color: var(--ochre-600); }
+  .toc a span { font-family: var(--font-display); font-size: 17px; color: var(--brand-ochre); }
+  .ov { margin-top: 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 32px; }
+  .ov-i, .step { display: block; text-decoration: none; color: inherit; }
+  .ov-dot { width: 30px; height: 30px; border: 1px solid var(--border-strong); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 15px; color: var(--text-heading); margin-left: -14px; background: var(--brand-cream); margin-bottom: 18px; position: relative; }
+  .ov-bar { height: 2px; background: var(--brand-ochre); transition-delay: var(--d, 0ms); }
+  .ov-h { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 20px; }
+  .ov-h h3, .step h3 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 26px; line-height: 1.2; color: var(--text-heading); }
+  .ov-ar { display: flex; color: var(--brand-espresso); transition: transform 240ms var(--ease-out); }
+  .ov-i:hover .ov-ar { transform: translateX(6px); }
+  .ov-i p { margin: 8px 0 0; font-size: 15px; line-height: 1.6; color: var(--text-muted); }
+  .st { padding-top: 48px; padding-bottom: 48px; }
+  .st.last { padding-bottom: 96px; }
+  .st-in { border-top: 1px solid var(--border-hairline); padding-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 40px 64px; align-items: start; }
+  .st-l { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--ochre-600); }
+  .st-h { margin: 12px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 34px; line-height: 1.15; color: var(--text-heading); text-wrap: balance; }
+  .st-p { margin: 16px 0 0; font-size: 17px; line-height: 1.65; max-width: 52ch; text-wrap: pretty; }
+  .st-in > p.st-p { margin: 0; }
+  .boxes { margin-top: 28px; display: grid; gap: 12px; max-width: 46ch; }
+  .box { padding: 16px 20px; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 4px; }
+  .box.warm { display: flex; gap: 12px; align-items: flex-start; background: var(--ochre-100); border: 0; }
+  .box-l { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .box-t { margin-top: 6px; font-size: 15px; line-height: 1.5; color: var(--text-heading); }
+  .box.warm .box-t { margin: 0; }
+  .box-i { display: flex; margin-top: 1px; color: var(--brand-espresso); }
+  .tl { list-style: none; margin: 0; padding: 0; display: grid; }
+  .tl li { display: flex; gap: 16px; align-items: flex-start; padding: 16px 0; border-top: 1px solid var(--border-hairline); font-size: 15px; line-height: 1.6; }
+  .tl-n { flex: 0 0 28px; font-family: var(--font-display); font-size: 17px; line-height: 1.4; color: var(--brand-ochre); }
+  .tl-t { display: block; font-size: 17px; font-weight: 500; color: var(--text-heading); }
+  .fig { margin: 48px 0 0; }
+  .fig-f { position: relative; aspect-ratio: 3 / 2; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 4px; overflow: hidden; }
+  .fig-f :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .fig-f.contain :global(img) { object-fit: contain; }
+  figcaption { margin-top: 12px; font-size: 13px; line-height: 1.5; color: var(--text-muted); }
+  .eng { background: var(--surface-card); border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); scroll-margin-top: 24px; }
+  .eng-in { padding: 96px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px 80px; align-items: start; }
+  .eng-h3 { margin: 28px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 26px; line-height: 1.2; color: var(--text-heading); }
+  .dim { position: relative; height: 24px; margin-top: 40px; max-width: 360px; }
+  .dim-line { position: absolute; left: 0; right: 0; top: 12px; height: 1px; background: var(--border-strong); }
+  .dim .t { position: absolute; top: 4px; width: 1px; height: 16px; background: var(--border-strong); }
+  .dim .t.l { left: 0; } .dim .t.r { right: 0; }
+  .dim-t { position: absolute; left: 50%; top: -6px; transform: translateX(-50%); padding: 0 12px; background: var(--surface-card); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+  .eng-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 24px; }
+  .eng-c { padding: 20px 0 0; border-top: 2px solid var(--brand-ochre); }
+  .eng-ch { display: flex; align-items: center; gap: 12px; color: var(--brand-espresso); }
+  .eng-ch h4 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 22px; color: var(--text-heading); }
+  .eng-c p { margin: 10px 0 0; font-size: 15px; line-height: 1.6; color: var(--text-body); }
+  .eng-x { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--border-hairline); font-size: 15px; line-height: 1.65; text-wrap: pretty; }
+  .pm-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px; }
+  .pm-c { background: var(--surface-card); border: 1px solid var(--border-hairline); border-top: 2px solid var(--brand-ochre); border-radius: 4px; box-shadow: var(--shadow-1); padding: 32px 32px 36px; }
+  .pm-h { display: flex; align-items: center; gap: 12px; color: var(--brand-espresso); }
+  .pm-h h3 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 26px; line-height: 1.2; color: var(--text-heading); }
+  .pm-c p { margin: 14px 0 0; font-size: 16px; line-height: 1.65; text-wrap: pretty; }
+  .req { margin-top: 72px; }
+  .req h3 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: 30px; color: var(--text-heading); }
+  .req-g { margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 40px 64px; }
+  .req-t { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .req-line { margin-top: 12px; height: 2px; background: var(--brand-ochre); }
+  .chk { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 12px; }
+  .chk li { display: flex; gap: 12px; align-items: flex-start; font-size: 15px; line-height: 1.55; }
+  .chk li span { flex: 0 0 auto; display: flex; margin-top: 3px; color: var(--brand-ochre); }
+  .start { background: var(--surface-card); border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); scroll-margin-top: 24px; }
+  .start-in { padding: 96px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .steps { margin-top: 56px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 32px; }
+  .step-h { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding-top: 20px; }
+  .step-h h3 { margin-top: 12px; font-size: 24px; }
+  .step-i { color: var(--brand-stone); display: flex; }
+  .step p { margin: 12px 0 0; font-size: 15px; line-height: 1.6; }
+  .axes { display: none; position: fixed; left: calc(50% - 664px); top: 50%; transform: translateY(-50%); z-index: 30; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 240ms var(--ease-standard); }
+  .axes:global(.show) { opacity: 1; pointer-events: auto; }
+  .ax-gap { width: 0; height: 44px; border-left: 1px dashed var(--border-strong); }
+  .ax { width: 30px; height: 30px; padding: 0; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--brand-cream); color: var(--text-heading); font-family: var(--font-display); font-size: 17px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 240ms, color 240ms, border-color 240ms, box-shadow 240ms; }
+  .ax:hover { border-color: var(--brand-espresso); }
+  .ax:global(.on) { background: var(--brand-ochre); color: #2A1C10; border-color: var(--brand-ochre); box-shadow: 0 0 0 5px rgba(201,138,62,.22); }
+  @media (min-width: 1340px) { .axes { display: flex; } }
+  @media (max-width: 768px) {
+    .sec { padding: 56px 20px; } .toc { padding: 16px 20px 0; } .st { padding-top: 24px; padding-bottom: 24px; } .st.last { padding-bottom: 56px; }
+    .st-h { font-size: 28px; } .eng-in, .start-in { padding: 56px 20px; } .pm-c { padding: 24px; } .req { margin-top: 48px; } .dim-t { font-size: 11px; }
+  }
+</style>
+<script>
+  const axes = document.querySelector<HTMLElement>('[data-axes]');
+  const secs = ['stages', 'engineer', 'permits', 'start'].map((id) => document.getElementById(id));
+  if (axes && secs.every(Boolean)) {
+    const btns = [...axes.querySelectorAll<HTMLElement>('.ax')];
+    const spy = () => {
+      const vh = innerHeight; let a = 0;
+      secs.forEach((e, k) => { if (e!.getBoundingClientRect().top < vh * 0.45) a = k; });
+      const on = secs[0]!.getBoundingClientRect().top < vh * 0.6 && secs[3]!.getBoundingClientRect().bottom > vh * 0.4;
+      axes.classList.toggle('show', on);
+      btns.forEach((b, k) => { b.classList.toggle('on', k === a); b.setAttribute('aria-current', String(k === a)); });
+    };
+    let raf = 0;
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; spy(); }); }, { passive: true });
+    spy();
+    btns.forEach((b) => b.addEventListener('click', () => {
+      const el = document.getElementById(b.dataset.go!);
+      if (el) scrollTo({ top: el.getBoundingClientRect().top + scrollY, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }));
+  }
+</script>
