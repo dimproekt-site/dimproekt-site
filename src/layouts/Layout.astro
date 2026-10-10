@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import UaOnlyBar from '../components/UaOnlyBar.astro';
+import type { Lang } from '../i18n/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: Lang;
+  active?: 'projects' | 'design' | 'about' | 'contacts';
+  overlay?: boolean;
+  large?: boolean;
+  uaOnly?: boolean;
+  enHref?: string;
+  uaHref?: string;
+  noindex?: boolean;
+}
+const { title, description, lang = 'uk', active, overlay = false, large = false, uaOnly = false, enHref, uaHref, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..700&family=Noto+Sans:ital,wght@0,300..700;1,400..600&display=swap" />
+  </head>
+  <body>
+    <Header lang={lang} active={active} overlay={overlay} large={large} uaOnly={uaOnly} enHref={enHref} uaHref={uaHref} />
+    {uaOnly && <UaOnlyBar />}
+    <main id="main"><slot /></main>
+    <Footer lang={lang} />
+    <script is:inline define:vars={{ lang }}>
+      // Запам'ятовуємо вибір мови для повідомлення «лише українською»
+      try {
+        document.addEventListener('click', function (e) {
+          var a = e.target && e.target.closest && e.target.closest('[data-lang]');
+          if (a) localStorage.setItem('dp-lang', a.getAttribute('data-lang'));
+        });
+        if (lang === 'en') localStorage.setItem('dp-lang', 'en');
+      } catch (err) {}
+    </script>
+  </body>
+</html>

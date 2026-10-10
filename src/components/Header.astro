@@ -1,0 +1,189 @@
+---
+import Icon from './Icon.astro';
+import { NAV, ROUTES, CONTACTS, type Lang } from '../i18n/site';
+
+interface Props {
+  lang?: Lang;
+  active?: 'projects' | 'design' | 'about' | 'contacts';
+  /** Прозора шапка поверх hero (головна) */
+  overlay?: boolean;
+  /** Збільшена шапка (головна) */
+  large?: boolean;
+  /** Сторінка лише українською: кнопка EN неактивна */
+  uaOnly?: boolean;
+  /** Адреса англійської версії цієї сторінки, якщо вона є */
+  enHref?: string;
+  /** Адреса української версії цієї сторінки */
+  uaHref?: string;
+}
+const { lang = 'uk', active, overlay = false, large = false, uaOnly = false, enHref = ROUTES.homeEn, uaHref = ROUTES.home } = Astro.props;
+const nav = NAV[lang];
+const homeHref = lang === 'en' ? ROUTES.homeEn : ROUTES.home;
+const en = lang === 'en';
+---
+<header class:list={['site-header', { overlay, large }]}>
+  <a class="logo" href={homeHref} aria-label="ДІМПРОЕКТ">
+    {large ? (
+      <picture>
+        <source media="(max-width: 767px)" srcset="/assets/logo-on-dark-compact.svg" />
+        <img src="/assets/logo-header-on-dark.svg" alt="ДІМПРОЕКТ — архітектурна майстерня" />
+      </picture>
+    ) : (
+      <img src="/assets/logo-on-dark.svg" alt="ДІМПРОЕКТ — архітектурна майстерня" />
+    )}
+  </a>
+
+  <button class="burger" type="button" aria-label={en ? 'Menu' : 'Меню'} aria-expanded="false" aria-controls="mobile-menu" data-burger>
+    <span data-burger-open><Icon name="menu" size={20} /></span>
+    <span data-burger-close hidden><Icon name="x" size={20} /></span>
+  </button>
+
+  <div class="mobile-menu" id="mobile-menu" hidden data-mobile-menu>
+    {nav.map((it) => (
+      <div class="mobile-item">
+        <a class="mobile-link" href={it.href}>{it.short ?? it.label}</a>
+        {it.sub?.map((s) => <a class="mobile-sub" href={s.href}>{s.label}</a>)}
+      </div>
+    ))}
+  </div>
+
+  <nav class="nav" aria-label={en ? 'Main navigation' : 'Основна навігація'}>
+    {nav.map((it) => (
+      <div class="nav-item">
+        <a class:list={['nav-link', { active: active === it.key }]} href={it.href} aria-haspopup={it.sub ? 'true' : undefined}>
+          {it.label}
+          {it.sub && <Icon name="chevron-right" size={14} class="caret" />}
+        </a>
+        {it.sub && (
+          <div class="dropdown">
+            {it.sub.map((s) => <a href={s.href}>{s.label}</a>)}
+          </div>
+        )}
+      </div>
+    ))}
+  </nav>
+
+  <a class="phone" href={CONTACTS.phoneHref} aria-label={CONTACTS.phone}>
+    <span class="phone-ring"><Icon name="phone" size={16} /></span>
+    <span class="phone-text">{CONTACTS.phone}</span>
+  </a>
+
+  <div class="social">
+    <a href={CONTACTS.instagram} target="_blank" rel="noopener" aria-label="Instagram"><Icon name="instagram" size={20} /></a>
+    <a href={CONTACTS.facebook} target="_blank" rel="noopener" aria-label="Facebook"><Icon name="facebook" size={20} /></a>
+  </div>
+
+  <div class="lang" role="group" aria-label={en ? 'Language' : 'Мова'}>
+    {uaOnly || en ? (
+      <a class:list={['lang-btn', { on: !en }]} href={uaHref} data-lang="uk">UA</a>
+    ) : (
+      <span class="lang-btn on" aria-current="true">UA</span>
+    )}
+    {uaOnly ? (
+      <span class="lang-btn off" aria-disabled="true" title="English version is not available for this page">EN</span>
+    ) : en ? (
+      <span class="lang-btn on" aria-current="true">EN</span>
+    ) : (
+      <a class="lang-btn" href={enHref} data-lang="en">EN</a>
+    )}
+  </div>
+</header>
+
+<style>
+  .site-header {
+    --head-h: 88px; --logo-h: 44px; --h-pad: 48px; --h-gap: 40px;
+    position: relative; z-index: 20; height: var(--head-h); padding: 0 var(--h-pad);
+    display: flex; align-items: center; gap: var(--h-gap); box-sizing: border-box;
+    background: var(--brand-espresso); font-family: var(--font-sans);
+  }
+  .site-header.overlay { background: transparent; position: absolute; top: 0; left: 0; right: 0; }
+  .site-header.large { --head-h: 96px; --logo-h: 61px; }
+  @media (max-width: 1439px) { .site-header { --h-pad: 32px; --h-gap: 24px; } }
+  @media (max-width: 1279px) { .site-header.large { --head-h: 88px; --logo-h: 54px; } }
+  @media (max-width: 767px) {
+    .site-header { --h-pad: 20px; --h-gap: 12px; }
+    .site-header.large { --head-h: 76px; --logo-h: 44px; }
+  }
+
+  .logo { display: flex; flex: 0 0 auto; margin-right: auto; transform-origin: left center; transition: transform var(--dur-med) var(--ease-standard); text-decoration: none; }
+  .logo:hover { transform: scale(1.04); }
+  .logo img { height: var(--logo-h); width: auto; display: block; }
+
+  .nav { display: flex; align-items: center; gap: 32px; }
+  .nav-item { position: relative; height: var(--head-h); display: flex; align-items: center; }
+  .nav-link {
+    display: flex; align-items: center; gap: 6px; color: var(--brand-parchment); text-decoration: none;
+    font-size: 15px; font-weight: 500; white-space: nowrap; padding-bottom: 2px; border-bottom: 2px solid transparent;
+  }
+  .nav-link.active { border-bottom-color: var(--brand-ochre); }
+  .nav-link:hover { color: var(--brand-parchment); }
+  .nav-link :global(.caret) { transform: rotate(90deg); opacity: 0.8; }
+  .dropdown {
+    display: none; position: absolute; top: calc(var(--head-h) - 14px); left: -20px; min-width: 300px;
+    background: var(--surface-card); border: 1px solid var(--border-hairline); border-top: 2px solid var(--brand-ochre);
+    border-radius: 0 0 4px 4px; box-shadow: var(--shadow-3); padding: 8px 0;
+  }
+  .nav-item:hover .dropdown, .nav-item:focus-within .dropdown { display: block; }
+  .dropdown a { display: block; padding: 11px 20px; color: var(--text-heading); text-decoration: none; font-size: 15px; }
+  .dropdown a:hover { background: var(--ochre-100); color: var(--text-heading); }
+
+  .phone { display: flex; align-items: center; gap: 12px; color: var(--brand-parchment); text-decoration: none; white-space: nowrap; }
+  .phone:hover { color: var(--brand-parchment); }
+  .phone-ring { width: 38px; height: 38px; border: 1px solid rgba(245,237,225,0.55); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .phone-text { font-family: var(--font-display); font-size: 21px; }
+
+  .social { display: flex; align-items: center; gap: 18px; }
+  .social a { color: var(--brand-parchment); display: flex; }
+  .social a:hover { color: var(--ochre-300); }
+
+  .lang { display: flex; align-items: center; border: 1px solid rgba(245,237,225,0.45); border-radius: 2px; overflow: hidden; }
+  .lang-btn {
+    border: 0; padding: 7px 10px; font-family: var(--font-sans); font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+    background: transparent; color: var(--brand-parchment); text-decoration: none; line-height: 1.4;
+  }
+  .lang-btn.on { background: var(--brand-parchment); color: #2A1C10; }
+  .lang-btn.off { opacity: 0.42; cursor: not-allowed; }
+  a.lang-btn:hover { color: var(--brand-parchment); background: rgba(245,237,225,0.12); }
+  a.lang-btn.on:hover { color: #2A1C10; background: var(--brand-parchment); }
+
+  .burger {
+    display: none; order: 10; width: 44px; height: 44px; border: 1px solid rgba(245,237,225,0.45); border-radius: 2px;
+    background: transparent; color: var(--brand-parchment); cursor: pointer; align-items: center; justify-content: center;
+  }
+  .burger [hidden] { display: none; }
+  .mobile-menu {
+    position: absolute; top: var(--head-h); left: 0; right: 0; background: var(--surface-card);
+    border-top: 2px solid var(--brand-ochre); box-shadow: var(--shadow-3); padding: 12px 0 20px;
+  }
+  .mobile-menu[hidden] { display: none; }
+  .mobile-item { padding: 0 24px; }
+  .mobile-link { display: block; padding: 12px 0; font-size: 17px; font-weight: 500; color: var(--text-heading); text-decoration: none; border-bottom: 1px solid var(--border-hairline); }
+  .mobile-sub { display: block; padding: 9px 0 9px 16px; font-size: 15px; color: var(--text-body); text-decoration: none; }
+
+  /* Компактна шапка: бургер замість меню */
+  @media (max-width: 1279px) {
+    .nav { display: none; }
+    .burger { display: flex; }
+  }
+  @media (min-width: 1280px) { .mobile-menu { display: none !important; } }
+  /* Номер телефону: показуємо текст ≥1440 або на планшеті 640–1279 */
+  @media (min-width: 1280px) and (max-width: 1439px) { .phone-text { display: none; } }
+  @media (max-width: 639px) { .phone-text { display: none; } }
+  /* На вузьких екранах соцмережі є в підвалі, у шапці місця немає */
+  @media (max-width: 479px) { .social { display: none; } }
+</style>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const menu = document.querySelector<HTMLElement>('[data-mobile-menu]');
+  const openIcon = document.querySelector<HTMLElement>('[data-burger-open]');
+  const closeIcon = document.querySelector<HTMLElement>('[data-burger-close]');
+  burger?.addEventListener('click', () => {
+    if (!menu || !openIcon || !closeIcon) return;
+    const open = menu.hidden;
+    menu.hidden = !open;
+    openIcon.hidden = open;
+    closeIcon.hidden = !open;
+    burger.setAttribute('aria-expanded', String(open));
+  });
+</script>

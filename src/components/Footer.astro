@@ -1,0 +1,87 @@
+---
+import Icon from './Icon.astro';
+import whatsappSvg from '../assets/icons/whatsapp.svg?raw';
+import telegramSvg from '../assets/icons/telegram.svg?raw';
+import { FOOTER, CONTACTS, ROUTES, type Lang } from '../i18n/site';
+
+interface Props { lang?: Lang }
+const { lang = 'uk' } = Astro.props;
+const t = FOOTER[lang];
+const hoursLine = `${t.hoursList.join(', ')} (${t.tz})`;
+---
+<footer class="site-footer on-dark">
+  <div class="inner">
+    <div class="grid">
+      <div>
+        <img class="logo" src="/assets/logo-footer-on-dark.svg" alt="ДІМПРОЕКТ — архітектурна майстерня" />
+        <div class="social">
+          <a href={CONTACTS.instagram} target="_blank" rel="noopener" aria-label="Instagram"><Icon name="instagram" size={18} /></a>
+          <a href={CONTACTS.facebook} target="_blank" rel="noopener" aria-label="Facebook"><Icon name="facebook" size={18} /></a>
+          <a href={CONTACTS.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp"><span class="msg" set:html={whatsappSvg} /></a>
+          <a href={CONTACTS.telegram} target="_blank" rel="noopener" aria-label="Telegram"><span class="msg" set:html={telegramSvg} /></a>
+        </div>
+      </div>
+      {t.columns.map((col) => (
+        <div>
+          <div class="overline">{col.title}</div>
+          <ul>
+            {col.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </div>
+      ))}
+      <div class="contacts">
+        <div class="overline">{t.contacts}</div>
+        <a class="phone" href={CONTACTS.phoneHref}>{CONTACTS.phone}</a>
+        <a class="mail" href={`mailto:${CONTACTS.email}`}>{CONTACTS.email}</a>
+        <div class="hours"><span class="hours-label">{t.hours}</span> · {hoursLine}</div>
+      </div>
+    </div>
+    <div class="fb">
+      <a href={CONTACTS.facebookGroup} target="_blank" rel="noopener">
+        <span class="fb-icon"><Icon name="facebook" size={14} /></span>
+        <span>{t.fbGroup}</span>
+      </a>
+    </div>
+    <div class="legal">
+      <span>{t.legal}</span>
+      <a href={ROUTES.privacy}>{t.privacy}</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--surface-dark); color: var(--text-on-dark); padding: var(--space-20) var(--gutter) var(--space-8); font-family: var(--font-sans); }
+  .inner { max-width: var(--container-max); margin: 0 auto; }
+  .grid { display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-12); }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-10) var(--space-8); }
+    .grid > :first-child { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  .logo { height: 54px; width: auto; display: block; }
+  .social { display: flex; gap: var(--space-3); margin-top: var(--space-6); }
+  .social a { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid var(--border-dark); border-radius: var(--radius-sm); color: var(--text-on-dark); text-decoration: none; }
+  .social a:hover { border-color: var(--brand-ochre); color: var(--text-on-dark); }
+  .msg { display: flex; }
+  .msg :global(svg) { width: 18px; height: 18px; }
+  .overline { font-size: var(--text-overline); letter-spacing: var(--ls-overline); text-transform: uppercase; font-weight: var(--weight-semibold); color: var(--brand-ochre); margin-bottom: var(--space-4); }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+  li a { font-size: var(--text-body-sm); color: var(--text-on-dark); text-decoration: none; }
+  li a:hover { color: var(--ochre-300); }
+  .contacts { min-width: 0; }
+  .phone { display: block; font-family: var(--font-display); font-size: var(--text-h4); color: var(--text-on-dark); text-decoration: none; margin-bottom: var(--space-2); }
+  .mail { display: block; overflow-wrap: anywhere; font-size: var(--text-body-sm); color: var(--text-on-dark-muted); text-decoration: none; }
+  .mail:hover { color: var(--ochre-300); }
+  .hours { margin-top: var(--space-4); font-size: var(--text-caption); line-height: 1.5; color: var(--text-on-dark-muted); }
+  .hours-label { color: var(--brand-ochre); font-weight: var(--weight-semibold); letter-spacing: var(--ls-overline); text-transform: uppercase; font-size: var(--text-overline); }
+  .fb { margin-top: var(--space-12); }
+  .fb a { display: inline-flex; align-items: flex-start; gap: 10px; max-width: 100%; font-size: var(--text-caption); line-height: 1.5; color: var(--text-on-dark-muted); text-decoration: none; text-underline-offset: 3px; }
+  .fb a:hover { color: var(--text-on-dark); text-decoration: underline; }
+  .fb-icon { flex: 0 0 auto; display: flex; margin-top: 2px; }
+  .fb span:last-child { min-width: 0; text-wrap: pretty; }
+  .legal { margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--border-dark); display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: var(--text-caption); color: var(--text-on-dark-muted); }
+  .legal a { color: var(--text-on-dark-muted); text-decoration: underline; text-underline-offset: 3px; }
+  .legal a:hover { color: var(--ochre-300); }
+</style>

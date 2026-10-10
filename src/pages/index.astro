@@ -1,38 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
-
-const allProjects = await getCollection('projects');
-const sadybni = allProjects.filter((p) => p.data.projectType === 'sadybny');
-const bagatokvartyrni = allProjects.filter((p) => p.data.projectType === 'bagatokvartyrny');
+import Layout from '../layouts/Layout.astro';
 ---
-
-<html lang="uk">
-  <head>
-    <meta charset="utf-8" />
-    <title>Дімпроект — тимчасова сторінка</title>
-  </head>
-  <body>
-    <h1>Дімпроект</h1>
-    <p>
-      Це тимчасова сторінка для перевірки структури контенту.
-      Дизайн ще не розроблявся — це наступний крок.
-    </p>
-
-    <h2>Садибні будинки ({sadybni.length})</h2>
-    <ul>
-      {sadybni.map((p) => (
-        <li>
-          {p.data.title} — {p.data.stage === 'robochyi' ? 'робочий проект' : 'ескізний проект'}
-          {p.data.forSale ? ' · для продажу' : ''}
-        </li>
-      ))}
-    </ul>
-
-    <h2>Багатоквартирні будинки ({bagatokvartyrni.length})</h2>
-    <ul>
-      {bagatokvartyrni.map((p) => (
-        <li>{p.data.title}</li>
-      ))}
-    </ul>
-  </body>
-</html>
+<Layout title="ДІМПРОЕКТ — архітектурна майстерня" description="Проектування садибних будинків, готові проекти, багатоквартирне житло та комерційна нерухомість." large enHref="/en/">
+  <section style="min-height: 60vh; display: grid; place-items: center; padding: 160px 24px 80px; text-align: center">
+    <div><h1>Скелет сайту</h1><p>Шапка, підвал і перемикач мови. Решта сторінок — наступними кроками.</p></div>
+  </section>
+</Layout>

@@ -1,0 +1,25 @@
+:root {
+  /* Architectural = restrained corners */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-pill: 999px;
+
+  --border-width: 1px; /* @kind spacing */
+  --border-width-thick: 2px; /* @kind spacing */
+
+  /* Shadows are warm-tinted (espresso), never neutral black */
+  --shadow-0: none;
+  --shadow-1: 0 1px 2px rgba(63, 44, 27, 0.06);
+  --shadow-2: 0 2px 6px rgba(63, 44, 27, 0.08);
+  --shadow-3: 0 6px 18px rgba(63, 44, 27, 0.10);
+  --shadow-4: 0 14px 36px rgba(63, 44, 27, 0.14);
+  --shadow-hairline: inset 0 0 0 1px var(--border-hairline);
+  --shadow-focus: 0 0 0 3px rgba(201, 138, 62, 0.32);
+
+  /* Photo protection gradient (text over imagery) */
+  --scrim-bottom: linear-gradient(to top, rgba(42,28,16,0.80) 0%, rgba(42,28,16,0.45) 38%, rgba(42,28,16,0) 78%); /* @kind other */
+  --scrim-full: linear-gradient(to right, rgba(42,28,16,0.78) 0%, rgba(42,28,16,0.30) 55%, rgba(42,28,16,0) 100%); /* @kind other */
+}

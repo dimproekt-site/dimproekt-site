@@ -1,0 +1,33 @@
+---
+// Повідомлення для англомовних відвідувачів на сторінках, які є лише українською.
+---
+<div class="ua-only" role="note" lang="en" id="ua-only-bar" hidden>
+  <div class="inner">
+    <span class="ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span>
+    <p>This page is available in Ukrainian only. You can use your browser's translate feature.</p>
+    <button type="button" aria-label="Close" id="ua-only-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+  </div>
+</div>
+
+<style>
+  .ua-only { background: var(--ochre-100); border-bottom: 1px solid var(--border-hairline); font-family: var(--font-sans); }
+  .ua-only[hidden] { display: none; }
+  .inner { max-width: 1200px; margin: 0 auto; padding: 6px 20px 6px 32px; display: flex; align-items: center; gap: 12px; }
+  .ico { flex: 0 0 auto; display: flex; color: var(--brand-espresso); }
+  p { flex: 1; margin: 0; font-size: 14px; line-height: 1.5; color: var(--text-heading); text-wrap: pretty; max-width: none; }
+  button { flex: 0 0 auto; width: 36px; height: 36px; border: 0; border-radius: 2px; background: transparent; color: var(--text-heading); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background var(--dur-fast) var(--ease-standard); }
+  button:hover { background: rgba(63, 44, 27, 0.08); }
+</style>
+
+<script>
+  const bar = document.getElementById('ua-only-bar');
+  let lang: string | null = null;
+  let closed = false;
+  try { lang = localStorage.getItem('dp-lang'); } catch {}
+  try { closed = sessionStorage.getItem('dp-uaonly-closed') === '1'; } catch {}
+  if (bar && lang === 'en' && !closed) bar.hidden = false;
+  document.getElementById('ua-only-close')?.addEventListener('click', () => {
+    if (bar) bar.hidden = true;
+    try { sessionStorage.setItem('dp-uaonly-closed', '1'); } catch {}
+  });
+</script>

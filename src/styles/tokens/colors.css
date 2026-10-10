@@ -1,0 +1,77 @@
+:root {
+  /* ---- Brand base (given) ---- */
+  --brand-cream: #FAF6F0;      /* page background */
+  --brand-espresso: #3F2C1B;   /* dark sections: header, footer */
+  --brand-parchment: #F5EDE1;  /* text on dark */
+  --brand-stone: #8A7A68;      /* muted text */
+  --brand-ochre: #C98A3E;      /* accent: buttons, links */
+
+  /* The logo keeps its own, brighter orange. It is NOT an interface colour:
+     never use it for buttons, links, rules or tints — only inside the lockup. */
+  --brand-logo-orange: #FF9028; /* @kind color */
+
+  /* ---- Warm neutral ramp (derived from espresso <-> cream) ---- */
+  --neutral-50:  #FDFBF8;
+  --neutral-100: #FAF6F0;
+  --neutral-200: #F1E9DD;
+  --neutral-300: #E3D7C6;
+  --neutral-400: #C9B9A3;
+  --neutral-500: #A99781;
+  --neutral-600: #8A7A68;
+  --neutral-700: #6B5A47;
+  --neutral-800: #54402C;
+  --neutral-900: #3F2C1B;
+  --neutral-950: #2A1C10;
+
+  /* ---- Accent ramp (ochre) ---- */
+  --ochre-100: #F9EEDD;
+  --ochre-200: #EED9B6;
+  --ochre-300: #E0BC85;
+  --ochre-400: #D4A25D;
+  --ochre-500: #C98A3E;
+  --ochre-600: #A96F2C;
+  --ochre-700: #85551F;
+
+  /* ---- Status / semantics ---- */
+  --status-success: #4E7A52;
+  --status-success-bg: #EAF0E7;
+  --status-success-border: #C3D5BF;
+  --status-warning: #A96F2C;
+  --status-warning-bg: #F9EEDD;
+  --status-warning-border: #E7CFA6;
+  --status-danger: #9B3B2E;
+  --status-danger-bg: #F7E7E2;
+  --status-danger-border: #E0C0B7;
+  --status-info: #3F6B7A;
+  --status-info-bg: #E8F0F2;
+  --status-info-border: #BFD3D9;
+
+  /* ---- Semantic surfaces ---- */
+  --surface-page: var(--brand-cream);
+  --surface-raised: #FFFFFF;
+  --surface-sunken: var(--neutral-200);
+  --surface-card: #FFFFFF;
+  --surface-card-quiet: var(--neutral-100);
+  --surface-dark: var(--brand-espresso);
+  --surface-dark-raised: #4C3722;
+  --surface-accent: var(--brand-ochre);
+  --surface-accent-quiet: var(--ochre-100);
+  --surface-overlay: rgba(42, 28, 16, 0.55);
+
+  /* ---- Semantic text ---- */
+  --text-heading: var(--brand-espresso);
+  --text-body: #4A3927;
+  --text-muted: var(--brand-stone);
+  --text-on-dark: var(--brand-parchment);
+  --text-on-dark-muted: #B5A28C;
+  --text-on-accent: #2A1C10;
+  --text-link: var(--ochre-600);
+  --text-link-hover: var(--brand-espresso);
+
+  /* ---- Semantic borders ---- */
+  --border-hairline: var(--neutral-300);
+  --border-strong: var(--neutral-400);
+  --border-dark: rgba(245, 237, 225, 0.18);
+  --border-accent: var(--brand-ochre);
+  --focus-ring: var(--ochre-600);
+}

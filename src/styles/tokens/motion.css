@@ -1,0 +1,24 @@
+:root {
+  --dur-instant: 80ms; /* @kind other */
+  --dur-fast: 140ms; /* @kind other */
+  --dur-med: 240ms; /* @kind other */
+  --dur-slow: 420ms; /* @kind other */
+  --dur-reveal: 700ms; /* @kind other */
+
+  --ease-standard: cubic-bezier(0.2, 0.6, 0.2, 1); /* @kind other */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --ease-in: cubic-bezier(0.5, 0, 0.75, 0); /* @kind other */
+  --ease-inout: cubic-bezier(0.6, 0, 0.2, 1); /* @kind other */
+
+  --lift-hover: translateY(-2px); /* @kind other */
+  --press-scale: 0.985; /* @kind other */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms; /* @kind other */
+    --dur-med: 0ms; /* @kind other */
+    --dur-slow: 0ms; /* @kind other */
+    --dur-reveal: 0ms; /* @kind other */
+  }
+}

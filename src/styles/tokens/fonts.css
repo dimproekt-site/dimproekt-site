@@ -1,0 +1,7 @@
+/* Шрифти EB Garamond і Noto Sans підключаються через <link> у Layout.astro */
+
+:root {
+  --font-display: 'EB Garamond', 'Times New Roman', serif;
+  --font-sans: 'Noto Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}

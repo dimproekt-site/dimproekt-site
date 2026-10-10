@@ -1,0 +1,33 @@
+:root {
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* Layout */
+  --container-max: 1200px;
+  --container-wide: 1440px;
+  --gutter: 32px;
+  --gutter-mobile: 20px;
+  --gutter-tablet: 24px;
+  --section-y: 96px;
+  --section-y-tight: 64px;
+  --grid-columns: 12; /* @kind other */
+
+  /* Breakpoints. Astro/CSS cannot read custom properties inside @media,
+     so these are documentation + JS; write the literal px in media queries. */
+  --bp-sm: 480px; /* @kind spacing */
+  --bp-md: 768px; /* @kind spacing */
+  --bp-lg: 1024px; /* @kind spacing */
+  --bp-xl: 1280px; /* @kind spacing */
+}

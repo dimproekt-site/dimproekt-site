@@ -1,0 +1,42 @@
+:root {
+  /* Display + headings: EB Garamond. Body + UI: Noto Sans. */
+  --text-display-1: 72px; /* @kind font */
+  --lh-display-1: 1.04; /* @kind font */
+  --ls-display-1: -0.015em; /* @kind font */
+  --text-display-2: 56px; /* @kind font */
+  --lh-display-2: 1.08; /* @kind font */
+  --ls-display-2: -0.012em; /* @kind font */
+  --text-h1: 44px; /* @kind font */
+  --lh-h1: 1.12; /* @kind font */
+  --ls-h1: -0.01em; /* @kind font */
+  --text-h2: 34px; /* @kind font */
+  --lh-h2: 1.18; /* @kind font */
+  --ls-h2: -0.006em; /* @kind font */
+  --text-h3: 26px; /* @kind font */
+  --lh-h3: 1.26; /* @kind font */
+  --ls-h3: 0; /* @kind font */
+  --text-h4: 21px; /* @kind font */
+  --lh-h4: 1.32; /* @kind font */
+  --ls-h4: 0; /* @kind font */
+  --text-body-lg: 19px; /* @kind font */
+  --lh-body-lg: 1.65; /* @kind font */
+  --text-body: 17px; /* @kind font */
+  --lh-body: 1.70; /* @kind font */
+  --text-body-sm: 15px; /* @kind font */
+  --lh-body-sm: 1.60; /* @kind font */
+  --text-caption: 13px; /* @kind font */
+  --lh-caption: 1.50; /* @kind font */
+  --ls-caption: 0.01em; /* @kind font */
+  --text-overline: 12px; /* @kind font */
+  --lh-overline: 1.40; /* @kind font */
+  --ls-overline: 0.14em; /* @kind font */
+
+  --weight-light: 300; /* @kind font */
+  --weight-regular: 400; /* @kind font */
+  --weight-medium: 500; /* @kind font */
+  --weight-semibold: 600; /* @kind font */
+  --weight-bold: 700; /* @kind font */
+
+  --measure-prose: 68ch; /* @kind font */
+  --measure-narrow: 46ch; /* @kind font */
+}
