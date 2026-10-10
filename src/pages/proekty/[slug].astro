@@ -1,0 +1,499 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Badge from '../../components/Badge.astro';
+import Button from '../../components/Button.astro';
+import Tag from '../../components/Tag.astro';
+import Icon from '../../components/Icon.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import ContactFab from '../../components/ContactFab.astro';
+import { CONTACTS, ROUTES } from '../../i18n/site';
+import whatsappSvg from '../../assets/icons/whatsapp.svg?raw';
+import telegramSvg from '../../assets/icons/telegram.svg?raw';
+import { getSadybni, getCommercial, STAGE_LABEL, floorsText, priceText, nf } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const [sad, com] = await Promise.all([getSadybni(), getCommercial()]);
+  return [
+    ...sad.map((e, i) => ({ params: { slug: e.id }, props: { kind: 'sad', entry: e, list: sad, idx: i } })),
+    ...com.map((e, i) => ({ params: { slug: e.id }, props: { kind: 'com', entry: e, list: com, idx: i } })),
+  ];
+}
+
+const { kind, entry, list, idx } = Astro.props as any;
+const sad = kind === 'sad';
+const d = entry.data;
+const { Content } = await render(entry);
+const m2 = 'м²';
+
+const prev = list[(idx - 1 + list.length) % list.length];
+const next = list[(idx + 1) % list.length];
+const similar = list.filter((x: any) => x.id !== entry.id).slice(0, 3);
+
+const catLabel = sad ? 'Садибні будинки' : 'Багатоквартирне житло та комерційна нерухомість';
+const catHref = sad ? ROUTES.sadybni : ROUTES.multi;
+const kicker = sad ? [d.title, STAGE_LABEL[d.stage as 'robochyi' | 'eskizny']].join(' · ') : 'Комерційна нерухомість';
+const h1 = (sad && d.seo_title) || d.title;
+const forSale = sad && d.for_sale;
+const price = sad && d.price ? priceText(d) : '';
+
+const has = (v: any) => v != null && v !== '';
+const stats = sad
+  ? [
+      { v: `${nf(d.area)} ${m2}`, label: 'Загальна площа', icon: 'home' },
+      { v: d.bedrooms, label: 'Спальні', k: 'bed' },
+      { v: d.bathrooms, label: 'Санвузли', k: 'bath' },
+      { v: d.garage, label: 'Гараж', k: 'car' },
+      { v: d.dims, label: 'Габарити', icon: 'ruler' },
+      { v: floorsText(d), label: 'Поверхи', icon: 'layers' },
+    ].filter((s) => has(s.v))
+  : [];
+const params = sad
+  ? ([
+      ['Загальна площа', `${nf(d.area)} ${m2}`],
+      ['Поверхи', d.floors_detail || floorsText(d)],
+      ['Житлова площа', has(d.living_area) ? `${nf(d.living_area)} ${m2}` : null],
+      ['Площа забудови', has(d.build_area) ? `${nf(d.build_area)} ${m2}` : null],
+      ['Фундамент', d.foundation], ['Зовнішні стіни', d.walls], ['Перекриття', d.slabs],
+      ['Покрівля', d.roof], ['Покрівельне покриття', d.roof_cover], ['Тераса', d.terrace],
+      ['Габарити з гаражем', d.dims_garage], ['Підпокрівельний простір', d.floors_note], ['Примітка', d.note],
+    ].filter((r) => has(r[1])) as string[][])
+  : d.params.map((p: any) => [p.label, p.value]);
+const specs = sad ? [] : d.specs;
+
+const gallery = d.gallery as { image: any; vertical: boolean }[];
+const plans = d.plans as { image: any; label: string }[];
+const lbData = {
+  gal: gallery.map((g, k) => ({ src: g.image.src, alt: `${d.title}, фото ${k + 1}` })),
+  plan: plans.map((p) => ({ src: p.image.src, alt: `${d.title}: ${p.label.toLowerCase()}` })),
+};
+
+const esk = sad && d.stage === 'eskizny';
+const inclText = esk
+  ? 'Ескізний проект: плани поверхів, фасади, розрізи, схема генплану. Якщо вам сподобався цей проект, ми можемо розробити повний комплект робочої документації на будівництво (АР + КР).'
+  : 'Плани з розмірами, фасади, розрізи, вузли, склад підлог і стін, специфікації вікон і дверей (АР) та фундаменти, перекриття, армування й конструкції даху (КР). Проект можна адаптувати під вашу ділянку.';
+const inclWa = CONTACTS.whatsapp + '?text=' + encodeURIComponent(`Доброго дня! Надішліть, будь ласка, повний перелік креслень і аркушів проекту «${d.title}»`);
+
+let primaryLabel: string, primaryMsg: string, secondary: { label: string; href: string } | null = null;
+if (!sad) { primaryLabel = 'Запитати архітектора'; primaryMsg = `Питання архітектору щодо проекту ${d.title}`; }
+else if (forSale) { primaryLabel = 'Замовити цей проект'; primaryMsg = `Цікавить проект ${d.title}`; secondary = { label: 'Що входить у проект', href: '#includes' }; }
+else { primaryLabel = 'Обговорити схожий проект'; primaryMsg = `Цікавить проект ${d.title}`; secondary = { label: 'Як почати проектування', href: ROUTES.start }; }
+const cardSpecs = (x: any) => sad
+  ? [{ k: 'Площа', v: `${nf(x.data.area)} ${m2}` }, { k: 'Поверхи', v: floorsText(x.data) }]
+  : [...(x.data.area ? [{ k: 'Площа', v: `${nf(x.data.area)} ${m2}` }] : []), ...(x.data.floors ? [{ k: 'Поверхи', v: x.data.floors }] : []), ...(x.data.year ? [{ k: 'Рік', v: x.data.year }] : [])];
+---
+<Layout title={`${h1} | ДІМПРОЕКТ`} description={d.intro} active="projects" uaOnly enHref={ROUTES.homeEn}>
+  <section class="ph" data-screen-label="Заголовок проекту">
+    <img class="pi-mark" src="/assets/mark-dark.svg" alt="" />
+    <div class="ph-in">
+      <Breadcrumbs items={[{ label: 'Головна', href: ROUTES.home }, { label: catLabel, href: catHref }, { label: d.title }]} />
+      <div class="pi-eyebrow"><span class="eb-line" data-draw="x"></span>{kicker}</div>
+      <h1 class="ph-h1">{h1}</h1>
+      <p class="ph-intro">{d.intro}</p>
+      {!sad && d.location && <div class="ph-loc"><Icon name="map-pin" size={18} />{d.location}</div>}
+    </div>
+  </section>
+
+  <section class="pt" data-screen-label="Галерея і замовлення">
+    <div class="pt-grid">
+      <div class="gal" data-gal tabindex="0" aria-label="Галерея проекту, гортання клавішами ← →">
+        <div class="gmain" data-gmain>
+          {gallery.map((g, k) => (
+            <div class:list={['gs', { vert: g.vertical }]} data-i={k} hidden={k > 0}>
+              <Image src={g.image} alt={`${d.title}, фото ${k + 1}`} widths={[640, 960, 1280, 1600]} sizes="(max-width: 1023px) 100vw, 760px" loading={k === 0 ? 'eager' : 'lazy'} class="gimg" />
+            </div>
+          ))}
+          {gallery.length > 1 && (
+            <>
+              <button type="button" class="garrow gl" data-gprev aria-label="Попереднє фото"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+              <button type="button" class="garrow gr" data-gnext aria-label="Наступне фото"><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+              <div class="gcount" aria-live="polite" data-gcount>1 / {gallery.length}</div>
+            </>
+          )}
+          <button type="button" class="gopen" data-gopen aria-label="Відкрити на весь екран"><Icon name="maximize-2" size={18} /></button>
+        </div>
+        {gallery.length > 1 && (
+          <div class="gstrip">
+            <div class="gthumbs" role="list" aria-label="Мініатюри галереї" data-thumbs>
+              {gallery.map((g, k) => (
+                <div class:list={['gt', { on: k === 0 }]} role="listitem" data-t={k}>
+                  <Image src={g.image} alt="" widths={[112, 224, 336]} sizes="112px" loading="lazy" class="gtimg" />
+                  <button type="button" aria-label={`Показати зображення ${k + 1} / ${gallery.length}`} data-pick={k}></button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <aside class="ord" aria-label="Замовлення проекту">
+        {forSale && <Badge tone="accent">Для продажу</Badge>}
+        {forSale && (
+          <>
+            <div class:list={['price', { sm: !price }]}>{price || 'Ціна за запитом'}</div>
+            {price && <p class="price-note">Електронний комплект PDF, готовий протягом тижня після оплати</p>}
+          </>
+        )}
+        {specs.length > 0 && (
+          <dl class="ord-specs">
+            {specs.map((s: any) => (<div><dt>{s.label}</dt><dd>{s.value}</dd></div>))}
+          </dl>
+        )}
+        <div class="ord-btns">
+          <Button variant="primary" size="lg" full data-consult-open data-consult-message={primaryMsg}>{primaryLabel}</Button>
+          {secondary && <a class="ord-sec" href={secondary.href}>{secondary.label}<span class="arrow"><Icon name="arrow-right" size={16} /></span></a>}
+          {forSale && <button type="button" class="ord-ask" data-consult-open data-consult-message={`Питання архітектору щодо проекту ${d.title}`}>Запитати архітектора</button>}
+        </div>
+      </aside>
+
+      <div class="below">
+        {stats.length > 0 && (
+          <div class="stats" role="list" aria-label="Ключові показники">
+            {stats.map((s: any) => (
+              <div class="stat" role="listitem">
+                <span class="stat-i" aria-hidden="true">
+                  {s.icon && <Icon name={s.icon} size={24} />}
+                  {s.k === 'bed' && <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"></path><path d="M4 10V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"></path><path d="M12 4v6"></path><path d="M2 18h20"></path></svg>}
+                  {s.k === 'bath' && <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4 8 6"></path><path d="M17 19v2"></path><path d="M2 12h20"></path><path d="M7 19v2"></path><path d="M9 5 7.621 3.621A2.121 2.121 0 0 0 4 5v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"></path></svg>}
+                  {s.k === 'car' && <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle></svg>}
+                </span>
+                <span class="stat-v">{s.v}</span>
+                <span class="stat-l">{s.label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        {params.length > 0 && (
+          <details class="pm" data-screen-label="Усі параметри">
+            <summary><span>Усі параметри</span><span class="pm-ic" aria-hidden="true"><Icon name="plus" size={18} /></span></summary>
+            <dl class="pm-list">
+              {params.map((r: string[]) => (<div><dt>{r[0]}</dt><dd>{r[1]}</dd></div>))}
+            </dl>
+          </details>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="pbody" data-reveal data-screen-label="Опис">
+    <div class="prose"><Content /></div>
+  </section>
+
+  {!sad && d.composition && (
+    <section class="pbody" data-reveal data-screen-label="Склад комплексу">
+      <div class="eyebrow och"><span class="eb-line"></span>Генплан</div>
+      <h2 class="h34">Склад комплексу</h2>
+      <div class="ctable">
+        <table>
+          <thead><tr><th scope="col" style="width:40px">№</th><th scope="col">Будівля</th><th scope="col" class="r">Площа квартир, м²</th><th scope="col" class="r">Комерційні приміщення, м²</th></tr></thead>
+          <tbody>{d.composition.map((r: any) => (<tr><td class="n">{r.no}</td><td>{r.name}</td><td class="r">{r.flats}</td><td class="r">{r.commercial}</td></tr>))}</tbody>
+        </table>
+      </div>
+      {d.composition_note && <p class="cnote">{d.composition_note}</p>}
+    </section>
+  )}
+
+  <div aria-hidden="true" style="height:96px"></div>
+
+  {forSale && (
+    <section id="includes" class="sec sec-card incl" data-reveal data-screen-label="Що входить у проект">
+      <div class="incl-in">
+        <div>
+          <div class="eyebrow"><span class="eb-line" data-draw="x"></span>Комплект документації</div>
+          <h2 class="h2">Що входить у проект</h2>
+        </div>
+        <div>
+          <p class="incl-t">{inclText}</p>
+          {d.tags.length > 0 && <div class="incl-tags">{d.tags.map((t: string) => <Tag>{t}</Tag>)}</div>}
+          <div class="incl-more">
+            <p>Повний перелік креслень і аркушів проекту надамо за запитом.</p>
+            <a href={inclWa} target="_blank" rel="noopener">Запросити перелік<span class="arrow"><Icon name="arrow-right" size={16} /></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {plans.length > 0 && (
+    <section class="pplans" data-reveal data-screen-label="Планування">
+      <div style="margin-bottom:32px">
+        <div class="eyebrow"><span class="eb-line" data-draw="x"></span>Креслення</div>
+        <h2 class="h2" style="font-size:clamp(32px,4.4vw,44px)">Планування</h2>
+      </div>
+      <div class="plans">
+        {plans.map((p, k) => (
+          <figure>
+            <div class="pl">
+              <Image src={p.image} alt={`${d.title}: ${p.label.toLowerCase()}`} widths={[640, 960, 1280, 1600]} sizes="(max-width: 1023px) 100vw, 880px" loading="lazy" class="plimg" />
+              <button type="button" class="gopen" data-plopen={k} aria-label={`Відкрити на весь екран: ${p.label}`}><Icon name="maximize-2" size={18} /></button>
+            </div>
+            <figcaption>{p.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <nav class="pager" data-reveal aria-label="Інші проекти категорії">
+    <div class="pager-in">
+      <a class="pg pg-p" href={`/proekty/${prev.id}/`}>
+        <span class="pg-ar" style="transform:scaleX(-1)"><Icon name="arrow-right" size={20} /></span>
+        <span><span class="pg-k">Попередній проект</span><span class="pg-t">{prev.data.title}</span></span>
+      </a>
+      <a class="pg pg-n" href={`/proekty/${next.id}/`}>
+        <span><span class="pg-k">Наступний проект</span><span class="pg-t">{next.data.title}</span></span>
+        <span class="pg-ar"><Icon name="arrow-right" size={20} /></span>
+      </a>
+    </div>
+  </nav>
+
+  <section class="sim" data-reveal data-screen-label="Схожі проекти">
+    <div class="eyebrow"><span class="eb-line" data-draw="x"></span>Ще з цієї категорії</div>
+    <h2 class="h2" style="margin-bottom:40px">Схожі проекти</h2>
+    <div class="grid3">
+      {similar.map((x: any) => (
+        <ProjectCard href={`/proekty/${x.id}/`} title={x.data.title} image={x.data.cover}
+          stageLabel={sad ? STAGE_LABEL[x.data.stage as 'robochyi' | 'eskizny'] : 'Комерційна нерухомість'}
+          forSale={sad && x.data.for_sale} location={sad ? undefined : x.data.city}
+          description={x.data.card_text} specs={cardSpecs(x)} />
+      ))}
+    </div>
+  </section>
+
+  <section class="pcta" data-reveal data-screen-label="Консультація">
+    <div class="pcta-l">
+      <h2 class="h2" style="margin-top:0">{sad ? 'Обговоримо ваш будинок?' : 'Обговоримо ваш обʼєкт?'}</h2>
+      <p class="cta-text">Розкажіть про ділянку та побажання — передзвонимо протягом робочого дня.</p>
+      <div class="pcta-row">
+        <a class="cta-phone" style="margin-top:0" href={CONTACTS.phoneHref}>{CONTACTS.phone}</a>
+        <div class="cta-links" style="margin-top:0">
+          <a href={CONTACTS.whatsapp} target="_blank" rel="noopener"><span class="mi" set:html={whatsappSvg} />WhatsApp</a>
+          <a href={CONTACTS.telegram} target="_blank" rel="noopener"><span class="mi" set:html={telegramSvg} />Telegram</a>
+          <a href={`mailto:${CONTACTS.email}`}><Icon name="mail" size={20} />{CONTACTS.email}</a>
+        </div>
+      </div>
+    </div>
+    <div class="pcta-b">
+      <Button variant="primary" size="lg" data-consult-open>Отримати консультацію</Button>
+      <Button variant="secondary" size="lg" href={catHref}>Дивитись проекти</Button>
+    </div>
+    <details class="cp" data-screen-label="Авторські права">
+      <summary><span>Авторські права та використання проектів</span><span class="cp-ic" aria-hidden="true"><Icon name="chevron-right" size={18} /></span></summary>
+      <div class="cp-b">
+        <p>Проект — результат творчої праці архітекторів та інженерів. За Цивільним кодексом України майнові права на об'єкт, створений у зв'язку з виконанням трудового договору, належать працівникові-автору й роботодавцю спільно, якщо договором не передбачено інше (ст. 429 ЦКУ). Права на матеріали цього сайту, зокрема креслення, візуалізації й фотографії, належать ДІМПРОЕКТ та авторам проектів. Копіювати й використовувати їх без письмової згоди заборонено.</p>
+        <p>Ми показуємо на сайті ту частину матеріалів проекту, яка не містить особистих даних замовника й не прив'язана до конкретної ділянки.</p>
+        <p>Замовник, який не викуповує майнові права, може використати проект за призначенням: збудувати за ним власний приватний будинок на своїй ділянці та користуватися пакетом документів на нього. Продавати й тиражувати проект або передавати його третім особам для повторного будівництва без викупу прав не можна. Після викупу майнових прав замовник розпоряджається проектом на умовах договору.</p>
+      </div>
+    </details>
+  </section>
+
+  <dialog class="lb" id="lightbox" aria-label="Перегляд зображень">
+    <div class="lb-top"><div class="lb-count" aria-live="polite" data-lbcount></div><button type="button" class="lb-x" data-lbclose aria-label="Закрити"><Icon name="x" size={20} /></button></div>
+    <div class="lb-stage"><img alt="" data-lbimg /></div>
+    <button type="button" class="lb-ar lb-l" data-lbprev aria-label="Попереднє зображення"><Icon name="chevron-left" size={22} /></button>
+    <button type="button" class="lb-ar lb-r" data-lbnext aria-label="Наступне зображення"><Icon name="chevron-right" size={22} /></button>
+  </dialog>
+  <script type="application/json" id="lb-data" set:html={JSON.stringify(lbData)}></script>
+
+  {sad && <ContactFab projectTitle={d.title} />}
+</Layout>
+
+<style is:global>
+  .ph { position: relative; overflow: hidden; }
+  .ph-in { position: relative; padding: 48px 32px 40px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .ph .pi-eyebrow { display: flex; align-items: center; gap: 12px; margin-top: 56px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .ph .pi-mark { position: absolute; right: -60px; top: 40px; width: 520px; max-width: 90vw; opacity: .06; pointer-events: none; }
+  .ph-h1 { margin: 20px 0 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(32px, 4.6vw, 48px); line-height: 1.12; letter-spacing: -.01em; color: var(--text-heading); max-width: 30ch; text-wrap: balance; }
+  .ph-intro { margin: 16px 0 0; font-family: var(--font-display); font-size: 21px; line-height: 1.45; color: var(--text-body); max-width: 52ch; text-wrap: pretty; }
+  .ph-loc { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 17px; color: var(--text-muted); }
+
+  .pt { padding: 0 clamp(16px, 4vw, 32px); max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .pt-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px 48px; align-items: start; }
+  .gal { min-width: 0; outline-offset: 4px; } .gal:focus-visible { outline: 2px solid var(--ochre-600); }
+  .gmain { position: relative; aspect-ratio: 16 / 9; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 4px; overflow: hidden; touch-action: pan-y; }
+  .gs { position: absolute; inset: 0; } .gs[hidden] { display: none; }
+  .gimg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+  .gs.vert { background: var(--neutral-100); } .gs.vert .gimg { object-fit: contain; padding: 12px; box-sizing: border-box; }
+  .garrow { position: absolute; top: 50%; transform: translateY(-50%); width: 56px; height: 56px; padding: 0; border: 0; background: transparent; color: #F5EDE1; cursor: pointer; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 1px 3px rgba(0,0,0,.45)); opacity: 0; transition: opacity 140ms; }
+  .garrow.gl { left: 4px; } .garrow.gr { right: 4px; }
+  .gmain:hover .garrow, .garrow:focus-visible { opacity: 1; } .garrow:hover { color: #C98A3E; }
+  .garrow[hidden] { display: none; }
+  .gcount { position: absolute; left: 12px; bottom: 12px; padding: 4px 10px; border-radius: 2px; background: rgba(42,28,16,.72); color: var(--brand-parchment); font-family: var(--font-display); font-size: 17px; letter-spacing: .04em; pointer-events: none; }
+  .gopen { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border: 1px solid var(--border-hairline); border-radius: 2px; background: rgba(250,246,240,.92); color: var(--brand-espresso); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .gopen:hover { background: var(--brand-cream); border-color: var(--brand-espresso); }
+  @media (hover: none) { .garrow { display: none; } }
+  .gstrip { position: relative; margin-top: 12px; }
+  .gthumbs { display: flex; gap: 8px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: thin; }
+  .gt { position: relative; flex: 0 0 auto; width: 112px; aspect-ratio: 16 / 9; border-radius: 2px; overflow: hidden; background: var(--surface-card); border: 1px solid var(--border-hairline); opacity: .72; transition: opacity 140ms; }
+  .gt.on { opacity: 1; }
+  .gt::after { content: ''; position: absolute; inset: 0; border: 2px solid transparent; border-radius: 2px; pointer-events: none; }
+  .gt.on::after { border-color: var(--brand-ochre); }
+  .gtimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gt button { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; background: transparent; border: 0; cursor: pointer; }
+  .gt button:focus-visible { outline: 2px solid var(--ochre-600); outline-offset: -2px; }
+
+  .ord { background: var(--surface-card); border: 1px solid var(--border-hairline); border-top: 2px solid var(--brand-ochre); border-radius: 4px; box-shadow: var(--shadow-1); padding: 28px; align-self: start; }
+  .price { margin-top: 16px; font-family: var(--font-display); font-size: 40px; line-height: 1.1; color: var(--text-heading); }
+  .price.sm { font-size: 30px; }
+  .price-note { margin: 10px 0 0; font-size: 14px; line-height: 1.55; color: #4A3927; text-wrap: pretty; }
+  .ord-specs { margin: 0; }
+  .ord-specs > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border-hairline); }
+  .ord-specs dt { font-size: 13px; color: var(--text-muted); }
+  .ord-specs dd { margin: 0; font-family: var(--font-display); font-size: 21px; line-height: 1.25; color: var(--text-heading); text-align: right; }
+  .ord-btns { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 24px; }
+  .ord-btns > :first-child:last-child, .ord-btns:first-child { margin-top: 0; }
+  .ord-sec { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; box-sizing: border-box; min-height: 52px; padding: 8px 16px; text-align: center; border: 1px solid var(--border-strong); border-radius: 2px; color: var(--text-heading); text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; transition: border-color 140ms; }
+  .ord-sec:hover { border-color: var(--brand-espresso); color: var(--text-heading); }
+  .ord-sec .arrow { display: flex; transition: transform 240ms var(--ease-out); } .ord-sec:hover .arrow { transform: translateX(4px); }
+  .ord-ask { justify-self: center; min-height: 44px; padding: 0 8px; background: none; border: 0; cursor: pointer; font: inherit; font-size: 15px; font-weight: 500; color: var(--ochre-600); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .ord-ask:hover { color: var(--brand-espresso); }
+  @media (min-width: 1024px) {
+    .pt-grid { grid-template-columns: minmax(0, 1fr) 360px; }
+    .gal { grid-column: 1; grid-row: 1; }
+    .ord { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: 24px; }
+    .below { grid-column: 1; grid-row: 2; }
+  }
+  .below { min-width: 0; }
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); justify-content: start; gap: 24px 16px; padding: 24px 0; border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); }
+  @media (min-width: 768px) { .stats { grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); } }
+  .stat { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .stat-i { order: 1; display: flex; height: 24px; color: var(--brand-ochre); }
+  .stat-v { order: 2; flex: 1 1 auto; display: flex; align-items: flex-end; font-family: var(--font-display); font-size: 24px; line-height: 1.15; color: var(--text-heading); font-variant-numeric: lining-nums; }
+  .stat-l { order: 3; font-size: 13px; line-height: 1.35; color: #4A3927; }
+  .pm { border-bottom: 1px solid var(--border-hairline); }
+  .pm summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; font-size: 15px; font-weight: 600; color: var(--text-heading); }
+  .pm summary::-webkit-details-marker { display: none; } .pm summary:hover { color: var(--ochre-600); }
+  .pm-ic { display: flex; transition: transform 240ms var(--ease-standard); } .pm[open] .pm-ic { transform: rotate(45deg); }
+  .pm-list { margin: 0; padding-bottom: 20px; display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 40px; }
+  @media (min-width: 768px) { .pm-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .pm-list > div, .cp-b { }
+  .pm-list > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--border-hairline); }
+  .pm-list dt { font-size: 14px; line-height: 1.45; color: #4A3927; }
+  .pm-list dd { margin: 0; font-size: 15px; line-height: 1.45; color: var(--text-heading); text-align: right; text-wrap: pretty; }
+
+  .pbody { padding: 72px clamp(16px, 4vw, 32px) 0; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .prose { max-width: 68ch; }
+  .prose h2 { margin: 32px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 26px; line-height: 1.2; color: var(--text-heading); }
+  .prose h2:first-child { margin-top: 0; }
+  .prose p { margin: 12px 0 0; font-size: 17px; line-height: 1.7; color: var(--text-body); text-wrap: pretty; }
+  .prose ul { list-style: none; margin: 8px 0 0; padding: 0; }
+  .prose li { display: flex; gap: 12px; margin: 8px 0 0; font-size: 17px; line-height: 1.6; color: var(--text-body); }
+  .prose li::before { content: ''; flex: 0 0 auto; width: 6px; height: 6px; margin-top: 11px; background: var(--brand-ochre); }
+  .eyebrow.och { color: var(--ochre-600); }
+  .h34 { margin: 16px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 34px; line-height: 1.2; color: var(--text-heading); }
+  .ctable { margin-top: 28px; max-width: 880px; overflow-x: auto; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 4px; }
+  .ctable table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.45; color: var(--text-body); }
+  .ctable thead tr { background: var(--neutral-50); text-align: left; }
+  .ctable th { padding: 12px 16px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600; color: #4A3927; border-bottom: 1px solid var(--border-hairline); }
+  .ctable td { padding: 12px 16px; border-bottom: 1px solid var(--border-hairline); color: var(--text-heading); font-variant-numeric: tabular-nums; }
+  .ctable .r { text-align: right; } .ctable td.n { font-family: var(--font-display); font-size: 19px; color: var(--ochre-600); }
+  .cnote { margin: 16px 0 0; max-width: 880px; font-size: 14px; line-height: 1.6; color: #4A3927; text-wrap: pretty; }
+
+  .incl { scroll-margin-top: 24px; }
+  .incl-in { padding: 80px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 32px 80px; align-items: start; }
+  .incl-t { margin: 0; font-size: 17px; line-height: 1.7; color: var(--text-body); max-width: 56ch; text-wrap: pretty; }
+  .incl-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .incl-more { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-top: 24px; max-width: 56ch; }
+  .incl-more p { margin: 0; font-size: 15px; line-height: 1.6; color: #4A3927; }
+  .incl-more a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-size: 15px; font-weight: 600; color: var(--text-heading); text-decoration: none; }
+  .incl-more a:hover { color: var(--ochre-600); } .incl-more .arrow { display: flex; color: var(--brand-ochre); transition: transform 240ms var(--ease-out); } .incl-more a:hover .arrow { transform: translateX(4px); }
+
+  .pplans { padding: 96px clamp(16px, 4vw, 32px) 0; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .plans { display: flex; flex-direction: column; gap: 56px; }
+  .plans figure { margin: 0; min-width: 0; width: 100%; max-width: 880px; }
+  .pl { position: relative; aspect-ratio: 4 / 3; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 4px; overflow: hidden; }
+  .plimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 12px; box-sizing: border-box; background: #fff; display: block; }
+  .pl .gopen { right: 10px; top: 10px; }
+  .plans figcaption { margin-top: 12px; font-family: var(--font-display); font-size: 21px; line-height: 1.25; color: var(--text-heading); }
+
+  .pager { padding: 96px 32px 0; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .pager-in { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); }
+  .pg { display: flex; align-items: center; gap: 16px; color: var(--text-heading); text-decoration: none; }
+  .pg:hover { color: var(--ochre-600); }
+  .pg-p { padding: 28px 24px 28px 0; } .pg-n { padding: 28px 0 28px 24px; justify-content: flex-end; text-align: right; }
+  .pg-ar { flex: 0 0 auto; display: flex; transition: transform 240ms var(--ease-out); }
+  .pg-n:hover .pg-ar { transform: translateX(4px); } .pg-p:hover .pg-ar { transform: scaleX(-1) translateX(4px) !important; }
+  .pg-k { display: block; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .pg-t { display: block; margin-top: 6px; font-family: var(--font-display); font-size: 26px; line-height: 1.2; }
+  .sim { padding: 96px 32px 0; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .pcta { padding: 96px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px; }
+  .pcta-l { max-width: 640px; }
+  .pcta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 20px; }
+  .pcta-b { display: flex; flex-wrap: wrap; gap: 16px; }
+  .cp { flex: 1 1 100%; border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); }
+  .cp summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 0; font-size: 15px; font-weight: 600; color: var(--text-heading); }
+  .cp summary::-webkit-details-marker { display: none; } .cp summary:hover { color: var(--ochre-600); }
+  .cp-ic { display: flex; transition: transform 240ms var(--ease-standard); } .cp[open] .cp-ic { transform: rotate(90deg); }
+  .cp-b { max-width: 80ch; padding-bottom: 20px; font-size: 14px; line-height: 1.65; color: var(--text-muted); }
+  .cp-b p { margin: 10px 0 0; text-wrap: pretty; } .cp-b p:first-child { margin-top: 0; }
+
+  .lb { border: 0; padding: 0; max-width: none; max-height: none; width: 100%; height: 100%; background: rgba(42,28,16,.92); color: var(--brand-parchment); }
+  .lb:not([open]) { display: none; }
+  .lb[open] { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 16px 24px; box-sizing: border-box; }
+  .lb::backdrop { background: rgba(42,28,16,.92); }
+  .lb-top { position: absolute; left: 24px; right: 16px; top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .lb-count { font-family: var(--font-display); font-size: 21px; letter-spacing: .04em; }
+  .lb-x { width: 44px; height: 44px; border: 1px solid var(--border-dark); border-radius: 2px; background: transparent; color: var(--brand-parchment); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .lb-x:hover, .lb-ar:hover { border-color: var(--brand-parchment); }
+  .lb-stage { position: relative; width: min(100%, 1200px, calc((100vh - 120px) * 1.5)); aspect-ratio: 3 / 2; }
+  .lb-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+  .lb-ar { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border: 1px solid var(--border-dark); border-radius: 2px; background: rgba(42,28,16,.6); color: var(--brand-parchment); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .lb-l { left: 16px; } .lb-r { right: 16px; }
+  @media (max-width: 768px) { .ph-in { padding: 32px 20px 32px; } .ph .pi-eyebrow { margin-top: 36px; } .ph-intro { font-size: 19px; } .gt { width: 84px; } .incl-in, .pager, .sim, .pcta { padding-left: 20px; padding-right: 20px; } .incl-in { padding-top: 56px; padding-bottom: 56px; } .pager, .sim { padding-top: 64px; } .pcta { padding-top: 64px; padding-bottom: 64px; } .pg-t { font-size: 22px; } .ord { padding: 22px; } }
+</style>
+
+<script>
+  // Галерея, лайтбокс (фото й плани), клавіші ← →, свайп
+  const data = JSON.parse(document.getElementById('lb-data')!.textContent || '{}') as { gal: { src: string; alt: string }[]; plan: { src: string; alt: string }[] };
+  const slides = [...document.querySelectorAll<HTMLElement>('.gs')];
+  const thumbs = [...document.querySelectorAll<HTMLElement>('.gt')];
+  const count = document.querySelector<HTMLElement>('[data-gcount]');
+  const prevB = document.querySelector<HTMLElement>('[data-gprev]'), nextB = document.querySelector<HTMLElement>('[data-gnext]');
+  const n = slides.length;
+  let gi = 0;
+  const showG = (k: number) => {
+    gi = Math.max(0, Math.min(n - 1, k));
+    slides.forEach((s, i) => (s.hidden = i !== gi));
+    thumbs.forEach((t, i) => t.classList.toggle('on', i === gi));
+    if (count) count.textContent = `${gi + 1} / ${n}`;
+    if (prevB) prevB.hidden = gi === 0;
+    if (nextB) nextB.hidden = gi === n - 1;
+    const t = thumbs[gi], box = t?.parentElement;
+    if (t && box) { const l = t.offsetLeft - box.offsetLeft, r = l + t.offsetWidth; if (l < box.scrollLeft) box.scrollLeft = l - 8; else if (r > box.scrollLeft + box.clientWidth) box.scrollLeft = r - box.clientWidth + 8; }
+  };
+  if (n > 1) {
+    showG(0);
+    prevB?.addEventListener('click', () => showG(gi - 1));
+    nextB?.addEventListener('click', () => showG(gi + 1));
+    document.querySelectorAll<HTMLElement>('[data-pick]').forEach((b) => b.addEventListener('click', () => showG(+b.dataset.pick!)));
+    const gal = document.querySelector<HTMLElement>('[data-gal]')!;
+    gal.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') { e.preventDefault(); showG(gi - 1); } else if (e.key === 'ArrowRight') { e.preventDefault(); showG(gi + 1); } });
+    let sx = 0, sy = 0;
+    const main = document.querySelector('[data-gmain]')!;
+    main.addEventListener('touchstart', (e: any) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    main.addEventListener('touchend', (e: any) => { const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) showG(gi + (dx < 0 ? 1 : -1)); }, { passive: true });
+    const th = document.querySelector<HTMLElement>('[data-thumbs]');
+    th?.addEventListener('wheel', (e) => { if (th.scrollWidth <= th.clientWidth || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; e.preventDefault(); th.scrollLeft += e.deltaY; }, { passive: false });
+  }
+
+  const lb = document.getElementById('lightbox') as HTMLDialogElement;
+  const img = lb.querySelector<HTMLImageElement>('[data-lbimg]')!, cnt = lb.querySelector<HTMLElement>('[data-lbcount]')!;
+  let kind: 'gal' | 'plan' = 'gal', li = 0;
+  const pad = (x: number) => String(x).padStart(2, '0');
+  const paint = () => { const arr = data[kind]; const it = arr[li]; img.src = it.src; img.alt = it.alt; cnt.textContent = `${pad(li + 1)} / ${pad(arr.length)}`; };
+  const openLb = (k: 'gal' | 'plan', i: number) => { kind = k; li = i; paint(); lb.showModal(); document.body.style.overflow = 'hidden'; };
+  const step = (d: number) => { const len = data[kind].length; li = (li + d + len) % len; paint(); };
+  lb.addEventListener('close', () => { document.body.style.overflow = ''; });
+  lb.querySelector('[data-lbclose]')!.addEventListener('click', () => lb.close());
+  lb.querySelector('[data-lbprev]')!.addEventListener('click', () => step(-1));
+  lb.querySelector('[data-lbnext]')!.addEventListener('click', () => step(1));
+  lb.addEventListener('mousedown', (e) => { if (e.target === lb || (e.target as Element).classList.contains('lb-stage')) lb.close(); });
+  lb.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') step(-1); else if (e.key === 'ArrowRight') step(1); });
+  let tx = 0, ty = 0;
+  lb.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  lb.addEventListener('touchend', (e) => { const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) step(dx < 0 ? 1 : -1); }, { passive: true });
+  document.querySelector('[data-gopen]')?.addEventListener('click', () => openLb('gal', gi));
+  document.querySelectorAll<HTMLElement>('[data-plopen]').forEach((b) => b.addEventListener('click', () => openLb('plan', +b.dataset.plopen!)));
+</script>
