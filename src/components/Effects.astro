@@ -1,0 +1,24 @@
+<script>
+  // Поява блоків при прокрутці (data-reveal) і «креслення» ліній (data-draw)
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    const rio = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { const t = e.target as HTMLElement; t.style.opacity = '1'; t.style.transform = 'none'; rio.unobserve(t); }
+    }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((el) => {
+      el.style.opacity = '0'; el.style.transform = 'translateY(24px)';
+      el.style.transition = 'opacity 700ms cubic-bezier(.2,.7,.2,1), transform 700ms cubic-bezier(.2,.7,.2,1)';
+      rio.observe(el);
+    });
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { (e.target as HTMLElement).style.transform = 'none'; io.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll<HTMLElement>('[data-draw]').forEach((el) => {
+      const y = el.dataset.draw === 'y';
+      el.style.transformOrigin = y ? 'top' : 'left';
+      el.style.transform = y ? 'scaleY(0)' : 'scaleX(0)';
+      el.style.transition = `transform ${y ? 900 : 700}ms cubic-bezier(.2,.7,.2,1) ${el.dataset.delay || 0}ms`;
+      io.observe(el);
+    });
+  }
+</script>

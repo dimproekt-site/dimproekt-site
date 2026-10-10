@@ -1,0 +1,480 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import Tag from './Tag.astro';
+import ProjectCard from './ProjectCard.astro';
+import { HOME } from '../i18n/home';
+import { CONTACTS, ROUTES, type Lang } from '../i18n/site';
+import { getSadybni, getCommercial, getHomeSettings, floorsText, nf } from '../lib/projects';
+import whatsappSvg from '../assets/icons/whatsapp.svg?raw';
+import telegramSvg from '../assets/icons/telegram.svg?raw';
+import catSadybni from '../assets/categories/sadybni.webp';
+import catKomertsiyne from '../assets/categories/komertsiyne.webp';
+
+interface Props { lang?: Lang }
+const { lang = 'uk' } = Astro.props;
+const t = HOME[lang];
+const en = lang === 'en';
+
+const [sadybni, commercial, settings] = await Promise.all([getSadybni(), getCommercial(), getHomeSettings()]);
+const bySlug = new Map(sadybni.map((p) => [p.id, p]));
+const byCommercial = new Map(commercial.map((p) => [p.id, p]));
+
+const slides = settings.hero_projects
+  .map((h) => ({ p: bySlug.get(h.project)!, image: h.image, focus: h.focus }))
+  .filter((s) => s.p)
+  .map((s) => ({
+    p: s.p,
+    img: s.image ?? s.p.data.cover,
+    focus: s.focus ?? s.p.data.carousel_focus ?? '50% 50%',
+  }));
+const showHomes = settings.showcase_homes.map((id) => bySlug.get(id)).filter(Boolean);
+const showCom = settings.showcase_commercial.map((id) => byCommercial.get(id)).filter(Boolean);
+
+const catHref = [ROUTES.sadybni, ROUTES.multi];
+const catImg = [catSadybni, catKomertsiyne];
+const icons = ['pencil-ruler', 'file-text', 'building-2', 'image'] as const;
+const sections = ['catalog', 'projects', 'services', 'contact'];
+const letters = ['А', 'Б', 'В', 'Г'];
+const secTitles = [t.s1, t.s2, t.s3, t.s4];
+const here = en ? ROUTES.homeEn : ROUTES.home;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Layout title={t.title} description={t.description} lang={lang} overlay large enHref={ROUTES.homeEn} uaHref={ROUTES.home}>
+  <script is:inline slot="head">
+    (function () {
+      var S = [[215,'10'],[301,'06'],[511,'07'],[701,'13'],[802,'09'],[916,'10'],[1001,'04'],[1116,'10'],[1201,'05']];
+      var d = new Date(), k = (d.getMonth() + 1) * 100 + d.getDate(), f = '05';
+      for (var i = 0; i < S.length; i++) if (k >= S[i][0]) f = S[i][1];
+      var need = (window.innerWidth || 1440) * Math.min(window.devicePixelRatio || 1, 2);
+      var w = need <= 828 ? 828 : need <= 1280 ? 1280 : need <= 1920 ? 1920 : 3072;
+      var src = '/assets/hero/f2k_000' + f + '_' + w + '.webp';
+      var l = document.createElement('link'); l.rel = 'preload'; l.as = 'image'; l.href = src; l.setAttribute('fetchpriority', 'high');
+      document.head.appendChild(l);
+      document.documentElement.style.setProperty('--dp-hero-bg', "url('" + src + "')");
+    })();
+  </script>
+
+  <!-- HERO -->
+  <section class="hero" data-screen-label="Hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-shade" aria-hidden="true"></div>
+    <div class="hero-in">
+      <div class="rail" aria-hidden="true">
+        <div class="rail-line" data-draw="y"></div>
+        <div class="rail-dots">
+          {slides.map((_, k) => (
+            <div class="rd" data-dot={k}><span class="rd-n">{k + 1}</span><span class="rd-p"></span></div>
+          ))}
+        </div>
+      </div>
+
+      <div class="hero-text">
+        <div class="eyebrow on-dark"><span class="eb-line" data-draw="x"></span>{t.eyebrow}</div>
+        <h1 class="sr-only">{t.h1}</h1>
+        <div class="wordmark"><img src="/assets/wordmark-outline.svg" alt="" aria-hidden="true" width="440" height="64" /></div>
+        <p class="lead">{t.lead}</p>
+        <div class="hero-cta">
+          <Button variant="primary" size="lg" full href="#catalog">{t.ctaCatalog}</Button>
+          <Button variant="onDark" size="lg" full href="#contact">{t.ctaOrder}</Button>
+        </div>
+      </div>
+
+      <div class="hero-car" data-carousel>
+        <div class="car-view">
+          <div class="car-track">
+            {slides.map((s, k) => (
+              <a class="slide" href={`/proekty/${s.p.id}/`} data-slide={k}>
+                <Image src={s.img} alt={s.p.data.title} widths={[280, 560, 840]} sizes="280px" loading={k > 2 ? 'lazy' : 'eager'} class="slide-img" style={`object-position:${s.focus}`} />
+                <div class="slide-cap">
+                  <div class="slide-kind">{t.kind} · {t.stage[s.p.data.stage]}</div>
+                  <div class="slide-title">{s.p.data.title}</div>
+                  <div class="slide-stats">
+                    <div><div class="sv">{nf(s.p.data.area)} {en ? 'm²' : 'м²'}</div><div class="sk">{t.stats.area}</div></div>
+                    {s.p.data.bedrooms != null && <div><div class="sv">{s.p.data.bedrooms}</div><div class="sk">{t.stats.bedrooms}</div></div>}
+                    <div><div class="sv">{floorsText(s.p.data)}</div><div class="sk">{t.stats.floors}</div></div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="car-ctl">
+          <button class="car-btn" data-prev aria-label={t.prev}><span style="display:flex;transform:rotate(180deg)"><Icon name="arrow-right" size={20} /></span></button>
+          <button class="car-btn" data-next aria-label={t.next}><Icon name="arrow-right" size={20} /></button>
+          <div class="car-count"><span data-counter>01</span><span class="car-total"> / {pad(slides.length)}</span></div>
+          <div class="car-bar"><div class="car-prog" data-progress></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- А · КАТЕГОРІЇ -->
+  <section id="catalog" class="sec" data-reveal data-screen-label="Категорії">
+    <div class="wrap">
+      <div class="eyebrow"><span class="num">01</span><span class="eb-line" data-draw="x"></span>{t.s1}</div>
+      <h2 class="h2">{t.h2_1}</h2>
+      <div class="dimline"><div class="dl-main" data-draw="x"></div><div class="dl-l"></div><div class="dl-r"></div><div class="dl-c1"></div><div class="dl-c2"></div><div class="dl-t">{t.dim}</div></div>
+      <div class="cats">
+        {t.cats.map((c: any, k: number) => (
+          <div class="cat" data-zoom-card>
+            <div class="cat-photo">
+              <Image src={catImg[k]} alt={c.alt} widths={[420, 640, 840, 1200]} sizes="(max-width: 900px) 100vw, 584px" class="cat-img" loading="lazy" />
+              <span class="corner tl"></span><span class="corner br"></span>
+            </div>
+            <div class="cat-body">
+              <div class="cat-eyebrow">{c.eyebrow}</div>
+              <h3 class="cat-title">{c.title}</h3>
+              <p class="cat-text">{c.text}</p>
+              <div class="cat-tags">{c.tags.map((tg: string) => <Tag>{tg}</Tag>)}</div>
+              <div class="cat-btns">
+                <Button variant="primary" href={catHref[k]}>{t.viewProjects}<span class="arrow"><Icon name="arrow-right" size={16} /></span></Button>
+                {k === 0 && <Button variant="secondary" href={ROUTES.start}>{t.howStart}<span class="arrow"><Icon name="arrow-right" size={16} /></span></Button>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Б · ПРОЕКТИ -->
+  <section id="projects" class="sec sec-card" data-reveal data-screen-label="Проекти">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow"><span class="num">02</span><span class="eb-line" data-draw="x"></span>{t.s2}</div>
+          <h2 class="h2">{t.h2_2}</h2>
+        </div>
+        <Button variant="secondary" href={ROUTES.sadybni}>{t.ctaCatalog}<span class="arrow"><Icon name="arrow-right" size={16} /></span></Button>
+      </div>
+      <div class="grid3">
+        {showHomes.map((p: any) => (
+          <ProjectCard href={`/proekty/${p.id}/`} title={p.data.title} image={p.data.cover}
+            stageLabel={`${t.kind} · ${t.stage[p.data.stage]}`} forSale={p.data.for_sale} badgeLabel={en ? 'For sale' : 'Для продажу'}
+            description={p.data.card_text}
+            specs={[{ k: en ? 'Area' : 'Площа', v: `${nf(p.data.area)} ${en ? 'm²' : 'м²'}` }, { k: en ? 'Floors' : 'Поверхи', v: floorsText(p.data) }]} />
+        ))}
+        {showCom.map((p: any) => (
+          <ProjectCard href={`/proekty/${p.id}/`} title={p.data.title} image={p.data.cover}
+            stageLabel={en ? 'Commercial real estate' : 'Комерційна нерухомість'}
+            location={p.data.city} description={p.data.card_text}
+            specs={[...(p.data.area ? [{ k: en ? 'Area' : 'Площа', v: `${nf(p.data.area)} ${en ? 'm²' : 'м²'}` }] : []), ...(p.data.floors ? [{ k: en ? 'Floors' : 'Поверхи', v: p.data.floors }] : []), ...(p.data.year ? [{ k: en ? 'Year' : 'Рік', v: p.data.year }] : [])]} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- В · ПОСЛУГИ -->
+  <section id="services" class="sec sec-svc" data-reveal data-screen-label="Послуги">
+    <img class="svc-mark" src="/assets/mark-dark.svg" alt="" />
+    <div class="wrap rel">
+      <div class="eyebrow"><span class="num">03</span><span class="eb-line" data-draw="x"></span>{t.s3}</div>
+      <h2 class="h2 mb48">{t.h2_3}</h2>
+      <div class="svcs">
+        {t.services.map((s: string[], k: number) => (
+          <div>
+            <div class="svc-pin"><div class="svc-n">{k + 1}</div><div class="svc-stem" data-draw="y"></div></div>
+            <div class="svc-line" data-draw="x" data-delay={k * 120}></div>
+            <div class="svc-ico"><Icon name={icons[k]} size={32} strokeWidth={1.5} /></div>
+            <h3 class="svc-title">{s[0]}</h3>
+            <p class="svc-text">{s[1]}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Г · КОНТАКТИ -->
+  <section id="contact" class="sec sec-contact" data-reveal data-screen-label="Контакти">
+    <div class="wrap contact-grid">
+      <div>
+        <div class="eyebrow"><span class="num">04</span><span class="eb-line" data-draw="x"></span>{t.s4}</div>
+        <h2 class="h2">{t.h2_4}</h2>
+        <p class="c-lead">{t.contactLead}</p>
+        <div class="c-list">
+          <div>
+            <div class="lbl">{t.phoneLabel}</div>
+            <a class="c-phone" href={CONTACTS.phoneHref}>{CONTACTS.phone}</a>
+          </div>
+          <div>
+            <div class="lbl">{t.hoursLabel}</div>
+            <ul class="c-hours">{t.hours.map((h: string) => <li>{h}</li>)}</ul>
+            <div class="c-tz">{t.tz}</div>
+          </div>
+          <div>
+            <div class="lbl">{t.msgLabel}</div>
+            <div class="c-links">
+              <a href={CONTACTS.whatsapp} target="_blank" rel="noopener"><span class="mi" set:html={whatsappSvg} />WhatsApp</a>
+              <a href={CONTACTS.telegram} target="_blank" rel="noopener"><span class="mi" set:html={telegramSvg} />Telegram @dimproekt</a>
+              <a href={`mailto:${CONTACTS.email}`}><Icon name="mail" size={20} />{CONTACTS.email}</a>
+            </div>
+          </div>
+          <div>
+            <div class="lbl">{t.socialLabel}</div>
+            <div class="c-links">
+              <a href={CONTACTS.instagram} target="_blank" rel="noopener"><Icon name="instagram" size={20} />@dimproekt</a>
+              <a href={CONTACTS.facebook} target="_blank" rel="noopener"><Icon name="facebook" size={20} />Facebook</a>
+            </div>
+          </div>
+        </div>
+        <div class="c-cta"><Button variant="primary" data-consult-open>{t.consult}</Button></div>
+      </div>
+      <div class="c-side">
+        <div class="remote">
+          <img class="remote-mark" src="/assets/mark-dark.svg" alt="" />
+          <div class="rel">
+            <div class="eyebrow"><span class="eb-line" data-draw="x"></span>{t.remoteEyebrow}</div>
+            <h3 class="remote-title">{t.remoteTitle}</h3>
+            <p class="remote-text">{t.remoteText}</p>
+            <div class="remote-list">
+              <div class="lbl">{t.remoteListLabel}</div>
+              <ul>
+                <li><span class="ri"><Icon name="phone" size={18} /></span><span><b>{t.remote[0][0]}</b>{t.remote[0][1]}</span></li>
+                <li><span class="ri"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg></span><span><b>{t.remote[1][0]}</b>{t.remote[1][1]}</span></li>
+                <li><span class="ri"><Icon name="pencil-ruler" size={18} /></span><span><b>{t.remote[2][0]}</b>{t.remote[2][1]}</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="pay">
+          <div class="lbl">{t.payLabel}</div>
+          <div class="pay-list">
+            <div title="Mastercard"><img src="/assets/payment-mastercard.svg" alt="Mastercard" height="22" style="height:22px;width:auto" /></div>
+            <div title="Visa"><img src="/assets/payment-visa.svg" alt="Visa" height="24" style="height:24px;width:auto" /></div>
+            <div title="PayPal"><img src="/assets/payment-paypal.svg" alt="PayPal" height="18" style="height:18px;width:auto" /></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="axes" aria-label={t.railLabel} data-axes>
+    {letters.map((l, k) => (
+      <>
+        {k > 0 && <div class="ax-gap"></div>}
+        <button class="ax" data-go={sections[k]} title={`${l} · ${secTitles[k]}`} aria-label={`${l} · ${secTitles[k]}`}>{l}</button>
+      </>
+    ))}
+  </nav>
+</Layout>
+
+<style is:global>
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  .rel { position: relative; }
+  .lbl, .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; }
+  .eyebrow .num { font-family: var(--font-display); font-size: 21px; letter-spacing: 0; color: var(--brand-ochre); font-weight: 400; }
+  .eb-line { display: block; width: 40px; height: 2px; background: var(--brand-ochre); flex: 0 0 auto; }
+  .eyebrow.on-dark { color: var(--ochre-300); }
+  .h2 { margin: 16px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 44px; line-height: 1.15; color: var(--text-heading); }
+  .h2.mb48 { margin-bottom: 48px; }
+  .wrap { padding: 96px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
+  .sec { position: relative; }
+  .sec-card { background: var(--surface-card); border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); }
+  .sec-svc { overflow: hidden; }
+  .sec-contact { border-top: 1px solid var(--border-hairline); }
+
+  /* HERO */
+  .hero { position: relative; min-height: 820px; background: var(--brand-espresso); overflow: hidden; display: flex; align-items: center; padding-top: 96px; box-sizing: border-box; }
+  .hero-bg { position: absolute; inset: 0; background-color: var(--brand-espresso); background-image: var(--dp-hero-bg, url('/assets/hero/f2k_00010_1920.webp')); background-size: cover; background-position: center; }
+  .hero-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(42,28,16,.7) 0%, rgba(42,28,16,0) 22%), linear-gradient(90deg, rgba(42,28,16,.82) 0%, rgba(42,28,16,.55) 38%, rgba(42,28,16,.05) 70%), linear-gradient(0deg, rgba(42,28,16,.45) 0%, rgba(42,28,16,0) 30%); }
+  .hero-in { position: relative; width: 100%; max-width: 1440px; margin: 0 auto; padding: 72px 0 96px 48px; display: flex; align-items: center; gap: 56px; box-sizing: border-box; }
+  .rail { flex: 0 0 28px; align-self: stretch; display: flex; flex-direction: column; align-items: center; position: relative; min-height: 520px; }
+  .rail-line { position: absolute; top: 12px; bottom: 6px; left: 13.5px; width: 1px; background: rgba(245,237,225,.32); }
+  .rail-dots { position: relative; display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 100%; }
+  .rd { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-family: var(--font-display); font-size: 14px; color: #2A1C10; }
+  .rd-n { display: none; }
+  .rd-p { width: 7px; height: 7px; border-radius: 50%; background: var(--brand-parchment); opacity: .7; }
+  .rd.on { background: var(--brand-ochre); box-shadow: 0 0 0 5px rgba(201,138,62,.22); }
+  .rd.on .rd-n { display: block; } .rd.on .rd-p { display: none; }
+  .hero-text { flex: 1 1 380px; max-width: 480px; color: var(--brand-parchment); }
+  .wordmark { margin-top: 24px; min-height: 64px; display: flex; align-items: center; }
+  .wordmark img { display: block; width: 440px; max-width: 100%; height: auto; }
+  .lead { margin: 24px 0 0; font-family: var(--font-display); font-size: 26px; line-height: 1.35; color: var(--brand-parchment); text-wrap: pretty; }
+  .hero-cta { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; margin-top: 40px; }
+  .hero-cta .btn { padding: 16px 20px; }
+  .hero-car { flex: 1.5 1 540px; min-width: 0; --sw: 280px; --gap: 24px; }
+  .car-view { overflow: hidden; padding: 8px 0 8px 2px; touch-action: pan-y; }
+  .car-track { display: flex; align-items: center; gap: var(--gap); height: 440px; transition: transform 420ms var(--ease-inout); will-change: transform; }
+  .slide { position: relative; flex: 0 0 var(--sw); height: 340px; border-radius: 4px; overflow: hidden; display: block; text-decoration: none; background: var(--neutral-800); box-shadow: var(--shadow-3); transition: height 420ms var(--ease-inout), opacity 420ms var(--ease-standard); }
+  .slide.on { height: 420px; }
+  .slide.past { opacity: 0; pointer-events: none; }
+  .slide .slide-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .slide-cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 64px 20px 18px; pointer-events: none; background: linear-gradient(0deg, rgba(42,28,16,.9) 0%, rgba(42,28,16,.6) 55%, rgba(42,28,16,0) 100%); }
+  .slide-kind { font-size: 10px; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; color: var(--ochre-300); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .slide-title { margin-top: 6px; font-family: var(--font-display); font-size: 22px; line-height: 1.2; color: var(--brand-parchment); }
+  .slide-stats { display: flex; gap: 18px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(245,237,225,.22); }
+  .sv { font-family: var(--font-display); font-size: 19px; line-height: 1.1; color: var(--brand-parchment); white-space: nowrap; }
+  .sk { margin-top: 3px; font-size: 11px; color: rgba(245,237,225,.8); }
+  .car-ctl { display: flex; align-items: center; gap: 12px; margin-top: 28px; }
+  .car-btn { width: 48px; height: 44px; border: 1px solid rgba(245,237,225,.45); background: transparent; color: var(--brand-parchment); border-radius: 2px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 140ms; }
+  .car-btn:hover { background: rgba(245,237,225,.12); }
+  .car-count { margin-left: 16px; font-family: var(--font-display); font-size: 21px; color: var(--brand-parchment); }
+  .car-total { color: rgba(245,237,225,.6); }
+  .car-bar { flex: 1; max-width: 160px; height: 1px; background: rgba(245,237,225,.3); margin-left: 8px; position: relative; }
+  .car-prog { position: absolute; left: 0; top: -.5px; height: 2px; width: 0; background: var(--brand-ochre); transition: width 420ms var(--ease-inout); }
+
+  /* Категорії */
+  .dimline { position: relative; height: 24px; margin: 40px 0 32px; }
+  .dl-main { position: absolute; left: 0; right: 0; top: 12px; height: 1px; background: var(--border-strong); }
+  .dl-l, .dl-r { position: absolute; top: 4px; width: 1px; height: 16px; background: var(--border-strong); }
+  .dl-l { left: 0; } .dl-r { right: 0; }
+  .dl-c1, .dl-c2 { position: absolute; top: 7px; width: 11px; height: 1px; background: var(--brand-espresso); transform: translateY(5px) rotate(-45deg); }
+  .dl-c1 { left: -5px; } .dl-c2 { right: -5px; }
+  .dl-t { position: absolute; left: 50%; top: -6px; transform: translateX(-50%); padding: 0 12px; background: var(--brand-cream); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+  .cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px; }
+  .cat { display: block; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-1); transition: transform 240ms var(--ease-standard), box-shadow 240ms var(--ease-standard); }
+  .cat:hover { transform: translateY(-2px); box-shadow: var(--shadow-3); }
+  .cat-photo { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+  .cat-img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 700ms var(--ease-out); }
+  .cat:hover .cat-img { transform: scale(1.05); }
+  .corner { position: absolute; width: 18px; height: 18px; pointer-events: none; border: 0 solid var(--brand-parchment); }
+  .corner.tl { top: 16px; left: 16px; border-top-width: 1px; border-left-width: 1px; }
+  .corner.br { bottom: 16px; right: 16px; border-bottom-width: 1px; border-right-width: 1px; }
+  .cat-body { padding: 28px 28px 32px; }
+  .cat-eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .cat-title { margin: 10px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 34px; line-height: 1.15; color: var(--text-heading); }
+  .cat-text { margin: 12px 0 0; font-size: 15px; line-height: 1.6; color: var(--text-body); max-width: 46ch; text-wrap: pretty; }
+  .cat-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .cat-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+  .sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 48px; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 32px; }
+
+  /* Послуги */
+  .svc-mark { position: absolute; right: -80px; top: 40px; width: 620px; max-width: 90vw; opacity: .06; pointer-events: none; }
+  .svcs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 40px 32px; }
+  .svc-pin { display: flex; flex-direction: column; align-items: flex-start; }
+  .svc-n { width: 26px; height: 26px; border: 1px solid var(--border-strong); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 15px; color: var(--text-heading); margin-left: -12px; background: var(--brand-cream); }
+  .svc-stem { height: 18px; width: 0; border-left: 1px dashed var(--border-strong); margin-left: 1px; }
+  .svc-line { height: 2px; background: var(--brand-ochre); }
+  .svc-ico { padding-top: 24px; color: var(--brand-espresso); }
+  .svc-title { margin: 20px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 26px; line-height: 1.2; color: var(--text-heading); }
+  .svc-text { margin: 10px 0 0; font-size: 15px; line-height: 1.6; color: var(--text-body); text-wrap: pretty; }
+
+  /* Контакти */
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 64px; align-items: center; }
+  .c-lead { margin: 16px 0 0; font-size: 17px; line-height: 1.6; color: var(--text-body); max-width: 46ch; text-wrap: pretty; }
+  .c-list { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border-hairline); display: grid; gap: 20px; }
+  .c-phone { display: inline-block; margin-top: 6px; font-family: var(--font-display); font-size: 34px; color: var(--text-heading); text-decoration: none; }
+  .c-phone:hover { color: var(--ochre-600); }
+  .c-hours { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 15px; color: var(--text-heading); }
+  .c-tz { margin-top: 6px; font-size: 13px; color: var(--text-muted); }
+  .c-links { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 10px; }
+  .c-links a { display: flex; align-items: center; gap: 10px; color: var(--text-heading); text-decoration: none; font-size: 15px; }
+  .c-links a:hover { color: var(--ochre-600); }
+  .mi { display: inline-flex; width: 20px; height: 20px; } .mi svg { width: 20px; height: 20px; fill: currentColor; }
+  .c-cta { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
+  .c-side { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  .remote { position: relative; overflow: hidden; background: var(--surface-card); border: 1px solid var(--border-hairline); border-top: 2px solid var(--brand-ochre); border-radius: 4px; box-shadow: var(--shadow-1); padding: 48px 44px 52px; }
+  .remote-mark { position: absolute; right: -40px; bottom: -30px; width: 300px; opacity: .06; pointer-events: none; }
+  .remote-title { margin: 16px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 34px; line-height: 1.15; color: var(--text-heading); }
+  .remote-text { margin: 20px 0 0; font-size: 17px; line-height: 1.65; color: var(--text-body); max-width: 46ch; text-wrap: pretty; }
+  .remote-list { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border-hairline); }
+  .remote-list ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 12px; }
+  .remote-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.5; color: var(--text-body); }
+  .remote-list b { font-weight: 500; color: var(--text-heading); }
+  .ri { flex: 0 0 auto; display: flex; margin-top: 1px; color: var(--brand-ochre); }
+  .pay { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 0 4px; }
+  .pay-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pay-list > div { height: 36px; min-width: 64px; padding: 0 12px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 2px; }
+
+  /* Бічна навігація А-Б-В-Г */
+  .axes { display: none; position: fixed; left: calc(50% - 664px); top: 50%; transform: translateY(-50%); z-index: 30; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 240ms var(--ease-standard); }
+  .axes.show { opacity: 1; pointer-events: auto; }
+  .ax-gap { width: 0; height: 44px; border-left: 1px dashed var(--border-strong); }
+  .ax { width: 30px; height: 30px; padding: 0; border-radius: 50%; border: 1px solid var(--border-strong); background: var(--brand-cream); color: var(--text-heading); font-family: var(--font-display); font-size: 17px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 240ms, color 240ms, border-color 240ms, box-shadow 240ms; }
+  .ax:hover { border-color: var(--brand-espresso); }
+  .ax.on { background: var(--brand-ochre); color: #2A1C10; border-color: var(--brand-ochre); box-shadow: 0 0 0 5px rgba(201,138,62,.22); }
+  @media (min-width: 1340px) { .axes { display: flex; } }
+
+  /* Адаптив */
+  @media (max-width: 1100px) {
+    .hero { min-height: 0; }
+    .hero-in { flex-direction: column; align-items: stretch; gap: 40px; padding: 48px 24px 56px; }
+    .rail { display: none; }
+    .hero-text { max-width: 560px; flex: none; }
+    .hero-car { flex: none; width: 100%; }
+  }
+  @media (max-width: 768px) {
+    .wrap { padding: 64px 20px; }
+    .h2 { font-size: 34px; }
+    .hero { padding-top: 76px; }
+    .hero-in { padding: 32px 20px 48px; }
+    .lead { font-size: 22px; }
+    .hero-car { --sw: 240px; --gap: 16px; }
+    .car-track { height: 400px; }
+    .slide { height: 320px; } .slide.on { height: 390px; }
+    .cat-body { padding: 22px 20px 26px; } .cat-title { font-size: 28px; }
+    .remote { padding: 32px 24px 36px; }
+    .c-phone { font-size: 28px; }
+    .contact-grid { gap: 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .car-track, .slide, .car-prog { transition: none; } }
+</style>
+
+<script>
+  // Карусель hero: автоперемикання 6 с, свайп, лічильник, точки зліва
+  const root = document.querySelector<HTMLElement>('[data-carousel]');
+  if (root) {
+    const track = root.querySelector<HTMLElement>('.car-track')!;
+    const slides = [...root.querySelectorAll<HTMLElement>('.slide')];
+    const dots = [...document.querySelectorAll<HTMLElement>('[data-dot]')];
+    const counter = root.querySelector<HTMLElement>('[data-counter]')!;
+    const prog = root.querySelector<HTMLElement>('[data-progress]')!;
+    const n = slides.length;
+    let i = 0, timer: number | undefined;
+    const step = () => {
+      const cs = getComputedStyle(root);
+      return parseFloat(cs.getPropertyValue('--sw')) + parseFloat(cs.getPropertyValue('--gap'));
+    };
+    const render = () => {
+      track.style.transform = `translateX(${-i * step()}px)`;
+      slides.forEach((s, k) => { s.classList.toggle('on', k === i); s.classList.toggle('past', k < i); });
+      dots.forEach((d, k) => d.classList.toggle('on', k === i));
+      counter.textContent = String(i + 1).padStart(2, '0');
+      prog.style.width = ((i + 1) / n) * 100 + '%';
+    };
+    const go = (d: number) => { i = (i + d + n) % n; render(); };
+    const restart = () => {
+      clearInterval(timer);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = window.setInterval(() => go(1), 6000);
+    };
+    root.querySelector('[data-prev]')!.addEventListener('click', () => { go(-1); restart(); });
+    root.querySelector('[data-next]')!.addEventListener('click', () => { go(1); restart(); });
+    let sx = 0, sy = 0;
+    const view = root.querySelector('.car-view')!;
+    view.addEventListener('touchstart', (e: any) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    view.addEventListener('touchend', (e: any) => {
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { go(dx < 0 ? 1 : -1); restart(); }
+    }, { passive: true });
+    window.addEventListener('resize', render);
+    render(); restart();
+  }
+
+  // Бічна навігація розділами А-Б-В-Г
+  const axes = document.querySelector<HTMLElement>('[data-axes]');
+  const secs = ['catalog', 'projects', 'services', 'contact'].map((id) => document.getElementById(id));
+  if (axes && secs.every(Boolean)) {
+    const btns = [...axes.querySelectorAll<HTMLElement>('.ax')];
+    const spy = () => {
+      const vh = innerHeight;
+      let a = 0;
+      secs.forEach((e, k) => { if (e!.getBoundingClientRect().top < vh * 0.45) a = k; });
+      const on = secs[0]!.getBoundingClientRect().top < vh * 0.6 && secs[3]!.getBoundingClientRect().bottom > vh * 0.4;
+      axes.classList.toggle('show', on);
+      btns.forEach((b, k) => { b.classList.toggle('on', k === a); b.setAttribute('aria-current', String(k === a)); });
+    };
+    let raf = 0;
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; spy(); }); }, { passive: true });
+    spy();
+    btns.forEach((b) => b.addEventListener('click', () => {
+      const el = document.getElementById(b.dataset.go!);
+      if (el) scrollTo({ top: el.getBoundingClientRect().top + scrollY, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }));
+  }
+</script>

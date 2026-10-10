@@ -1,0 +1,41 @@
+<div class="dpc" aria-hidden="true" data-cursor>
+  <div class="dpc-h"></div>
+  <div class="dpc-v"></div>
+  <div class="dpc-l"></div>
+  <div class="dpc-r"></div>
+</div>
+<style is:global>
+  .dpc { position: fixed; inset: 0; pointer-events: none; z-index: 9998; display: none; }
+  .dpc.on { display: block; }
+  .dpc-h, .dpc-v { position: fixed; background: rgba(201,138,62,.45); pointer-events: none; transition: opacity 140ms; }
+  .dpc-h { left: 0; right: 0; top: 0; height: 1px; }
+  .dpc-v { top: 0; bottom: 0; left: 0; width: 1px; }
+  .dpc-l { position: fixed; left: 0; top: 0; color: rgba(201,138,62,.75); font-family: var(--font-sans); font-size: 10px; letter-spacing: .08em; mix-blend-mode: difference; pointer-events: none; white-space: nowrap; transition: opacity 140ms; }
+  .dpc-r { position: fixed; left: 0; top: 0; width: 36px; height: 36px; margin: -18px 0 0 -18px; border: 1px solid var(--brand-ochre); border-radius: 50%; pointer-events: none; opacity: 0; transition: background 240ms, opacity 140ms; }
+</style>
+<script>
+  // «Кресло» креслярського курсора з координатами; лише для миші
+  const el = document.querySelector<HTMLElement>('[data-cursor]');
+  if (el && matchMedia('(pointer: fine)').matches) {
+    const h = el.querySelector<HTMLElement>('.dpc-h')!, v = el.querySelector<HTMLElement>('.dpc-v')!;
+    const l = el.querySelector<HTMLElement>('.dpc-l')!, r = el.querySelector<HTMLElement>('.dpc-r')!;
+    el.classList.add('on');
+    document.body.style.cursor = 'crosshair';
+    let mx = -100, my = -100, rx = -100, ry = -100, hover = false;
+    addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; hover = !!(e.target as Element).closest?.('a,button,input,textarea,select,summary'); }, { passive: true });
+    const tick = () => {
+      if (hover) { rx += (mx - rx) * 0.22; ry += (my - ry) * 0.22; } else { rx = mx; ry = my; }
+      const op = hover ? '0' : '1';
+      h.style.transform = `translateY(${my}px)`; h.style.opacity = op;
+      v.style.transform = `translateX(${mx}px)`; v.style.opacity = op;
+      l.style.opacity = op;
+      l.style.transform = `translate(${mx + 14}px,${my + 14}px)`;
+      l.textContent = `X ${String(Math.round(mx)).padStart(4, '0')} · Y ${String(Math.round(my + scrollY)).padStart(4, '0')}`;
+      r.style.transform = `translate(${rx}px,${ry}px) scale(${hover ? 1.6 : 0.6})`;
+      r.style.opacity = hover ? '1' : '0';
+      r.style.background = hover ? 'rgba(201,138,62,.14)' : 'transparent';
+      requestAnimationFrame(tick);
+    };
+    tick();
+  }
+</script>

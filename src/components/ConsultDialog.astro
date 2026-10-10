@@ -1,0 +1,137 @@
+---
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import { CONTACTS, ROUTES, type Lang } from '../i18n/site';
+import whatsappSvg from '../assets/icons/whatsapp.svg?raw';
+import telegramSvg from '../assets/icons/telegram.svg?raw';
+interface Props { lang?: Lang }
+const { lang = 'uk' } = Astro.props;
+const T = {
+  uk: { eyebrow: 'Консультація', title: 'Отримати консультацію', lead: 'Залиште контакт — передзвонимо протягом робочого дня.', name: 'Ім’я', contact: 'Телефон або месенджер', contactHint: 'Номер телефону, Telegram чи WhatsApp', message: 'Повідомлення', messagePh: 'Розкажіть про ділянку та побажання', send: 'Надіслати', sending: 'Надсилаємо…', close: 'Закрити', nameErr: 'Вкажіть ім’я', contactErr: 'Вкажіть телефон або месенджер', success: 'Дякуємо! Передзвонимо протягом робочого дня', error: 'Не вдалося надіслати. Напишіть нам у Telegram або WhatsApp', retry: 'Спробувати ще раз', consent: 'Надсилаючи форму, ви погоджуєтесь з', consentLink: 'політикою конфіденційності' },
+  en: { eyebrow: 'Consultation', title: 'Get a consultation', lead: 'Leave your contact — we will call back within one working day.', name: 'Name', contact: 'Phone or messenger', contactHint: 'Phone number, Telegram or WhatsApp', message: 'Message', messagePh: 'Tell us about your plot and wishes', send: 'Send', sending: 'Sending…', close: 'Close', nameErr: 'Enter your name', contactErr: 'Enter a phone or messenger', success: 'Thank you! We will call back within one working day', error: 'Could not send. Message us on Telegram or WhatsApp', retry: 'Try again', consent: 'By sending the form you agree to the', consentLink: 'privacy policy' },
+}[lang];
+---
+<dialog class="cd" id="consult-dialog" aria-labelledby="consult-title" data-t={JSON.stringify({ sending: T.sending, send: T.send })}>
+  <div class="cd-panel">
+    <div class="cd-head">
+      <div>
+        <div class="cd-eyebrow"><span class="cd-line"></span>{T.eyebrow}</div>
+        <h2 id="consult-title" class="cd-title">{T.title}</h2>
+      </div>
+      <button type="button" class="cd-x" data-consult-close aria-label={T.close}><Icon name="x" size={20} /></button>
+    </div>
+
+    <form class="cd-form" novalidate data-state="form">
+      <p class="cd-lead">{T.lead}</p>
+      <div class="f">
+        <label for="consult-name">{T.name} <span aria-hidden="true">*</span></label>
+        <input id="consult-name" name="name" autocomplete="name" required />
+        <div class="f-err" data-err="name" hidden>{T.nameErr}</div>
+      </div>
+      <div class="f">
+        <label for="consult-contact">{T.contact} <span aria-hidden="true">*</span></label>
+        <input id="consult-contact" name="contact" autocomplete="tel" required />
+        <div class="f-hint">{T.contactHint}</div>
+        <div class="f-err" data-err="contact" hidden>{T.contactErr}</div>
+      </div>
+      <div class="f">
+        <label for="consult-message">{T.message}</label>
+        <textarea id="consult-message" name="message" rows="4" placeholder={T.messagePh}></textarea>
+      </div>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+      <Button variant="primary" size="lg" full type="submit" data-submit>{T.send}</Button>
+      <p class="cd-consent">{T.consent} <a href={ROUTES.privacy}>{T.consentLink}</a></p>
+    </form>
+
+    <div class="cd-ok" role="status" hidden>
+      <div class="cd-ok-row"><span class="cd-ok-ico"><Icon name="check" size={20} /></span><p tabindex="-1">{T.success}</p></div>
+      <div style="margin-top:28px"><Button variant="secondary" data-consult-close>{T.close}</Button></div>
+    </div>
+
+    <div class="cd-fail" role="alert" hidden>
+      <p tabindex="-1">{T.error}</p>
+      <div class="cd-fail-links">
+        <a href={CONTACTS.telegram} target="_blank" rel="noopener"><span class="mi" set:html={telegramSvg} />Telegram</a>
+        <a href={CONTACTS.whatsapp} target="_blank" rel="noopener"><span class="mi" set:html={whatsappSvg} />WhatsApp</a>
+      </div>
+      <button type="button" class="cd-retry" data-retry>{T.retry}</button>
+    </div>
+  </div>
+</dialog>
+
+<style is:global>
+  .cd { border: 0; padding: 0; background: transparent; max-width: none; max-height: none; width: 100%; height: 100%; overflow-y: auto; color: var(--text-body); font-family: var(--font-sans); }
+  .cd:not([open]) { display: none; }
+  .cd::backdrop { background: rgba(42,28,16,.55); backdrop-filter: blur(3px); }
+  .cd[open] { display: grid; place-items: center; padding: 24px; box-sizing: border-box; background: transparent; }
+  .cd-panel { position: relative; width: 100%; max-width: 520px; background: var(--surface-raised, #fff); border: 1px solid var(--border-hairline); border-top: 2px solid var(--brand-ochre); border-radius: 4px; box-shadow: var(--shadow-4); animation: cdin 240ms var(--ease-out); }
+  @keyframes cdin { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .cd-head { display: flex; align-items: flex-start; gap: 16px; padding: 28px 28px 8px; }
+  .cd-head > div:first-child { flex: 1; }
+  .cd-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+  .cd-line { width: 40px; height: 2px; background: var(--brand-ochre); }
+  .cd-title { margin: 12px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 34px; line-height: 1.15; color: var(--text-heading); }
+  .cd-x { flex: 0 0 auto; width: 44px; height: 44px; margin: -6px -10px 0 0; border: 0; border-radius: 2px; background: transparent; color: var(--text-heading); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .cd-x:hover { background: var(--ochre-100); }
+  .cd-form { padding: 8px 28px 28px; display: grid; gap: 20px; }
+  .cd-lead { margin: 0; font-size: 15px; line-height: 1.6; }
+  .f label { display: block; font-size: 14px; font-weight: 500; color: var(--text-heading); margin-bottom: 6px; }
+  .f label span { color: var(--ochre-600); }
+  .f input, .f textarea { width: 100%; box-sizing: border-box; padding: 11px 14px; font: inherit; font-size: 16px; color: var(--text-heading); background: var(--surface-card, #fff); border: 1px solid var(--border-strong); border-radius: 2px; }
+  .f input:focus, .f textarea:focus { outline: 2px solid var(--brand-ochre); outline-offset: 1px; border-color: var(--brand-ochre); }
+  .f.bad input { border-color: var(--status-danger, #9B3B2E); }
+  .f-hint { margin-top: 6px; font-size: 13px; color: var(--text-muted); }
+  .f-err { margin-top: 6px; font-size: 13px; color: var(--status-danger, #9B3B2E); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .cd-consent { margin: -8px 0 0; font-size: 13px; line-height: 1.5; color: var(--text-muted); text-align: center; }
+  .cd-consent a { color: var(--ochre-600); text-underline-offset: 3px; }
+  .cd-ok, .cd-fail { padding: 16px 28px 32px; }
+  .cd-ok-row { display: flex; gap: 16px; align-items: flex-start; }
+  .cd-ok-ico { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--status-success, #4E7A52); color: var(--status-success, #4E7A52); display: flex; align-items: center; justify-content: center; }
+  .cd-ok p { margin: 0; padding-top: 8px; font-family: var(--font-display); font-size: 26px; line-height: 1.3; color: var(--text-heading); outline: none; }
+  .cd-fail p { margin: 0; font-size: 17px; line-height: 1.6; color: var(--status-danger, #9B3B2E); outline: none; }
+  .cd-fail-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .cd-fail-links a { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px; border: 1px solid var(--border-strong); border-radius: 2px; color: var(--text-heading); text-decoration: none; font-size: 15px; font-weight: 500; }
+  .cd-fail-links a:hover { border-color: var(--brand-ochre); color: var(--ochre-600); }
+  .cd-retry { margin-top: 20px; padding: 0; border: 0; background: none; font: inherit; font-size: 15px; color: var(--ochre-600); text-decoration: underline; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { .cd-panel { animation: none; } }
+</style>
+<script>
+  const dlg = document.getElementById('consult-dialog') as HTMLDialogElement | null;
+  if (dlg) {
+    const form = dlg.querySelector<HTMLFormElement>('.cd-form')!;
+    const ok = dlg.querySelector<HTMLElement>('.cd-ok')!, fail = dlg.querySelector<HTMLElement>('.cd-fail')!;
+    const btn = dlg.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const tx = JSON.parse(dlg.dataset.t || '{}');
+    const show = (s: 'form' | 'ok' | 'fail') => { form.hidden = s !== 'form'; ok.hidden = s !== 'ok'; fail.hidden = s !== 'fail'; };
+    const open = () => { show('form'); dlg.showModal(); document.body.style.overflow = 'hidden'; setTimeout(() => (form.elements.namedItem('name') as HTMLElement)?.focus(), 30); };
+    const close = () => dlg.close();
+    dlg.addEventListener('close', () => { document.body.style.overflow = ''; });
+    dlg.addEventListener('mousedown', (e) => { if (e.target === dlg) close(); });
+    document.addEventListener('click', (e) => {
+      const t = e.target as Element;
+      if (t.closest('[data-consult-open]')) { e.preventDefault(); open(); }
+      else if (t.closest('[data-consult-close]')) close();
+    });
+    dlg.querySelector('[data-retry]')!.addEventListener('click', () => { show('form'); (form.elements.namedItem('name') as HTMLElement)?.focus(); });
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(form)) as Record<string, string>;
+      const badName = !d.name?.trim(), badContact = !d.contact?.trim();
+      form.querySelector<HTMLElement>('[data-err="name"]')!.hidden = !badName;
+      form.querySelector<HTMLElement>('[data-err="contact"]')!.hidden = !badContact;
+      form.querySelectorAll('.f').forEach((f, k) => f.classList.toggle('bad', (k === 0 && badName) || (k === 1 && badContact)));
+      if (badName || badContact) { (form.elements.namedItem(badName ? 'name' : 'contact') as HTMLElement).focus(); return; }
+      btn.disabled = true; btn.textContent = tx.sending;
+      let good = false;
+      try {
+        const r = await fetch('/api/consult', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...d, page: location.pathname }) });
+        good = r.ok;
+      } catch { good = false; }
+      btn.disabled = false; btn.textContent = tx.send;
+      if (good) form.reset();
+      show(good ? 'ok' : 'fail');
+      dlg.querySelector<HTMLElement>(good ? '.cd-ok p' : '.cd-fail p')?.focus();
+    });
+  }
+</script>
