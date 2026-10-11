@@ -14,6 +14,8 @@ export const ROUTES = {
   about: '/pro-nas/',
   articles: '/statti/',
   privacy: '/polityka-konfidentsiinosti/',
+  refund: '/pravyla-povernennia/',
+  refundEn: '/en/refund-policy/',
 } as const;
 
 export const CONTACTS = {
@@ -60,7 +62,7 @@ export const FOOTER = {
   uk: {
     contacts: 'Контакти', hours: 'Режим роботи', tz: 'за київським часом',
     hoursList: ['Пн–Пт 10:00–19:00', 'Сб 10:00–16:00', 'Нд вихідний'],
-    legal: '© 2026 ДІМПРОЕКТ. Всі права захищені.', privacy: 'Політика конфіденційності',
+    legal: '© 2026 ДІМПРОЕКТ. Всі права захищені.', privacy: 'Політика конфіденційності', refund: 'Правила повернення та відшкодування',
     fbGroup: 'Наша група у Facebook: Проекти будинків та ідеї для дачі | Дім & Сад',
     columns: [
       { title: 'Проекти', links: [
@@ -77,7 +79,7 @@ export const FOOTER = {
   en: {
     contacts: 'Contacts', hours: 'Opening hours', tz: 'Kyiv time',
     hoursList: ['Mon–Fri 10:00–19:00', 'Sat 10:00–16:00', 'Sun closed'],
-    legal: '© 2026 DIMPROEKT. All rights reserved.', privacy: 'Privacy policy',
+    legal: '© 2026 DIMPROEKT. All rights reserved.', privacy: 'Privacy policy', refund: 'Return and refund policy',
     fbGroup: 'Our Facebook group: Проекти будинків та ідеї для дачі | Дім & Сад',
     columns: [
       { title: 'Projects', links: [

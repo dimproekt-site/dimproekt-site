@@ -45,6 +45,7 @@ const hoursLine = `${t.hoursList.join(', ')} (${t.tz})`;
     <div class="legal">
       <span>{t.legal}</span>
       <a href={ROUTES.privacy}>{t.privacy}</a>
+      <a href={lang === 'en' ? ROUTES.refundEn : ROUTES.refund}>{t.refund}</a>
     </div>
   </div>
 </footer>
