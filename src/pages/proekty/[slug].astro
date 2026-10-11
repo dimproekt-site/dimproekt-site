@@ -138,6 +138,8 @@ const cardSpecs = (x: any) => sad
         </div>
         {gallery.length > 1 && (
           <div class="gstrip">
+            <button type="button" class="sarrow sl" data-sprev aria-label="Мініатюри ліворуч" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+            <button type="button" class="sarrow sr" data-snext aria-label="Мініатюри праворуч" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
             <div class="gthumbs" role="list" aria-label="Мініатюри галереї" data-thumbs>
               {gallery.map((g, k) => (
                 <div class:list={['gt', { on: k === 0 }]} role="listitem" data-t={k}>
@@ -347,7 +349,12 @@ const cardSpecs = (x: any) => sad
   .gopen:hover { background: var(--brand-cream); border-color: var(--brand-espresso); }
   @media (hover: none) { .garrow { display: none; } }
   .gstrip { position: relative; margin-top: 12px; }
-  .gthumbs { display: flex; gap: 8px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: thin; }
+  .gthumbs { display: flex; gap: 8px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none; }
+  .gthumbs::-webkit-scrollbar { display: none; }
+  .sarrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 32px; height: 32px; padding: 0; border: 1px solid var(--border-hairline); border-radius: 2px; background: rgba(250,246,240,.94); color: var(--brand-espresso); cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(42,28,16,.25); }
+  .sarrow:hover { background: var(--brand-cream); border-color: var(--brand-espresso); }
+  .sarrow[hidden] { display: none; }
+  .sarrow.sl { left: 4px; } .sarrow.sr { right: 4px; }
   .gt { position: relative; flex: 0 0 auto; width: 112px; aspect-ratio: 16 / 9; border-radius: 2px; overflow: hidden; background: var(--surface-card); border: 1px solid var(--border-hairline); opacity: .72; transition: opacity 140ms; }
   .gt.on { opacity: 1; }
   .gt::after { content: ''; position: absolute; inset: 0; border: 2px solid transparent; border-radius: 2px; pointer-events: none; }
@@ -497,6 +504,11 @@ const cardSpecs = (x: any) => sad
     main.addEventListener('touchstart', (e: any) => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
     main.addEventListener('touchend', (e: any) => { const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) showG(gi + (dx < 0 ? 1 : -1)); }, { passive: true });
     const th = document.querySelector<HTMLElement>('[data-thumbs]');
+    const sp = document.querySelector<HTMLElement>('[data-sprev]'), sn = document.querySelector<HTMLElement>('[data-snext]');
+    const upd = () => { if (!th || !sp || !sn) return; sp.hidden = th.scrollLeft <= 2; sn.hidden = th.scrollLeft + th.clientWidth >= th.scrollWidth - 2; };
+    sp?.addEventListener('click', () => th?.scrollBy({ left: -th.clientWidth * 0.7 }));
+    sn?.addEventListener('click', () => th?.scrollBy({ left: th.clientWidth * 0.7 }));
+    th?.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd); upd();
     th?.addEventListener('wheel', (e) => { if (th.scrollWidth <= th.clientWidth || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; e.preventDefault(); th.scrollLeft += e.deltaY; }, { passive: false });
   }
 
