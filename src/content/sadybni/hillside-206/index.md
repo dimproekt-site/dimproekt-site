@@ -1,5 +1,6 @@
 ---
 title: "HILLSIDE 206"
+url_slug: "hillside-206"
 order: 2
 stage: "robochyi"
 for_sale: true

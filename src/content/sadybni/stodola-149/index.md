@@ -1,5 +1,6 @@
 ---
 title: "STODOLA 149"
+url_slug: "stodola-149"
 order: 6
 stage: "eskizny"
 for_sale: true

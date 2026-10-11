@@ -1,5 +1,6 @@
 ---
 title: "ЖК КАРАТ"
+url_slug: "karat"
 order: 1
 type: "житловий комплекс"
 location: "Ірпінь, Київська обл."

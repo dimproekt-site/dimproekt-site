@@ -1,5 +1,6 @@
 ---
 title: "TERRA 75"
+url_slug: "terra-75"
 order: 7
 stage: "robochyi"
 for_sale: true

@@ -13,6 +13,7 @@ const sadybni = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      url_slug: z.string().optional(), // адреса сторінки (латиницею), задає адмінка
       order: z.number().default(100),
       stage: z.enum(['robochyi', 'eskizny']),
       for_sale: z.boolean().default(false),
@@ -55,6 +56,7 @@ const commercial = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      url_slug: z.string().optional(), // адреса сторінки (латиницею), задає адмінка
       order: z.number().default(100),
       type: z.string(),
       location: z.string(),
@@ -82,6 +84,7 @@ const articles = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      url_slug: z.string().optional(), // адреса сторінки (латиницею), задає адмінка
       seo_title: z.string(),
       seo_description: z.string(),
       rubric: z.string(),

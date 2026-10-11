@@ -1,3 +1,5 @@
+# Decap CMS для сайту ДІМПРОЕКТ.
+# Поля повторюють схеми в src/content.config.ts: змінюєте там — змінюйте й тут.
 backend:
   name: github
   repo: dimproekt-site/dimproekt-site
@@ -5,50 +7,245 @@ backend:
   base_url: https://decap-proxy.dimproekt-am.workers.dev
   auth_endpoint: /auth
 
-media_folder: "src/assets/projects"
-public_folder: "/src/assets/projects"
+local_backend: true # працює лише на localhost (npx decap-server)
+locale: uk
+logo_url: /assets/mark-dark.svg
+search: false
+
+# Фото зберігаються поруч зі сторінкою: src/content/<розділ>/<адреса>/фото.webp
+media_folder: ""
+public_folder: ""
 
 collections:
-  - name: "projects"
-    label: "Проекти"
-    label_singular: "Проект"
-    folder: "src/content/projects"
+  # ───────── САДИБНІ БУДИНКИ ─────────
+  - name: sadybni
+    label: "Садибні будинки"
+    label_singular: "Проект садибного будинку"
+    description: "Каталог проектів: готові (робочий проект) та ескізні."
+    folder: "src/content/sadybni"
+    path: "{{slug}}/index"
+    slug: "{{fields.url_slug}}"
     create: true
-    slug: "{{slug}}"
-    identifier_field: title
+    extension: "md"
+    format: "frontmatter"
+    media_folder: ""
+    public_folder: ""
+    nested: { depth: 2, summary: "{{title}}" }
+    summary: "{{title}} · {{area}} м²"
+    sortable_fields: ["order", "title"]
     fields:
       - { label: "Назва проекту", name: "title", widget: "string" }
-
-      - label: "Категорія"
-        name: "projectType"
-        widget: "select"
-        options:
-          - { label: "Садибний (котеджний) будинок", value: "sadybny" }
-          - { label: "Багатоквартирний житловий будинок", value: "bagatokvartyrny" }
-
-      - label: "Стадія проекту (тільки для садибних)"
+      - label: "Адреса сторінки"
+        name: "url_slug"
+        widget: "string"
+        pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "Лише латиниця (малі літери), цифри та дефіс, наприклад: avant-2"]
+        hint: "Латиницею, через дефіс. Стане частиною посилання /proekty/адреса/. Після створення не змінюйте."
+      - { label: "Порядок у каталозі", name: "order", widget: "number", value_type: "int", default: 100, hint: "Менше число = вище в каталозі" }
+      - label: "Стадія"
         name: "stage"
         widget: "select"
-        required: false
         options:
           - { label: "Робочий проект (готовий, для будівництва)", value: "robochyi" }
-          - { label: "Ескізний проект (на замовлення клієнта)", value: "eskizny" }
+          - { label: "Ескізний проект", value: "eskizny" }
+      - { label: "Доступний для продажу", name: "for_sale", widget: "boolean", default: true }
+      - { label: "Ціна, грн", name: "price", widget: "number", value_type: "int", required: false, hint: "Залиште порожнім: на сайті буде «Ціна за запитом»" }
+      - { label: "Показувати в каруселі на головній (за потреби)", name: "carousel", widget: "boolean", default: false, hint: "Склад каруселі задається в «Налаштування сайту → Головна сторінка»" }
+      - { label: "SEO-заголовок", name: "seo_title", widget: "string", required: false }
+      - { label: "Короткий опис для картки", name: "card_text", widget: "text" }
+      - { label: "Вступ на сторінці проекту", name: "intro", widget: "text" }
 
-      - label: "Доступний для продажу"
-        name: "forSale"
-        widget: "boolean"
-        default: false
+      - { label: "Загальна площа, м²", name: "area", widget: "number", value_type: "float" }
+      - { label: "Житлова площа, м²", name: "living_area", widget: "number", value_type: "float", required: false }
+      - { label: "Площа забудови, м²", name: "build_area", widget: "number", value_type: "float", required: false }
+      - { label: "Поверхів над землею", name: "floors_above", widget: "number", value_type: "int", hint: "Для картки: 2 поверхи + підвал покажуться як «2+1»" }
+      - { label: "Поверхів нижче землі (підвал, цоколь)", name: "floors_below", widget: "number", value_type: "int", default: 0 }
+      - { label: "Поверховість: повний опис", name: "floors_detail", widget: "string", required: false, hint: "Наприклад: 1 + мансарда + підвал. Показується в «Усі параметри»" }
+      - { label: "Поверховість: примітка", name: "floors_note", widget: "string", required: false }
+      - { label: "Габарити будинку", name: "dims", widget: "string", required: false, hint: "Наприклад: 20,3 × 9,9 м" }
+      - { label: "Габарити з гаражем", name: "dims_garage", widget: "string", required: false }
+      - { label: "Спальні, шт.", name: "bedrooms", widget: "number", value_type: "int", required: false }
+      - { label: "Санвузли, шт.", name: "bathrooms", widget: "number", value_type: "int", required: false }
+      - { label: "Гараж", name: "garage", widget: "string", required: false }
+      - { label: "Тераса", name: "terrace", widget: "string", required: false }
+      - { label: "Стіни", name: "walls", widget: "string", required: false }
+      - { label: "Дах: форма", name: "roof", widget: "string", required: false }
+      - { label: "Дах: покриття", name: "roof_cover", widget: "string", required: false }
+      - { label: "Перекриття", name: "slabs", widget: "string", required: false }
+      - { label: "Фундамент", name: "foundation", widget: "string", required: false }
+      - { label: "Примітка", name: "note", widget: "text", required: false }
+      - label: "Склад проекту (мітки)"
+        name: "tags"
+        widget: "list"
+        default: ["АР", "КР"]
+        hint: "Наприклад: АР, КР"
 
-      - { label: "Показувати на головній (featured)", name: "featured", widget: "boolean", default: false }
+      - { label: "Головне фото (обкладинка)", name: "cover", widget: "image", choose_url: false, hint: "Це фото в картці каталогу. Бажано горизонтальне, від 1600 px" }
+      - { label: "Фото для каруселі головної (необов'язково)", name: "carousel_image", widget: "image", required: false, choose_url: false, hint: "Якщо потрібне інше кадрування, бажано вертикальне" }
+      - { label: "Фокус фото в каруселі", name: "carousel_focus", widget: "string", required: false, hint: "Яку частину кадру тримати видимою: «50% 30%» (по горизонталі і по вертикалі)" }
+      - label: "Галерея"
+        name: "gallery"
+        widget: "list"
+        summary: "{{fields.image}}"
+        fields:
+          - { label: "Фото", name: "image", widget: "image", choose_url: false }
+          - { label: "Вертикальне фото", name: "vertical", widget: "boolean", default: false }
+      - label: "Плани"
+        name: "plans"
+        widget: "list"
+        required: false
+        summary: "{{fields.label}}"
+        fields:
+          - { label: "Зображення плану", name: "image", widget: "image", choose_url: false }
+          - { label: "Підпис", name: "label", widget: "string", hint: "Наприклад: План 1-го поверху" }
+      - { label: "Опис проекту", name: "body", widget: "markdown", hint: "Заголовки другого рівня (##), абзаци, списки" }
 
-      - { label: "Площа, м²", name: "area", widget: "number", required: false, value_type: "float" }
-      - { label: "Поверховість", name: "floors", widget: "number", required: false, value_type: "int" }
-      - { label: "Локація об'єкта", name: "location", widget: "string", required: false }
-      - { label: "Рік", name: "year", widget: "number", required: false, value_type: "int" }
+  # ───────── КОМЕРЦІЙНА НЕРУХОМІСТЬ ─────────
+  - name: commercial
+    label: "Комерційна нерухомість"
+    label_singular: "Об'єкт"
+    description: "Портфоліо: багатоквартирне житло та комерційні будівлі."
+    folder: "src/content/commercial"
+    path: "{{slug}}/index"
+    slug: "{{fields.url_slug}}"
+    create: true
+    extension: "md"
+    format: "frontmatter"
+    media_folder: ""
+    public_folder: ""
+    nested: { depth: 2, summary: "{{title}}" }
+    fields:
+      - { label: "Назва", name: "title", widget: "string" }
+      - label: "Адреса сторінки"
+        name: "url_slug"
+        widget: "string"
+        pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "Лише латиниця (малі літери), цифри та дефіс"]
+        hint: "Латиницею, через дефіс. Після створення не змінюйте."
+      - { label: "Порядок", name: "order", widget: "number", value_type: "int", default: 100 }
+      - { label: "Тип об'єкта", name: "type", widget: "string", hint: "Наприклад: Багатоквартирний житловий комплекс" }
+      - { label: "Місце", name: "location", widget: "string" }
+      - { label: "Місто", name: "city", widget: "string", required: false }
+      - { label: "Рік", name: "year", widget: "string", required: false }
+      - { label: "Поверховість", name: "floors", widget: "string", required: false }
+      - { label: "Площа, м²", name: "area", widget: "number", value_type: "float", required: false }
+      - { label: "Короткий опис для картки", name: "card_text", widget: "text" }
+      - { label: "Вступ", name: "intro", widget: "text" }
+      - { label: "Головне фото (обкладинка)", name: "cover", widget: "image", choose_url: false }
+      - label: "Галерея"
+        name: "gallery"
+        widget: "list"
+        summary: "{{fields.image}}"
+        fields:
+          - { label: "Фото", name: "image", widget: "image", choose_url: false }
+          - { label: "Вертикальне фото", name: "vertical", widget: "boolean", default: false }
+      - label: "Плани"
+        name: "plans"
+        widget: "list"
+        required: false
+        summary: "{{fields.label}}"
+        fields:
+          - { label: "Зображення", name: "image", widget: "image", choose_url: false }
+          - { label: "Підпис", name: "label", widget: "string" }
+      - label: "Коротка специфікація (над текстом)"
+        name: "specs"
+        widget: "list"
+        required: false
+        summary: "{{fields.label}}: {{fields.value}}"
+        fields:
+          - { label: "Назва", name: "label", widget: "string" }
+          - { label: "Значення", name: "value", widget: "string" }
+      - label: "Усі параметри"
+        name: "params"
+        widget: "list"
+        required: false
+        summary: "{{fields.label}}: {{fields.value}}"
+        fields:
+          - { label: "Назва", name: "label", widget: "string" }
+          - { label: "Значення", name: "value", widget: "string" }
+      - label: "Склад комплексу (таблиця)"
+        name: "composition"
+        widget: "list"
+        required: false
+        summary: "{{fields.no}}: {{fields.name}}"
+        fields:
+          - { label: "№", name: "no", widget: "string" }
+          - { label: "Назва", name: "name", widget: "string" }
+          - { label: "Квартир", name: "flats", widget: "string" }
+          - { label: "Комерційних приміщень", name: "commercial", widget: "string" }
+      - { label: "Примітка до складу", name: "composition_note", widget: "text", required: false }
+      - { label: "Опис", name: "body", widget: "markdown" }
 
-      - { label: "Головне фото", name: "coverImage", widget: "image", required: false }
-      - { label: "Галерея", name: "gallery", widget: "list", field: { label: "Фото", name: "image", widget: "image" }, required: false }
+  # ───────── СТАТТІ ─────────
+  - name: articles
+    label: "Статті"
+    label_singular: "Стаття"
+    folder: "src/content/articles"
+    path: "{{slug}}/index"
+    slug: "{{fields.url_slug}}"
+    create: true
+    extension: "md"
+    format: "frontmatter"
+    media_folder: ""
+    public_folder: ""
+    nested: { depth: 2, summary: "{{title}}" }
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Заголовок", name: "title", widget: "string" }
+      - label: "Адреса сторінки"
+        name: "url_slug"
+        widget: "string"
+        pattern: ["^[a-z0-9]+(-[a-z0-9]+)*$", "Лише латиниця (малі літери), цифри та дефіс, наприклад: fundament-dlya-budynku"]
+        hint: "Латиницею, через дефіс. Стане частиною посилання /statti/адреса/. Після створення не змінюйте."
+      - { label: "SEO-заголовок", name: "seo_title", widget: "string", hint: "Що побачить Google у заголовку, до 60 символів" }
+      - { label: "SEO-опис", name: "seo_description", widget: "text", hint: "1–2 речення для пошукової видачі, до 160 символів" }
+      - { label: "Рубрика", name: "rubric", widget: "string", default: "Матеріали та технології" }
+      - { label: "Дата публікації", name: "date", widget: "datetime", format: "YYYY-MM-DDTHH:mm:ss", date_format: "DD.MM.YYYY", time_format: "HH:mm" }
+      - { label: "Час читання, хв", name: "read_time", widget: "number", value_type: "int", default: 5 }
+      - { label: "Обкладинка", name: "cover", widget: "image", choose_url: false }
+      - { label: "Опис обкладинки (alt)", name: "cover_alt", widget: "string", hint: "Коротко: що на фото. Для доступності та SEO" }
+      - { label: "Текст статті", name: "body", widget: "markdown", hint: "Розділи — заголовки другого рівня (##): з них будується зміст" }
 
-      - { label: "Короткий опис (для картки проекту)", name: "description", widget: "text" }
-      - { label: "Дата публікації", name: "publishDate", widget: "datetime" }
-      - { label: "Текст сторінки", name: "body", widget: "markdown" }
+  # ───────── НАЛАШТУВАННЯ САЙТУ ─────────
+  - name: settings
+    label: "Налаштування сайту"
+    files:
+      - name: home
+        label: "Головна сторінка"
+        file: "src/content/settings/home.md"
+        format: "frontmatter"
+        media_folder: "/src/assets/home"
+        public_folder: "../../assets/home"
+        fields:
+          - label: "Карусель на першому екрані (до 6 проектів)"
+            name: "hero_projects"
+            widget: "list"
+            max: 6
+            summary: "{{fields.project}}"
+            hint: "Порядок слайдів = порядок у списку. Якщо в проекту задано вертикальне фото для каруселі, воно має пріоритет."
+            fields:
+              - label: "Проект"
+                name: "project"
+                widget: "relation"
+                collection: "sadybni"
+                search_fields: ["title"]
+                value_field: "url_slug"
+                display_fields: ["title"]
+              - { label: "Інше фото для цього слайда (необов'язково)", name: "image", widget: "image", required: false, choose_url: false, hint: "Замість стандартного фото проекту; бажано вертикальне" }
+              - { label: "Фокус фото", name: "focus", widget: "string", required: false, hint: "«50% 30%»" }
+          - label: "Розділ 02: садибні проекти (до 6)"
+            name: "showcase_homes"
+            widget: "relation"
+            collection: "sadybni"
+            search_fields: ["title"]
+            value_field: "url_slug"
+            display_fields: ["title"]
+            multiple: true
+            max: 6
+          - label: "Розділ 02: комерційні об'єкти (до 4)"
+            name: "showcase_commercial"
+            widget: "relation"
+            collection: "commercial"
+            search_fields: ["title"]
+            value_field: "url_slug"
+            display_fields: ["title"]
+            multiple: true
+            max: 4

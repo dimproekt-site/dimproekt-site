@@ -1,5 +1,6 @@
 ---
 title: "AVANT-2"
+url_slug: "avant-2"
 order: 1
 stage: "robochyi"
 for_sale: true
