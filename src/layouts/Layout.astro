@@ -7,6 +7,7 @@ import Cursor from '../components/Cursor.astro';
 import Effects from '../components/Effects.astro';
 import ConsultDialog from '../components/ConsultDialog.astro';
 import type { Lang } from '../i18n/site';
+import { isTestHost, abs, organization, website } from '../lib/seo';
 
 interface Props {
   title: string;
@@ -19,9 +20,21 @@ interface Props {
   enHref?: string;
   uaHref?: string;
   noindex?: boolean;
+  /** Картинка для соцмереж: шлях від кореня сайту або повний URL (бажано 1200×630) */
+  image?: string;
+  ogType?: 'website' | 'article' | 'product';
+  /** Додаткова розмітка JSON-LD (об'єкт або масив) */
+  jsonLd?: object | object[];
+  /** Адреси мовних версій цієї сторінки, лише якщо така пара існує */
+  hreflang?: { uk?: string; en?: string };
+  home?: boolean;
 }
-const { title, description, lang = 'uk', active, overlay = false, large = false, uaOnly = false, enHref, uaHref, noindex = false } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { title, description, lang = 'uk', active, overlay = false, large = false, uaOnly = false, enHref, uaHref, noindex = false, image, ogType = 'website', jsonLd, hreflang, home = false } = Astro.props;
+const site = Astro.site!;
+const canonical = new URL(Astro.url.pathname, site);
+const blocked = noindex || isTestHost(site);
+const ogImage = abs(image ?? '/assets/og-default.jpg', site);
+const ld = [organization(site), ...(home ? [website(site)] : []), ...(jsonLd ? [jsonLd].flat() : [])];
 ---
 <!doctype html>
 <html lang={lang}>
@@ -31,7 +44,23 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {blocked ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
+    {hreflang?.uk && <link rel="alternate" hreflang="uk" href={abs(hreflang.uk, site)} />}
+    {hreflang?.en && <link rel="alternate" hreflang="en" href={abs(hreflang.en, site)} />}
+    {hreflang?.uk && <link rel="alternate" hreflang="x-default" href={abs(hreflang.uk, site)} />}
+    <meta property="og:site_name" content="ДІМПРОЕКТ" />
+    <meta property="og:type" content={ogType === 'product' ? 'website' : ogType} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'uk_UA'} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="theme-color" content="#3F2C1B" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)} />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="preload" href="/fonts/NotoSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/EBGaramond-Medium.woff2" as="font" type="font/woff2" crossorigin />

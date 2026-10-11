@@ -42,7 +42,7 @@ const secTitles = [t.s1, t.s2, t.s3, t.s4];
 const here = en ? ROUTES.homeEn : ROUTES.home;
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
-<Layout title={t.title} description={t.description} lang={lang} overlay large enHref={ROUTES.homeEn} uaHref={ROUTES.home}>
+<Layout title={t.title} description={t.description} lang={lang} overlay large enHref={ROUTES.homeEn} uaHref={ROUTES.home} home hreflang={{ uk: ROUTES.home, en: ROUTES.homeEn }}>
   <script is:inline slot="head">
     (function () {
       var S = [[215,'10'],[301,'06'],[511,'07'],[701,'13'],[802,'09'],[916,'10'],[1001,'04'],[1116,'10'],[1201,'05']];

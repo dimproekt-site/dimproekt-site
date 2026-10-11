@@ -5,6 +5,6 @@ import { ROUTES } from '../i18n/site';
 import { REFUND, LAUNCH_DATE } from '../i18n/refund';
 const t = REFUND.uk;
 ---
-<Layout title={t.seoTitle} description={t.seoDescription} enHref={ROUTES.refundEn}>
+<Layout title={t.seoTitle} description={t.seoDescription} enHref={ROUTES.refundEn} hreflang={{ uk: ROUTES.refund, en: ROUTES.refundEn }}>
   <LegalPage crumbs={[{ label: 'Головна', href: ROUTES.home }, { label: t.title }]} title={t.title} tocLabel={t.toc} updatedLabel="Діє" updated={LAUNCH_DATE.uk} intro={t.intro} sections={t.sections} outro={t.outro(LAUNCH_DATE.uk)} />
 </Layout>

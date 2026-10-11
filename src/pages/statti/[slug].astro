@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
@@ -8,6 +8,7 @@ import Button from '../../components/Button.astro';
 import Icon from '../../components/Icon.astro';
 import { CONTACTS, ROUTES } from '../../i18n/site';
 import { getArticles } from '../../lib/projects';
+import { abs, breadcrumbs, ORG_ID } from '../../lib/seo';
 
 export async function getStaticPaths() {
   const all = await getArticles();
@@ -19,8 +20,20 @@ const { Content, headings } = await render(entry);
 const toc = headings.filter((h: any) => h.depth === 2);
 const fmt = (x: Date) => x.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
 const iso = (x: Date) => x.toISOString().slice(0, 10);
+const site = Astro.site!;
+const og = await getImage({ src: d.cover, width: 1200, height: 630, format: 'jpeg', fit: 'cover' });
+const ld = [
+  {
+    '@context': 'https://schema.org', '@type': 'Article',
+    headline: d.title, description: d.seo_description, inLanguage: 'uk',
+    image: abs(og.src, site), datePublished: d.date.toISOString(), dateModified: d.date.toISOString(),
+    mainEntityOfPage: abs(Astro.url.pathname, site),
+    author: { '@id': abs(ORG_ID, site) }, publisher: { '@id': abs(ORG_ID, site) },
+  },
+  breadcrumbs([{ name: 'Головна', path: '/' }, { name: 'Статті', path: '/statti/' }, { name: d.title }], site),
+];
 ---
-<Layout title={`${d.seo_title} | ДІМПРОЕКТ`} description={d.seo_description} uaOnly enHref={ROUTES.homeEn}>
+<Layout title={`${d.seo_title} | ДІМПРОЕКТ`} description={d.seo_description} image={og.src} ogType="article" jsonLd={ld} uaOnly enHref={ROUTES.homeEn}>
   <div class="prog" aria-hidden="true"><div data-prog></div></div>
   <article class="ar" data-art>
     <header data-screen-label="Верх статті">

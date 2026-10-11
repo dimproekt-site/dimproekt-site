@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
@@ -12,6 +12,7 @@ import ContactFab from '../../components/ContactFab.astro';
 import { CONTACTS, ROUTES } from '../../i18n/site';
 import whatsappSvg from '../../assets/icons/whatsapp.svg?raw';
 import telegramSvg from '../../assets/icons/telegram.svg?raw';
+import { abs, breadcrumbs, ORG_ID } from '../../lib/seo';
 import { getSadybni, getCommercial, STAGE_LABEL, floorsText, priceText, nf } from '../../lib/projects';
 
 export async function getStaticPaths() {
@@ -70,6 +71,27 @@ const lbData = {
   plan: plans.map((p) => ({ src: p.image.src, alt: `${d.title}: ${p.label.toLowerCase()}` })),
 };
 
+const site = Astro.site!;
+const og = await getImage({ src: d.cover, width: 1200, height: 630, format: 'jpeg', fit: 'cover' });
+const pageUrl = abs(Astro.url.pathname, site);
+const ld: object[] = [
+  breadcrumbs([{ name: 'Головна', path: '/' }, { name: catLabel, path: catHref }, { name: d.title }], site),
+  sad
+    ? {
+        '@context': 'https://schema.org', '@type': 'Product',
+        name: h1, description: d.intro, sku: entry.id, url: pageUrl,
+        image: gallery.slice(0, 5).map((g) => abs(g.image.src, site)),
+        brand: { '@type': 'Brand', name: 'ДІМПРОЕКТ' },
+        category: 'Проекти будинків',
+        ...(forSale && d.price ? { offers: { '@type': 'Offer', url: pageUrl, price: d.price, priceCurrency: 'UAH', availability: 'https://schema.org/InStock', seller: { '@id': abs(ORG_ID, site) } } } : {}),
+      }
+    : {
+        '@context': 'https://schema.org', '@type': 'CreativeWork',
+        name: d.title, description: d.intro, url: pageUrl, image: abs(og.src, site),
+        creator: { '@id': abs(ORG_ID, site) },
+        ...(d.location ? { locationCreated: { '@type': 'Place', name: d.location } } : {}),
+      },
+];
 const esk = sad && d.stage === 'eskizny';
 const inclText = esk
   ? 'Ескізний проект: плани поверхів, фасади, розрізи, схема генплану. Якщо вам сподобався цей проект, ми можемо розробити повний комплект робочої документації на будівництво (АР + КР).'
@@ -84,7 +106,7 @@ const cardSpecs = (x: any) => sad
   ? [{ k: 'Площа', v: `${nf(x.data.area)} ${m2}` }, { k: 'Поверхи', v: floorsText(x.data) }]
   : [...(x.data.area ? [{ k: 'Площа', v: `${nf(x.data.area)} ${m2}` }] : []), ...(x.data.floors ? [{ k: 'Поверхи', v: x.data.floors }] : []), ...(x.data.year ? [{ k: 'Рік', v: x.data.year }] : [])];
 ---
-<Layout title={`${h1} | ДІМПРОЕКТ`} description={d.intro} active="projects" uaOnly enHref={ROUTES.homeEn}>
+<Layout title={`${h1} | ДІМПРОЕКТ`} description={d.intro} image={og.src} ogType={sad ? 'product' : 'website'} jsonLd={ld} active="projects" uaOnly enHref={ROUTES.homeEn}>
   <section class="ph" data-screen-label="Заголовок проекту">
     <img class="pi-mark" src="/assets/mark-dark.svg" alt="" />
     <div class="ph-in">
