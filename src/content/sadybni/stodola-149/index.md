@@ -1,31 +1,48 @@
 ---
-title: "STODOLA 149"
-url_slug: "stodola-149"
+title: STODOLA 149
+url_slug: stodola-149
 order: 6
-stage: "eskizny"
+stage: eskizny
 for_sale: true
 carousel: true
-seo_title: "Проект будинку для вузької ділянки шириною 6 м з мансардою і підвалом, 149 м²"
+seo_title: Проект будинку для вузької ділянки шириною 6 м з мансардою і підвалом, 149 м²
 card_text: "Будинок з мансардою і підвалом для вузької ділянки: ширина всього 6,1 м"
-intro: "Будинок спроектовано спеціально для вузької ділянки: ширина лише 6,1 м, але з просторою спільною кімнатою, трьома спальнями, мансардою та підвалом."
+intro: "Будинок спроектовано спеціально для вузької ділянки: ширина лише 6,1 м,
+  але з просторою спільною кімнатою, трьома спальнями, мансардою та підвалом."
 area: 149.28
 living_area: 67.54
 build_area: 89.5
 floors_above: 2
 floors_below: 1
-floors_detail: "1 + мансарда + підвал"
-dims: "12,6 × 6,1 м"
+floors_detail: 1 + мансарда + підвал
+dims: 12,6 × 6,1 м
 bedrooms: 3
 bathrooms: 2
-terrace: "є"
-walls: "газоблок + ефективне утеплення"
-roof: "двоскатна"
-roof_cover: "фальц-настил"
-foundation: "стрічковий монолітний"
+terrace: є
+walls: газоблок + ефективне утеплення
+roof: двоскатна
+roof_cover: фальц-настил
+foundation: стрічковий монолітний
 tags: []
-cover: "./stodola-149-01.webp"
-gallery: [{"image":"./stodola-149-01.webp","vertical":false},{"image":"./stodola-149-02.webp","vertical":false},{"image":"./stodola-149-03.webp","vertical":true},{"image":"./stodola-149-04.webp","vertical":false},{"image":"./stodola-149-05.webp","vertical":false}]
-plans: [{"image":"./stodola-149-plan-1.webp","label":"План 1-го поверху"},{"image":"./stodola-149-plan-2.webp","label":"План мансардного поверху"},{"image":"./stodola-149-plan-0.webp","label":"План підвального поверху"}]
+cover: stodola-149-03.webp
+gallery:
+  - image: ./stodola-149-01.webp
+    vertical: false
+  - image: ./stodola-149-02.webp
+    vertical: false
+  - image: ./stodola-149-03.webp
+    vertical: true
+  - image: ./stodola-149-04.webp
+    vertical: false
+  - image: ./stodola-149-05.webp
+    vertical: false
+plans:
+  - image: ./stodola-149-plan-1.webp
+    label: План 1-го поверху
+  - image: ./stodola-149-plan-2.webp
+    label: План мансардного поверху
+  - image: ./stodola-149-plan-0.webp
+    label: План підвального поверху
 ---
 
 ## Проект сучасного житлового будинку для вузької ділянки
