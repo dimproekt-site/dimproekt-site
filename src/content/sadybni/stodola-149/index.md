@@ -24,7 +24,8 @@ roof: двоскатна
 roof_cover: фальц-настил
 foundation: стрічковий монолітний
 tags: []
-cover: stodola-149-03.webp
+cover: stodola-149-04.webp
+carousel_image: stodola-149-03.webp
 gallery:
   - image: ./stodola-149-01.webp
     vertical: false
