@@ -138,8 +138,8 @@ const cardSpecs = (x: any) => sad
         </div>
         {gallery.length > 1 && (
           <div class="gstrip">
-            <button type="button" class="sarrow sl" data-sprev aria-label="Мініатюри ліворуч" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
-            <button type="button" class="sarrow sr" data-snext aria-label="Мініатюри праворуч" hidden><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+            <button type="button" class="sarrow sl" data-sprev aria-label="Мініатюри ліворуч" hidden><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+            <button type="button" class="sarrow sr" data-snext aria-label="Мініатюри праворуч" hidden><svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
             <div class="gthumbs" role="list" aria-label="Мініатюри галереї" data-thumbs>
               {gallery.map((g, k) => (
                 <div class:list={['gt', { on: k === 0 }]} role="listitem" data-t={k}>
@@ -340,21 +340,20 @@ const cardSpecs = (x: any) => sad
   .gs { position: absolute; inset: 0; } .gs[hidden] { display: none; }
   .gimg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
   .gs.vert { background: var(--neutral-100); } .gs.vert .gimg { object-fit: contain; padding: 12px; box-sizing: border-box; }
-  .garrow { position: absolute; top: 50%; transform: translateY(-50%); width: 56px; height: 56px; padding: 0; border: 0; background: transparent; color: #F5EDE1; cursor: pointer; display: flex; align-items: center; justify-content: center; filter: drop-shadow(0 1px 3px rgba(0,0,0,.45)); opacity: 0; transition: opacity 140ms; }
-  .garrow.gl { left: 4px; } .garrow.gr { right: 4px; }
-  .gmain:hover .garrow, .garrow:focus-visible { opacity: 1; } .garrow:hover { color: #C98A3E; }
+  .garrow, .sarrow { position: absolute; top: 0; bottom: 0; z-index: 2; width: 72px; padding: 0; border: 0; border-radius: 0; box-shadow: none; color: #F5EDE1; cursor: pointer; display: flex; align-items: center; opacity: 0; transition: opacity 160ms; }
+  .garrow.gl, .sarrow.sl { left: 0; justify-content: flex-start; padding-left: 8px; background: linear-gradient(90deg, rgba(42,28,16,.62), rgba(42,28,16,0)); }
+  .garrow.gr, .sarrow.sr { right: 0; justify-content: flex-end; padding-right: 8px; background: linear-gradient(270deg, rgba(42,28,16,.62), rgba(42,28,16,0)); }
+  .garrow svg, .sarrow svg { filter: drop-shadow(0 1px 3px rgba(0,0,0,.45)); }
+  .gmain:hover .garrow, .gstrip:hover .sarrow, .garrow:focus-visible, .sarrow:focus-visible { opacity: 1; } .garrow:hover, .sarrow:hover { color: #E3A857; }
   .garrow[hidden] { display: none; }
   .gcount { position: absolute; left: 12px; bottom: 12px; padding: 4px 10px; border-radius: 2px; background: rgba(42,28,16,.72); color: var(--brand-parchment); font-family: var(--font-display); font-size: 17px; letter-spacing: .04em; pointer-events: none; }
-  .gopen { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border: 1px solid var(--border-hairline); border-radius: 2px; background: rgba(250,246,240,.92); color: var(--brand-espresso); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .gopen { position: absolute; z-index: 3; right: 12px; top: 12px; width: 44px; height: 44px; border: 1px solid var(--border-hairline); border-radius: 2px; background: rgba(250,246,240,.92); color: var(--brand-espresso); cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .gopen:hover { background: var(--brand-cream); border-color: var(--brand-espresso); }
-  @media (hover: none) { .garrow { display: none; } }
+  @media (hover: none) { .garrow, .sarrow { display: none !important; } }
   .gstrip { position: relative; margin-top: 12px; }
   .gthumbs { display: flex; gap: 8px; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; -ms-overflow-style: none; }
   .gthumbs::-webkit-scrollbar { display: none; }
-  .sarrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 32px; height: 32px; padding: 0; border: 1px solid var(--border-hairline); border-radius: 2px; background: rgba(250,246,240,.94); color: var(--brand-espresso); cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 4px rgba(42,28,16,.25); }
-  .sarrow:hover { background: var(--brand-cream); border-color: var(--brand-espresso); }
   .sarrow[hidden] { display: none; }
-  .sarrow.sl { left: 4px; } .sarrow.sr { right: 4px; }
   .gt { position: relative; flex: 0 0 auto; width: 112px; aspect-ratio: 16 / 9; border-radius: 2px; overflow: hidden; background: var(--surface-card); border: 1px solid var(--border-hairline); opacity: .72; transition: opacity 140ms; }
   .gt.on { opacity: 1; }
   .gt::after { content: ''; position: absolute; inset: 0; border: 2px solid transparent; border-radius: 2px; pointer-events: none; }
