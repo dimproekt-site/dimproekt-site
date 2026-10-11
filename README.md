@@ -1,41 +1,40 @@
-# dimproekt-site — базовий каркас
+# ДІМПРОЕКТ: сайт
 
-## Що тут є
+Astro 5 (статика) + Cloudflare Workers + Decap CMS (адмінка `/admin/`).
 
-- `src/content/config.ts` — схема категорій проектів (садибні/багатоквартирні, робочі/ескізні, для продажу чи ні)
-- `src/content/projects/*.md` — 3 приклади записів (по одному на кожен сценарій категорій) — видалиш або заміниш на реальні проекти
-- `public/admin/` — конфігурація Decap CMS (адмін-панель без коду за адресою `/admin`)
-- `src/pages/index.astro` — тимчасова сторінка без дизайну, лише щоб перевірити, що все збирається
-
-## Як додати в свій репозиторій dimproekt-site
-
-```bash
-git clone https://github.com/OWNER/dimproekt-site.git
-cd dimproekt-site
-# розпакуй вміст цього архіву сюди (поверх порожнього репозиторію)
-git add .
-git commit -m "Базовий каркас: структура категорій проектів + Decap CMS"
-git push
-```
-
-## Перевірка локально (не обов'язково, але корисно)
+## Локально
 
 ```bash
 npm install
-npm run dev
+npm run dev          # сайт: http://localhost:4321
+npx decap-server     # в іншому терміналі: локальний режим адмінки, http://localhost:4321/admin/
 ```
 
-Відкриється сторінка зі списком прикладів проектів по категоріях — так можна
-переконатись, що структура працює, ще до підключення до Cloudflare Pages.
+У локальному режимі адмінка пише у файли на диску (без GitHub).
 
-## Що ще потрібно зробити (наступні кроки)
+## Де що лежить
 
-1. **Підключити репозиторій до Cloudflare Pages** — авто-деплой при кожному push
-2. **OAuth-Worker для Decap CMS** — щоб адмінка на `/admin` могла авторизуватись
-   через GitHub і зберігати зміни. Без цього кроку форма додавання проектів
-   працювати не буде (сам сайт при цьому працюватиме нормально).
-3. У `public/admin/config.yml` заміни `OWNER` на свій GitHub-логін
-4. **Дизайн** — поточна `index.astro` без стилів, це навмисно. Дизайн-концепцію
-   (кольори, типографіка, стиль) обговоримо окремим кроком.
-5. Наповнення реальними проектами — через CMS (після кроку 2) або напряму
-   markdown-файлами в `src/content/projects/`
+- `src/content/sadybni/<адреса>/index.md` + фото поруч: садибні проекти
+- `src/content/commercial/<адреса>/`: комерційні об'єкти
+- `src/content/articles/<адреса>/`: статті
+- `src/content/settings/home.md`: карусель і розділ 02 головної
+- `public/admin/config.yml`: поля адмінки (повторюють `src/content.config.ts`)
+- `src/i18n/`: тексти інтерфейсу, меню, футер, правила повернення
+- `src/pages/api/consult.ts`: форма консультації → Telegram
+
+## Деплой (Cloudflare Workers)
+
+`npm run build`, потім `npx wrangler deploy` (або Workers Builds з репозиторію: build `npm run build`, deploy `npx wrangler deploy`).
+
+Секрети Worker-а (Settings → Variables and Secrets):
+`TG_BOT_TOKEN`, `TG_CHAT_ID` (без них форма показує повідомлення про помилку з посиланнями на месенджери).
+
+## Чек-лист запуску на dimproekt.com
+
+1. Cloudflare: підключити домен до Worker-а (Settings → Domains & Routes).
+2. `astro.config.mjs`: `site: 'https://dimproekt.com'` (змінить canonical, sitemap, robots і зніме `noindex` з тестової адреси).
+3. Дата запуску: `src/i18n/refund.ts` (`LAUNCH_DATE`) і `src/pages/polityka-konfidentsiinosti.astro` (`updated`).
+4. `decap-proxy`: у налаштуваннях Worker-а вказати новий домен у змінній з адресою сайту (ORIGIN), якщо вона є; GitHub OAuth App не змінюється.
+5. Cloudflare → Web Analytics: увімкнути для сайту (без cookies).
+6. Google Search Console: додати домен, подати `https://dimproekt.com/sitemap-index.xml`.
+7. Перевірити форму консультації та посилання WhatsApp/Telegram на живому домені.
