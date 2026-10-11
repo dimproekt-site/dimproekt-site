@@ -87,7 +87,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
           <div class="car-track">
             {slides.map((s, k) => (
               <a class="slide" href={`/proekty/${s.p.id}/`} data-slide={k}>
-                <Image src={s.img} alt={s.p.data.title} widths={[280, 560, 840]} sizes="280px" loading={k > 2 ? 'lazy' : 'eager'} class="slide-img" style={`object-position:${s.focus}`} />
+                <Image src={s.img} alt={s.p.data.title} widths={[720, 1080, 1440]} sizes="720px" quality={85} loading={k > 2 ? 'lazy' : 'eager'} class="slide-img" style={`object-position:${s.focus}`} />
                 <div class="slide-cap">
                   <div class="slide-kind">{t.kind} · {t.stage[s.p.data.stage]}</div>
                   <div class="slide-title">{s.p.data.title}</div>
