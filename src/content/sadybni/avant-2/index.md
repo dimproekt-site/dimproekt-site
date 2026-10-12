@@ -1,33 +1,56 @@
 ---
-title: "AVANT-2"
-url_slug: "avant-2"
+title: AVANT-2
+url_slug: avant-2
 order: 1
-stage: "robochyi"
+stage: robochyi
 for_sale: true
 price: 20000
 carousel: true
-seo_title: "Проект одноповерхового будинку з плоским дахом і двома терасами, 140 м²"
-card_text: "Одноповерховий будинок з плоским дахом і панорамним склінням для вузької ділянки"
-intro: "Сучасний одноповерховий будинок площею 139,6 м² для вузької ділянки: лаконічна архітектура, панорамне скління, кухня-вітальня з каміном і дві тераси, одна з них на даху."
+seo_title: Проект одноповерхового будинку з плоским дахом і двома терасами, 140 м²
+card_text: Одноповерховий будинок з плоским дахом і панорамним склінням для
+  вузької ділянки
+intro: "Сучасний одноповерховий будинок площею 139,6 м² для вузької ділянки:
+  лаконічна архітектура, панорамне скління, кухня-вітальня з каміном і дві
+  тераси, одна з них на даху."
 area: 139.6
 living_area: 58.91
 build_area: 211.1
 floors_above: 1
 floors_below: 0
 floors_detail: "1"
-dims: "20,3 × 9,9 м"
+dims: 20,3 × 9,9 м
 bedrooms: 3
 bathrooms: 2
-terrace: "2 тераси (крита з барбекю і на покрівлі)"
-walls: "керамічний блок 2NF, мінвата"
-roof: "плоска"
-roof_cover: "монолітна ж/б плита"
-foundation: "буронабивні палі, ростверк"
-note: "Будинок сейсмостійкий, конструкції розроблено для будівництва в сейсмічному районі України (7 балів)."
-tags: ["АР","КР"]
-cover: "./avant-2-01.webp"
-gallery: [{"image":"./avant-2-01.webp","vertical":false},{"image":"./avant-2-02.webp","vertical":false},{"image":"./avant-2-03.webp","vertical":false},{"image":"./avant-2-04.webp","vertical":false},{"image":"./avant-2-05.webp","vertical":false},{"image":"./avant-2-06.webp","vertical":false},{"image":"./avant-2-07.webp","vertical":false}]
-plans: [{"image":"./avant-2-plan-1.webp","label":"План 1-го поверху"}]
+terrace: 2 тераси (крита з барбекю і на покрівлі)
+walls: керамічний блок 2NF, мінвата
+roof: плоска
+roof_cover: монолітна ж/б плита
+foundation: буронабивні палі, ростверк
+note: Будинок сейсмостійкий, конструкції розроблено для будівництва в
+  сейсмічному районі України (7 балів).
+tags:
+  - АР
+  - КР
+cover: ./avant-2-01.webp
+carousel_image: variant_.jpg
+gallery:
+  - image: ./avant-2-01.webp
+    vertical: false
+  - image: ./avant-2-02.webp
+    vertical: false
+  - image: ./avant-2-03.webp
+    vertical: false
+  - image: ./avant-2-04.webp
+    vertical: false
+  - image: ./avant-2-05.webp
+    vertical: false
+  - image: ./avant-2-06.webp
+    vertical: false
+  - image: ./avant-2-07.webp
+    vertical: false
+plans:
+  - image: ./avant-2-plan-1.webp
+    label: План 1-го поверху
 ---
 
 ## AVANT-2 — сучасний одноповерховий будинок, де архітектура працює на комфорт
