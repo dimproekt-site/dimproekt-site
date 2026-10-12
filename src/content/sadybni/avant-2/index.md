@@ -32,7 +32,7 @@ tags:
   - АР
   - КР
 cover: ./avant-2-01.webp
-carousel_image: variant_.jpg
+carousel_image: ""
 gallery:
   - image: ./avant-2-01.webp
     vertical: false
