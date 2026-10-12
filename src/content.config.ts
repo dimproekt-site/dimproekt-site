@@ -5,6 +5,8 @@ import { glob } from 'astro/loaders';
 const photo = (image: any) =>
   z.object({ image: image(), vertical: z.boolean().default(false) });
 const plan = (image: any) => z.object({ image: image(), label: z.string() });
+// Decap зберігає порожнє необов'язкове фото як "": трактуємо це як «немає фото»
+const optImage = (image: any) => z.preprocess((v) => (v === '' ? undefined : v), image().optional());
 const pair = z.object({ label: z.string(), value: z.string() });
 
 // Садибні будинки (проєкти)
@@ -43,7 +45,7 @@ const sadybni = defineCollection({
       note: z.string().optional(),
       tags: z.array(z.string()).default([]),
       cover: image(),
-      carousel_image: image().optional(), // окреме фото для каруселі (бажано вертикальне)
+      carousel_image: optImage(image), // окреме фото для каруселі (бажано вертикальне)
       carousel_focus: z.string().optional(), // напр. "50% 30%"
       gallery: z.array(photo(image)),
       plans: z.array(plan(image)).default([]),
@@ -104,7 +106,7 @@ const home = defineCollection({
         .array(
           z.object({
             project: z.string(), // slug садибного проєкту
-            image: image().optional(), // інше фото для каруселі (бажано вертикальне)
+            image: optImage(image), // інше фото для каруселі (бажано вертикальне)
             focus: z.string().optional(),
           }),
         )
