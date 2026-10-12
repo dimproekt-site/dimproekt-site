@@ -5,7 +5,7 @@ hero_projects:
   - project: horizon-143
   - project: mila-house-170
   - project: stodola-149
-  - project: nord-brick-house
+  - project: dobrobut-148
 showcase_homes:
   - avant-2
   - horizon-143
