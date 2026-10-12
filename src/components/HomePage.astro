@@ -27,7 +27,7 @@ const slides = settings.hero_projects
   .filter((s) => s.p)
   .map((s) => ({
     p: s.p,
-    img: s.image ?? s.p.data.cover,
+    img: s.image ?? s.p.data.carousel_image ?? s.p.data.cover,
     focus: s.focus ?? s.p.data.carousel_focus ?? '50% 50%',
   }));
 const showHomes = settings.showcase_homes.map((id) => bySlug.get(id)).filter(Boolean);
