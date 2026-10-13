@@ -1,6 +1,6 @@
 ---
 title: "БУЗКОВИЙ ДІМ 91"
-url_slug: "buzkovuydim91"
+url_slug: "buzkovyi-dim-91"
 order: 9
 stage: "robochyi"
 for_sale: true
@@ -23,10 +23,11 @@ walls: "газоблок + утеплення"
 roof: "вальмова"
 roof_cover: "металочерепиця"
 foundation: "стрічковий монолітний"
+note: "Площа забудови вказана з ганком, терасою та зовнішніми сходами до підвалу."
 tags: ["АР","КР"]
-cover: "./buzkovuydim91-01.webp"
-gallery: [{"image": "./buzkovuydim91-01.webp", "vertical": false}, {"image": "./buzkovuydim91-02.webp", "vertical": false}, {"image": "./buzkovuydim91-03.webp", "vertical": false}, {"image": "./buzkovuydim91-04.webp", "vertical": false}, {"image": "./buzkovuydim91-05.webp", "vertical": false}]
-plans: [{"image": "./buzkovuydim91-plan-1.webp", "label": "План 1-го поверху"}, {"image": "./buzkovuydim91-plan-0.webp", "label": "План підвального поверху"}]
+cover: "./buzkovyi-dim-91-01.webp"
+gallery: [{"image": "./buzkovyi-dim-91-01.webp", "vertical": false}, {"image": "./buzkovyi-dim-91-02.webp", "vertical": false}, {"image": "./buzkovyi-dim-91-03.webp", "vertical": false}, {"image": "./buzkovyi-dim-91-04.webp", "vertical": false}, {"image": "./buzkovyi-dim-91-05.webp", "vertical": false}]
+plans: [{"image": "./buzkovyi-dim-91-plan-1.webp", "label": "План 1-го поверху"}, {"image": "./buzkovyi-dim-91-plan-0.webp", "label": "План підвального поверху"}]
 ---
 
 БУЗКОВИЙ ДІМ 91 — проект садового будинку площею 91 м² з двома спальнями, загальною кімнатою, ванною кімнатою, терасою та підвалом.

@@ -1,6 +1,6 @@
 ---
 title: "ЯБЛУНЕВИЙ ДВІР 85"
-url_slug: "yablunevuydvir85"
+url_slug: "yablunevyi-dvir-85"
 order: 11
 stage: "robochyi"
 for_sale: true
@@ -24,9 +24,9 @@ roof: "вальмова, горище з висувною драбиною"
 roof_cover: "фальц-настил (квікфальц)"
 foundation: "стрічковий монолітний"
 tags: ["АР","КР"]
-cover: "./yablunevuydvir85-01.webp"
-gallery: [{"image": "./yablunevuydvir85-01.webp", "vertical": false}, {"image": "./yablunevuydvir85-02.webp", "vertical": false}, {"image": "./yablunevuydvir85-03.webp", "vertical": false}, {"image": "./yablunevuydvir85-04.webp", "vertical": false}, {"image": "./yablunevuydvir85-05.webp", "vertical": false}]
-plans: [{"image": "./yablunevuydvir85-plan-1.webp", "label": "План 1-го поверху"}]
+cover: "./yablunevyi-dvir-85-01.webp"
+gallery: [{"image": "./yablunevyi-dvir-85-01.webp", "vertical": false}, {"image": "./yablunevyi-dvir-85-02.webp", "vertical": false}, {"image": "./yablunevyi-dvir-85-03.webp", "vertical": false}, {"image": "./yablunevyi-dvir-85-04.webp", "vertical": false}, {"image": "./yablunevyi-dvir-85-05.webp", "vertical": false}]
+plans: [{"image": "./yablunevyi-dvir-85-plan-1.webp", "label": "План 1-го поверху"}]
 ---
 
 Проєкт «ЯБЛУНЕВИЙ ДВІР 85» — одноповерховий садибний будинок загальною площею 84,64 м². Простий у будівництві, економічний, з економним оздобленням.

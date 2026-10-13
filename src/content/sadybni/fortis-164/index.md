@@ -1,6 +1,6 @@
 ---
 title: "FORTIS 164"
-url_slug: "fortis164"
+url_slug: "fortis-164"
 order: 12
 stage: "robochyi"
 for_sale: true
@@ -25,9 +25,9 @@ roof: "вальмова"
 roof_cover: "полімерна черепиця"
 foundation: "стрічковий монолітний"
 tags: ["АР","КР"]
-cover: "./fortis164-01.webp"
-gallery: [{"image": "./fortis164-01.webp", "vertical": false}, {"image": "./fortis164-02.webp", "vertical": false}, {"image": "./fortis164-03.webp", "vertical": false}, {"image": "./fortis164-04.webp", "vertical": false}]
-plans: [{"image": "./fortis164-plan-1.webp", "label": "План 1-го поверху"}, {"image": "./fortis164-plan-0.webp", "label": "План підвального поверху"}]
+cover: "./fortis-164-01.webp"
+gallery: [{"image": "./fortis-164-01.webp", "vertical": false}, {"image": "./fortis-164-02.webp", "vertical": false}, {"image": "./fortis-164-03.webp", "vertical": false}, {"image": "./fortis-164-04.webp", "vertical": false}]
+plans: [{"image": "./fortis-164-plan-1.webp", "label": "План 1-го поверху"}, {"image": "./fortis-164-plan-0.webp", "label": "План підвального поверху"}]
 ---
 
 FORTIS 164 — просторий одноповерховий будинок із гаражем для родини, яка цінує комфорт, сучасний дизайн і зручність життя на одному рівні. Загальна площа 164 м², габарити 19,65 × 12,5 м.

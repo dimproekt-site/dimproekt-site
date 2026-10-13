@@ -1,6 +1,6 @@
 ---
 title: "Садиба Лаванда 100"
-url_slug: "sadubalavanda100"
+url_slug: "sadyba-lavanda-100"
 order: 10
 stage: "robochyi"
 for_sale: true
@@ -24,9 +24,9 @@ roof: "двоскатна"
 roof_cover: "металочерепиця"
 foundation: "стрічковий монолітний"
 tags: ["АР","КР"]
-cover: "./sadubalavanda100-01.webp"
-gallery: [{"image": "./sadubalavanda100-01.webp", "vertical": false}, {"image": "./sadubalavanda100-02.webp", "vertical": false}, {"image": "./sadubalavanda100-03.webp", "vertical": false}, {"image": "./sadubalavanda100-04.webp", "vertical": false}]
-plans: [{"image": "./sadubalavanda100-plan-1.webp", "label": "План 1-го поверху"}]
+cover: "./sadyba-lavanda-100-01.webp"
+gallery: [{"image": "./sadyba-lavanda-100-01.webp", "vertical": false}, {"image": "./sadyba-lavanda-100-02.webp", "vertical": false}, {"image": "./sadyba-lavanda-100-03.webp", "vertical": false}, {"image": "./sadyba-lavanda-100-04.webp", "vertical": false}]
+plans: [{"image": "./sadyba-lavanda-100-plan-1.webp", "label": "План 1-го поверху"}]
 ---
 
 Садиба Лаванда 100 — затишний одноповерховий будинок для комфортного життя та відпочинку серед природи. Будинок запроєктовано за індивідуальним замовленням для будівництва в Обухівському районі Київської області.
