@@ -291,8 +291,8 @@ const cardSpecs = (x: any) => sad
       <h2 class="h2" style="margin-top:0">{sad ? 'Обговоримо ваш будинок?' : 'Обговоримо ваш обʼєкт?'}</h2>
       <p class="cta-text">Розкажіть про ділянку та побажання — передзвонимо протягом робочого дня.</p>
       <div class="pcta-row">
-        <a class="cta-phone" href={CONTACTS.phoneHref}>{CONTACTS.phone}</a>
-        <div class="cta-links">
+        <a class="cta-phone" style="margin-top:0" href={CONTACTS.phoneHref}>{CONTACTS.phone}</a>
+        <div class="cta-links" style="margin-top:0">
           <a href={CONTACTS.whatsapp} target="_blank" rel="noopener"><span class="mi" set:html={whatsappSvg} />WhatsApp</a>
           <a href={CONTACTS.telegram} target="_blank" rel="noopener"><span class="mi" set:html={telegramSvg} />Telegram</a>
           <a href={`mailto:${CONTACTS.email}`}><Icon name="mail" size={20} />{CONTACTS.email}</a>
@@ -448,12 +448,8 @@ const cardSpecs = (x: any) => sad
   .sim { padding: 96px 32px 0; max-width: 1200px; margin: 0 auto; box-sizing: border-box; }
   .pcta { padding: 96px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px; }
   .pcta-l { max-width: 640px; }
-  .pcta-row { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; margin-top: 24px; }
-  .pcta .cta-phone { font-family: var(--font-display); font-size: 34px; line-height: 1.1; color: var(--text-heading); text-decoration: none; }
-  .pcta .cta-phone:hover { color: var(--ochre-600); }
-  .pcta .cta-links { display: flex; flex-wrap: wrap; gap: 14px 36px; }
-  .pcta .cta-links a { display: flex; align-items: center; gap: 10px; color: var(--text-heading); text-decoration: none; font-size: 15px; }
-  .pcta .cta-links a:hover { color: var(--ochre-600); }
+  .pcta-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 30px; margin-top: 20px; }
+  .pcta .cta-links { display: contents; }
   .pcta-b { display: flex; flex-wrap: wrap; gap: 16px; }
   .cp { flex: 1 1 100%; border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline); }
   .cp summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 0; font-size: 15px; font-weight: 600; color: var(--text-heading); }
