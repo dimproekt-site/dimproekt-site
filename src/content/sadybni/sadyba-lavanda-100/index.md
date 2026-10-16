@@ -1,32 +1,47 @@
 ---
-title: "Садиба Лаванда 100"
-url_slug: "sadyba-lavanda-100"
+title: Садиба Лаванда 100
+url_slug: sadyba-lavanda-100
 order: 10
-stage: "robochyi"
+stage: robochyi
 for_sale: true
-price: 15000
+price: 19900
 carousel: false
-seo_title: "Проект одноповерхового садового будинку 100 м² з трьома спальнями і терасою"
-card_text: "Одноповерховий садовий будинок з трьома спальнями, двома санвузлами і критою терасою"
-intro: "Затишний одноповерховий будинок площею 99,86 м²: загальна кімната, об'єднана з кухнею, три спальні, два санвузли, господарська кімната, котельня та крита тераса."
+seo_title: Проект одноповерхового садового будинку 100 м² з трьома спальнями і терасою
+card_text: Одноповерховий садовий будинок з трьома спальнями, двома санвузлами і
+  критою терасою
+intro: "Затишний одноповерховий будинок площею 99,86 м²: загальна кімната,
+  об'єднана з кухнею, три спальні, два санвузли, господарська кімната, котельня
+  та крита тераса."
 area: 99.86
 living_area: 57.3
 build_area: 139.27
 floors_above: 1
 floors_below: 0
 floors_detail: "1"
-dims: "12,6 × 11,6 м з терасою"
+dims: 12,6 × 11,6 м з терасою
 bedrooms: 3
 bathrooms: 2
-terrace: "крита тераса"
-walls: "газоблок + утеплення"
-roof: "двоскатна"
-roof_cover: "металочерепиця"
-foundation: "стрічковий монолітний"
-tags: ["АР","КР"]
-cover: "./sadyba-lavanda-100-01.webp"
-gallery: [{"image": "./sadyba-lavanda-100-01.webp", "vertical": false}, {"image": "./sadyba-lavanda-100-02.webp", "vertical": false}, {"image": "./sadyba-lavanda-100-03.webp", "vertical": false}, {"image": "./sadyba-lavanda-100-04.webp", "vertical": false}]
-plans: [{"image": "./sadyba-lavanda-100-plan-1.webp", "label": "План 1-го поверху"}]
+terrace: крита тераса
+walls: газоблок + утеплення
+roof: двоскатна
+roof_cover: металочерепиця
+foundation: стрічковий монолітний
+tags:
+  - АР
+  - КР
+cover: ./sadyba-lavanda-100-01.webp
+gallery:
+  - image: ./sadyba-lavanda-100-01.webp
+    vertical: false
+  - image: ./sadyba-lavanda-100-02.webp
+    vertical: false
+  - image: ./sadyba-lavanda-100-03.webp
+    vertical: false
+  - image: ./sadyba-lavanda-100-04.webp
+    vertical: false
+plans:
+  - image: ./sadyba-lavanda-100-plan-1.webp
+    label: План 1-го поверху
 ---
 
 Садиба Лаванда 100 — затишний одноповерховий будинок для комфортного життя та відпочинку серед природи. Будинок запроєктовано за індивідуальним замовленням для будівництва в Обухівському районі Київської області.
