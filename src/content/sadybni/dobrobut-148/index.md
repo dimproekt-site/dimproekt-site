@@ -1,33 +1,55 @@
 ---
-title: "Добробут 148"
-url_slug: "dobrobut-148"
+title: Добробут 148
+url_slug: dobrobut-148
 order: 8
-stage: "robochyi"
+stage: robochyi
 for_sale: true
-price: 16000
+price: 24900
 carousel: false
-seo_title: "Проект одноповерхового будинку з гаражем і вальмовим дахом, 149 м²"
-card_text: "Одноповерховий будинок з гаражем і критою терасою в традиційному стилі"
-intro: "Класична архітектура, вальмовий дах і планування на одному рівні без сходів: дві просторі спальні, піч-камін, гараж, технічне приміщення і крита тераса."
+seo_title: Проект одноповерхового будинку з гаражем і вальмовим дахом, 149 м²
+card_text: Одноповерховий будинок з гаражем і критою терасою в традиційному стилі
+intro: "Класична архітектура, вальмовий дах і планування на одному рівні без
+  сходів: дві просторі спальні, піч-камін, гараж, технічне приміщення і крита
+  тераса."
 area: 148.9
 living_area: 45.71
 build_area: 208.9
 floors_above: 1
 floors_below: 0
 floors_detail: "1"
-dims: "14,9 × 13,7 м"
+dims: 14,9 × 13,7 м
 bedrooms: 2
 bathrooms: 2
-garage: "1 авто"
-terrace: "крита тераса"
-walls: "газоблок + ефективне утеплення"
-roof: "вальмова"
-roof_cover: "металочерепиця"
-foundation: "стрічковий монолітний"
-tags: ["АР","КР"]
-cover: "./dobrobut-148-01.webp"
-gallery: [{"image":"./dobrobut-148-01.webp","vertical":false},{"image":"./dobrobut-148-02.webp","vertical":false},{"image":"./dobrobut-148-03.webp","vertical":false},{"image":"./dobrobut-148-04.webp","vertical":false},{"image":"./dobrobut-148-05.webp","vertical":false},{"image":"./dobrobut-148-06.webp","vertical":false},{"image":"./dobrobut-148-07.webp","vertical":false},{"image":"./dobrobut-148-08.webp","vertical":false}]
-plans: [{"image":"./dobrobut-148-plan-1.webp","label":"План 1-го поверху"}]
+garage: 1 авто
+terrace: крита тераса
+walls: газоблок + ефективне утеплення
+roof: вальмова
+roof_cover: металочерепиця
+foundation: стрічковий монолітний
+tags:
+  - АР
+  - КР
+cover: ./dobrobut-148-01.webp
+gallery:
+  - image: ./dobrobut-148-01.webp
+    vertical: false
+  - image: ./dobrobut-148-02.webp
+    vertical: false
+  - image: ./dobrobut-148-03.webp
+    vertical: false
+  - image: ./dobrobut-148-04.webp
+    vertical: false
+  - image: ./dobrobut-148-05.webp
+    vertical: false
+  - image: ./dobrobut-148-06.webp
+    vertical: false
+  - image: ./dobrobut-148-07.webp
+    vertical: false
+  - image: ./dobrobut-148-08.webp
+    vertical: false
+plans:
+  - image: ./dobrobut-148-plan-1.webp
+    label: План 1-го поверху
 ---
 
 ## Одноповерховий будинок з гаражем у традиційному стилі
