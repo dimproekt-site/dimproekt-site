@@ -1,32 +1,52 @@
 ---
-title: "HORIZON 143"
-url_slug: "horizon-143"
+title: HORIZON 143
+url_slug: horizon-143
 order: 3
-stage: "robochyi"
+stage: robochyi
 for_sale: true
-price: 22000
+price: 26900
 carousel: true
-seo_title: "Проект одноповерхового будинку з чотирма спальнями і критою терасою, 143 м²"
-card_text: "Одноповерховий будинок на чотири спальні з критою терасою і вальмовим дахом"
-intro: "Одноповерховий будинок для комфортного життя всієї родини: три спальні та гостьова кімната, загальна кімната з кухнею й їдальнею, велика крита тераса."
+seo_title: Проект одноповерхового будинку з чотирма спальнями і критою терасою, 143 м²
+card_text: Одноповерховий будинок на чотири спальні з критою терасою і вальмовим дахом
+intro: "Одноповерховий будинок для комфортного життя всієї родини: три спальні
+  та гостьова кімната, загальна кімната з кухнею й їдальнею, велика крита
+  тераса."
 area: 142.6
 living_area: 82.24
 build_area: 204.37
 floors_above: 1
 floors_below: 0
 floors_detail: "1"
-dims: "15,14 × 13,14 м"
+dims: 15,14 × 13,14 м
 bedrooms: 4
 bathrooms: 3
-terrace: "крита тераса"
-walls: "газоблок + ефективне утеплення"
-roof: "вальмова"
-roof_cover: "фальц-настил"
-foundation: "стрічковий монолітний"
-tags: ["АР","КР"]
-cover: "./horizon-143-01.webp"
-gallery: [{"image":"./horizon-143-01.webp","vertical":false},{"image":"./horizon-143-02.webp","vertical":false},{"image":"./horizon-143-03.webp","vertical":false},{"image":"./horizon-143-04.webp","vertical":false},{"image":"./horizon-143-05.webp","vertical":false},{"image":"./horizon-143-06.webp","vertical":false},{"image":"./horizon-143-07.webp","vertical":false}]
-plans: [{"image":"./horizon-143-plan-1.webp","label":"План 1-го поверху"}]
+terrace: крита тераса
+walls: газоблок + ефективне утеплення
+roof: вальмова
+roof_cover: фальц-настил
+foundation: стрічковий монолітний
+tags:
+  - АР
+  - КР
+cover: ./horizon-143-01.webp
+gallery:
+  - image: ./horizon-143-01.webp
+    vertical: false
+  - image: ./horizon-143-02.webp
+    vertical: false
+  - image: ./horizon-143-03.webp
+    vertical: false
+  - image: ./horizon-143-04.webp
+    vertical: false
+  - image: ./horizon-143-05.webp
+    vertical: false
+  - image: ./horizon-143-06.webp
+    vertical: false
+  - image: ./horizon-143-07.webp
+    vertical: false
+plans:
+  - image: ./horizon-143-plan-1.webp
+    label: План 1-го поверху
 ---
 
 HORIZON 143 - сучасний одноповерховий будинок для комфортного життя всієї родини.
