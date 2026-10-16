@@ -1,34 +1,50 @@
 ---
-title: "TERRA 75"
-url_slug: "terra-75"
+title: TERRA 75
+url_slug: terra-75
 order: 7
-stage: "robochyi"
+stage: robochyi
 for_sale: true
-price: 19000
+price: 18900
 carousel: true
-seo_title: "Проект невеликого одноповерхового будинку з прибудованим гаражем, 75 м²"
-card_text: "Компактний одноповерховий будинок з прибудованим гаражем і критою терасою"
-intro: "Компактний одноповерховий будинок з прибудованим гаражем: дві спальні, загальна кімната з кухнею й їдальнею, крита тераса. У гаражі (31,6 м²) розміщена котельня на твердому паливі."
+seo_title: Проект невеликого одноповерхового будинку з прибудованим гаражем, 75 м²
+card_text: Компактний одноповерховий будинок з прибудованим гаражем і критою терасою
+intro: "Компактний одноповерховий будинок з прибудованим гаражем: дві спальні,
+  загальна кімната з кухнею й їдальнею, крита тераса. У гаражі (31,6 м²)
+  розміщена котельня на твердому паливі."
 area: 75.41
 living_area: 42.47
 build_area: 113.21
 floors_above: 1
 floors_below: 0
 floors_detail: "1"
-dims: "8,2 × 10,8 м"
-dims_garage: "8,2 × 19,6 м"
+dims: 8,2 × 10,8 м
+dims_garage: 8,2 × 19,6 м
 bedrooms: 2
 bathrooms: 1
-garage: "прибудований"
-terrace: "крита тераса"
-walls: "газоблок + ефективне утеплення"
-roof: "двоскатна"
-roof_cover: "металочерепиця"
-foundation: "стрічковий монолітний"
-tags: ["АР","КР"]
-cover: "./terra-75-01.webp"
-gallery: [{"image":"./terra-75-01.webp","vertical":false},{"image":"./terra-75-02.webp","vertical":false},{"image":"./terra-75-03.webp","vertical":false},{"image":"./terra-75-04.webp","vertical":false},{"image":"./terra-75-05.webp","vertical":false}]
-plans: [{"image":"./terra-75-plan-1.webp","label":"План 1-го поверху"}]
+garage: прибудований
+terrace: крита тераса
+walls: газоблок + ефективне утеплення
+roof: двоскатна
+roof_cover: металочерепиця
+foundation: стрічковий монолітний
+tags:
+  - АР
+  - КР
+cover: ./terra-75-01.webp
+gallery:
+  - image: ./terra-75-01.webp
+    vertical: false
+  - image: ./terra-75-02.webp
+    vertical: false
+  - image: ./terra-75-03.webp
+    vertical: false
+  - image: ./terra-75-04.webp
+    vertical: false
+  - image: ./terra-75-05.webp
+    vertical: false
+plans:
+  - image: ./terra-75-plan-1.webp
+    label: План 1-го поверху
 ---
 
 TERRA 75 — сучасний одноповерховий житловий будинок із прибудованим гаражем, створений для тих, хто цінує функціональність, затишок та раціональне використання простору.
