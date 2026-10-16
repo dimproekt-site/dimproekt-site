@@ -4,6 +4,7 @@ url_slug: stodola-149
 order: 6
 stage: eskizny
 for_sale: true
+price: 14900
 carousel: true
 seo_title: Проект будинку для вузької ділянки шириною 6 м з мансардою і підвалом, 149 м²
 card_text: "Будинок з мансардою і підвалом для вузької ділянки: ширина всього 6,1 м"
