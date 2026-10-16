@@ -1,33 +1,52 @@
 ---
-title: "HILLSIDE 206"
-url_slug: "hillside-206"
+title: HILLSIDE 206
+url_slug: hillside-206
 order: 2
-stage: "robochyi"
+stage: robochyi
 for_sale: true
-price: 25000
+price: 37900
 carousel: false
-seo_title: "Проект будинку для ділянки з ухилом з цокольним поверхом і гаражем, 207 м²"
-card_text: "Будинок із цоколем і гаражем для ділянки з перепадом висот"
-intro: "Проект для ділянки зі складним рельєфом: на рівні першого поверху житлові кімнати, у цоколі гараж, котельня, льох і господарські приміщення."
+seo_title: Проект будинку для ділянки з ухилом з цокольним поверхом і гаражем, 207 м²
+card_text: Будинок із цоколем і гаражем для ділянки з перепадом висот
+intro: "Проект для ділянки зі складним рельєфом: на рівні першого поверху
+  житлові кімнати, у цоколі гараж, котельня, льох і господарські приміщення."
 area: 206.83
 living_area: 62.7
 build_area: 142.4
 floors_above: 1
 floors_below: 1
-floors_detail: "1 + цоколь"
-dims: "12,0 × 11,1 м"
+floors_detail: 1 + цоколь
+dims: 12,0 × 11,1 м
 bedrooms: 3
 bathrooms: 2
-garage: "у цоколі"
-walls: "газоблок + ефективне утеплення, внутрішні стіни цегла"
-roof: "вальмова"
-roof_cover: "металочерепиця"
-slabs: "збірні ж/б плити"
-foundation: "стрічковий монолітний"
-tags: ["АР","КР"]
-cover: "./hillside-206-01.webp"
-gallery: [{"image":"./hillside-206-01.webp","vertical":false},{"image":"./hillside-206-02.webp","vertical":false},{"image":"./hillside-206-03.webp","vertical":false},{"image":"./hillside-206-04.webp","vertical":false},{"image":"./hillside-206-05.webp","vertical":false},{"image":"./hillside-206-06.webp","vertical":false}]
-plans: [{"image":"./hillside-206-plan-1.webp","label":"План 1-го поверху"},{"image":"./hillside-206-plan-0.webp","label":"План цокольного поверху"}]
+garage: у цоколі
+walls: газоблок + ефективне утеплення, внутрішні стіни цегла
+roof: вальмова
+roof_cover: металочерепиця
+slabs: збірні ж/б плити
+foundation: стрічковий монолітний
+tags:
+  - АР
+  - КР
+cover: ./hillside-206-01.webp
+gallery:
+  - image: ./hillside-206-01.webp
+    vertical: false
+  - image: ./hillside-206-02.webp
+    vertical: false
+  - image: ./hillside-206-03.webp
+    vertical: false
+  - image: ./hillside-206-04.webp
+    vertical: false
+  - image: ./hillside-206-05.webp
+    vertical: false
+  - image: ./hillside-206-06.webp
+    vertical: false
+plans:
+  - image: ./hillside-206-plan-1.webp
+    label: План 1-го поверху
+  - image: ./hillside-206-plan-0.webp
+    label: План цокольного поверху
 ---
 
 ## Одноповерховий будинок із цокольним поверхом для ділянки з рельєфом
