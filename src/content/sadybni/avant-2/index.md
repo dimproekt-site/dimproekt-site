@@ -4,7 +4,7 @@ url_slug: avant-2
 order: 1
 stage: robochyi
 for_sale: true
-price: 20000
+price: 29900
 carousel: true
 seo_title: Проект одноповерхового будинку з плоским дахом і двома терасами, 140 м²
 card_text: Одноповерховий будинок з плоским дахом і панорамним склінням для
