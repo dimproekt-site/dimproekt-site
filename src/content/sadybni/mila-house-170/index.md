@@ -1,32 +1,61 @@
 ---
-title: "MILA House 170"
-url_slug: "mila-house-170"
+title: MILA House 170
+url_slug: mila-house-170
 order: 4
-stage: "robochyi"
+stage: robochyi
 for_sale: true
-price: 26000
+price: 33900
 carousel: true
-seo_title: "Проект одноповерхового будинку з внутрішнім двориком і трьома терасами, 170 м²"
-card_text: "Одноповерховий будинок із внутрішнім патіо, трьома терасами і панорамним склінням"
-intro: "Одноповерховий будинок для родини, яка цінує простір і приватність: планування навколо внутрішнього дворика, три тераси, панорамні вікна заввишки 2,7 м."
+seo_title: Проект одноповерхового будинку з внутрішнім двориком і трьома терасами, 170 м²
+card_text: Одноповерховий будинок із внутрішнім патіо, трьома терасами і
+  панорамним склінням
+intro: "Одноповерховий будинок для родини, яка цінує простір і приватність:
+  планування навколо внутрішнього дворика, три тераси, панорамні вікна заввишки
+  2,7 м."
 area: 169.9
 living_area: 78.14
 build_area: 230.3
 floors_above: 1
 floors_below: 0
 floors_detail: "1"
-dims: "21,4 × 11,9 м"
+dims: 21,4 × 11,9 м
 bedrooms: 4
 bathrooms: 2
-terrace: "3 тераси, внутрішній дворик-патіо"
-walls: "газоблок + ефективне утеплення"
-roof: "плоска"
-roof_cover: "монолітна ж/б плита"
-foundation: "стрічковий монолітний"
-tags: ["АР","КР"]
-cover: "./mila-house-170-01.webp"
-gallery: [{"image":"./mila-house-170-01.webp","vertical":false},{"image":"./mila-house-170-02.webp","vertical":false},{"image":"./mila-house-170-03.webp","vertical":false},{"image":"./mila-house-170-04.webp","vertical":false},{"image":"./mila-house-170-05.webp","vertical":true},{"image":"./mila-house-170-06.webp","vertical":false},{"image":"./mila-house-170-07.webp","vertical":false},{"image":"./mila-house-170-08.webp","vertical":false},{"image":"./mila-house-170-09.webp","vertical":true},{"image":"./mila-house-170-10.webp","vertical":false},{"image":"./mila-house-170-11.webp","vertical":false}]
-plans: [{"image":"./mila-house-170-plan-1.webp","label":"План 1-го поверху"}]
+terrace: 3 тераси, внутрішній дворик-патіо
+walls: газоблок + ефективне утеплення
+roof: плоска
+roof_cover: монолітна ж/б плита
+foundation: стрічковий монолітний
+tags:
+  - АР
+  - КР
+cover: ./mila-house-170-01.webp
+gallery:
+  - image: ./mila-house-170-01.webp
+    vertical: false
+  - image: ./mila-house-170-02.webp
+    vertical: false
+  - image: ./mila-house-170-03.webp
+    vertical: false
+  - image: ./mila-house-170-04.webp
+    vertical: false
+  - image: ./mila-house-170-05.webp
+    vertical: true
+  - image: ./mila-house-170-06.webp
+    vertical: false
+  - image: ./mila-house-170-07.webp
+    vertical: false
+  - image: ./mila-house-170-08.webp
+    vertical: false
+  - image: ./mila-house-170-09.webp
+    vertical: true
+  - image: ./mila-house-170-10.webp
+    vertical: false
+  - image: ./mila-house-170-11.webp
+    vertical: false
+plans:
+  - image: ./mila-house-170-plan-1.webp
+    label: План 1-го поверху
 ---
 
 Представляємо індивідуальний проєкт сучасного одноповерхового житлового будинку, створений для родини, яка цінує простір, приватність та гармонію з навколишнім середовищем.
