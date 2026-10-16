@@ -1,33 +1,50 @@
 ---
-title: "FORTIS 164"
-url_slug: "fortis-164"
+title: FORTIS 164
+url_slug: fortis-164
 order: 12
-stage: "robochyi"
+stage: robochyi
 for_sale: true
-price: 15000
+price: 32900
 carousel: false
-seo_title: "Проект одноповерхового будинку 164 м² з гаражем на одну машину і трьома спальнями"
-card_text: "Просторий одноповерховий будинок з гаражем, трьома спальнями і кабінетом"
-intro: "Просторий одноповерховий будинок площею 164 м² з гаражем на один автомобіль: вітальня-кухня-їдальня, три спальні, кабінет, два санвузли, технічне приміщення й невеликий підвал."
+seo_title: Проект одноповерхового будинку 164 м² з гаражем на одну машину і
+  трьома спальнями
+card_text: Просторий одноповерховий будинок з гаражем, трьома спальнями і кабінетом
+intro: "Просторий одноповерховий будинок площею 164 м² з гаражем на один
+  автомобіль: вітальня-кухня-їдальня, три спальні, кабінет, два санвузли,
+  технічне приміщення й невеликий підвал."
 area: 164
 living_area: 75.07
 build_area: 206.7
 floors_above: 1
 floors_below: 1
-floors_detail: "1 + підвал"
-dims: "19,65 × 12,5 м"
+floors_detail: 1 + підвал
+dims: 19,65 × 12,5 м
 bedrooms: 3
 bathrooms: 2
-garage: "1 авто"
-terrace: "є"
-walls: "газоблок + утеплення, фасад клінкерною плиткою під цеглу"
-roof: "вальмова"
-roof_cover: "полімерна черепиця"
-foundation: "стрічковий монолітний"
-tags: ["АР","КР"]
-cover: "./fortis-164-01.webp"
-gallery: [{"image": "./fortis-164-01.webp", "vertical": false}, {"image": "./fortis-164-02.webp", "vertical": false}, {"image": "./fortis-164-03.webp", "vertical": false}, {"image": "./fortis-164-04.webp", "vertical": false}]
-plans: [{"image": "./fortis-164-plan-1.webp", "label": "План 1-го поверху"}, {"image": "./fortis-164-plan-0.webp", "label": "План підвального поверху"}]
+garage: 1 авто
+terrace: є
+walls: газоблок + утеплення, фасад клінкерною плиткою під цеглу
+roof: вальмова
+roof_cover: полімерна черепиця
+foundation: стрічковий монолітний
+tags:
+  - АР
+  - КР
+cover: ./fortis-164-01.webp
+gallery:
+  - image: ./fortis-164-01.webp
+    vertical: false
+  - image: ./fortis-164-02.webp
+    vertical: false
+  - image: ./fortis-164-03.webp
+    vertical: false
+  - image: ./fortis-164-04.webp
+    vertical: false
+plans:
+  - image: ./fortis-164-plan-1.webp
+    label: План 1-го поверху
+  - image: ./fortis-164-plan-0.webp
+    label: План підвального поверху
 ---
 
 FORTIS 164 — просторий одноповерховий будинок із гаражем для родини, яка цінує комфорт, сучасний дизайн і зручність життя на одному рівні. Загальна площа 164 м², габарити 19,65 × 12,5 м.
