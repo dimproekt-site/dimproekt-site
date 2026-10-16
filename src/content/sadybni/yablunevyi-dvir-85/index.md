@@ -1,32 +1,48 @@
 ---
-title: "ЯБЛУНЕВИЙ ДВІР 85"
-url_slug: "yablunevyi-dvir-85"
+title: ЯБЛУНЕВИЙ ДВІР 85
+url_slug: yablunevyi-dvir-85
 order: 11
-stage: "robochyi"
+stage: robochyi
 for_sale: true
-price: 12000
+price: 17900
 carousel: false
-seo_title: "Проект економного одноповерхового будинку 85 м² з двома спальнями і терасою"
-card_text: "Простий у будівництві одноповерховий будинок з двома спальнями і критою терасою"
-intro: "Компактний одноповерховий будинок площею 84,64 м² для невеликої родини: дві спальні, загальна кімната, об'єднана з кухнею, крита тераса, котельня та горище."
+seo_title: Проект економного одноповерхового будинку 85 м² з двома спальнями і терасою
+card_text: Простий у будівництві одноповерховий будинок з двома спальнями і критою терасою
+intro: "Компактний одноповерховий будинок площею 84,64 м² для невеликої родини:
+  дві спальні, загальна кімната, об'єднана з кухнею, крита тераса, котельня та
+  горище."
 area: 84.64
 living_area: 42.47
 build_area: 130.3
 floors_above: 1
 floors_below: 0
 floors_detail: "1"
-dims: "12,2 × 9,86 м"
+dims: 12,2 × 9,86 м
 bedrooms: 2
 bathrooms: 1
-terrace: "крита тераса"
-walls: "газоблок + утеплення"
-roof: "вальмова, горище з висувною драбиною"
-roof_cover: "фальц-настил (квікфальц)"
-foundation: "стрічковий монолітний"
-tags: ["АР","КР"]
-cover: "./yablunevyi-dvir-85-01.webp"
-gallery: [{"image": "./yablunevyi-dvir-85-01.webp", "vertical": false}, {"image": "./yablunevyi-dvir-85-02.webp", "vertical": false}, {"image": "./yablunevyi-dvir-85-03.webp", "vertical": false}, {"image": "./yablunevyi-dvir-85-04.webp", "vertical": false}, {"image": "./yablunevyi-dvir-85-05.webp", "vertical": false}]
-plans: [{"image": "./yablunevyi-dvir-85-plan-1.webp", "label": "План 1-го поверху"}]
+terrace: крита тераса
+walls: газоблок + утеплення
+roof: вальмова, горище з висувною драбиною
+roof_cover: фальц-настил (квікфальц)
+foundation: стрічковий монолітний
+tags:
+  - АР
+  - КР
+cover: ./yablunevyi-dvir-85-01.webp
+gallery:
+  - image: ./yablunevyi-dvir-85-01.webp
+    vertical: false
+  - image: ./yablunevyi-dvir-85-02.webp
+    vertical: false
+  - image: ./yablunevyi-dvir-85-03.webp
+    vertical: false
+  - image: ./yablunevyi-dvir-85-04.webp
+    vertical: false
+  - image: ./yablunevyi-dvir-85-05.webp
+    vertical: false
+plans:
+  - image: ./yablunevyi-dvir-85-plan-1.webp
+    label: План 1-го поверху
 ---
 
 Проєкт «ЯБЛУНЕВИЙ ДВІР 85» — одноповерховий садибний будинок загальною площею 84,64 м². Простий у будівництві, економічний, з економним оздобленням.
