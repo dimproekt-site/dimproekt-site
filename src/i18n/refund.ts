@@ -1,7 +1,7 @@
 import type { Section } from '../components/LegalPage.astro';
 
 // Дату змінити на день підключення домену dimproekt.com (офіційний запуск сайту)
-export const LAUNCH_DATE = { uk: '[дата запуску сайту]', en: '[site launch date]' };
+export const LAUNCH_DATE = { uk: '16 жовтня 2026 р.', en: '16 October 2026' };
 
 export const REFUND = {
   uk: {
