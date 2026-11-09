@@ -9,7 +9,7 @@ const plan = (image: any) => z.object({ image: image(), label: z.string() });
 const optImage = (image: any) => z.preprocess((v) => (v === '' ? undefined : v), image().optional());
 const pair = z.object({ label: z.string(), value: z.string() });
 
-// Садибні будинки (проєкти)
+// Садибні будинки (проекти)
 const sadybni = defineCollection({
   loader: glob({ pattern: '*/index.md', base: './src/content/sadybni' }),
   schema: ({ image }) =>
@@ -105,7 +105,7 @@ const home = defineCollection({
       hero_projects: z
         .array(
           z.object({
-            project: z.string(), // slug садибного проєкту
+            project: z.string(), // slug садибного проекту
             image: optImage(image), // інше фото для каруселі (бажано вертикальне)
             focus: z.string().optional(),
           }),

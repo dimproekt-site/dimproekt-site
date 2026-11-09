@@ -5,7 +5,7 @@ export type Commercial = CollectionEntry<'commercial'>;
 
 export const CURRENCY = 'грн';
 
-export const STAGE_LABEL = { robochyi: 'Робочий проєкт', eskizny: 'Ескізний проєкт' } as const;
+export const STAGE_LABEL = { robochyi: 'Робочий проект', eskizny: 'Ескізний проект' } as const;
 export const STAGE_LABEL_EN = { robochyi: 'Construction design', eskizny: 'Concept design' } as const;
 
 export const nf = (n: number) => String(n).replace('.', ',');
