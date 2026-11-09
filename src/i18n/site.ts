@@ -26,6 +26,9 @@ export const CONTACTS = {
   telegram: 'https://t.me/dimproekt',
   instagram: 'https://www.instagram.com/dimproekt/',
   facebook: 'https://www.facebook.com/profile.php?id=61555465005838',
+  /** Профіль OLX та Google Business Profile: вставте посилання, коли вони з'являться; порожнє значення в розмітку не потрапляє */
+  olx: '',
+  googleBusiness: '',
   facebookGroup: 'https://www.facebook.com/groups/projecthouseandgarden',
 } as const;
 
