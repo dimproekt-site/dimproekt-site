@@ -230,6 +230,7 @@ const cardSpecs = (x: any) => sad
         </div>
         <div>
           <p class="incl-t">{inclText}</p>
+          <p class="incl-extra"><strong>Додатково:</strong> СНЗ з реєстрацією в ЄДЕССБ — 7 900 грн; пакет «СНЗ + фундамент під вашу геологію» — 12 900 грн.</p>
           {d.tags.length > 0 && <div class="incl-tags">{d.tags.map((t: string) => <Tag>{t}</Tag>)}</div>}
           <div class="incl-more">
             <p>Повний перелік креслень і аркушів проекту надамо за запитом.</p>
@@ -422,6 +423,7 @@ const cardSpecs = (x: any) => sad
   .incl { scroll-margin-top: 24px; }
   .incl-in { padding: 80px 32px; max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 32px 80px; align-items: start; }
   .incl-t { margin: 0; font-size: 17px; line-height: 1.7; color: var(--text-body); max-width: 56ch; text-wrap: pretty; }
+  .incl-extra { margin: 16px 0 0; font-size: 16px; line-height: 1.65; color: var(--text-body); max-width: 56ch; text-wrap: pretty; } .incl-extra strong { color: var(--text-heading); font-weight: 600; }
   .incl-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
   .incl-more { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-top: 24px; max-width: 56ch; }
   .incl-more p { margin: 0; font-size: 15px; line-height: 1.6; color: #4A3927; }
