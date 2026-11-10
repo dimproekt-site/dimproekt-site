@@ -50,7 +50,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
       for (var i = 0; i < S.length; i++) if (k >= S[i][0]) f = S[i][1];
       var need = (window.innerWidth || 1440) * Math.min(window.devicePixelRatio || 1, 2);
       var w = need <= 828 ? 828 : need <= 1280 ? 1280 : need <= 1920 ? 1920 : 3072;
-      var src = '/assets/hero/f2k_000' + f + '_' + w + '.webp';
+      // Адресу збираємо з частин, щоб пошукові роботи не приймали фрагмент рядка за посилання
+      var src = ['', 'assets', 'hero', 'f2k_000' + f + '_' + w + '.webp'].join('/');
       var l = document.createElement('link'); l.rel = 'preload'; l.as = 'image'; l.href = src; l.setAttribute('fetchpriority', 'high');
       document.head.appendChild(l);
       document.documentElement.style.setProperty('--dp-hero-bg', "url('" + src + "')");

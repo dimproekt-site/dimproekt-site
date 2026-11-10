@@ -6,6 +6,9 @@ export const prerender = false;
 
 const clip = (s: unknown, n: number) => String(s ?? '').trim().slice(0, n);
 
+// Відкриття адреси браузером або роботом: не 404, і в пошук не потрапляє
+export const GET: APIRoute = () => new Response('method not allowed', { status: 405, headers: { Allow: 'POST', 'X-Robots-Tag': 'noindex, nofollow' } });
+
 export const POST: APIRoute = async ({ request, locals }) => {
   let body: any;
   try { body = await request.json(); } catch { return new Response('bad request', { status: 400 }); }
