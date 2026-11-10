@@ -138,6 +138,14 @@ const ld = [
   .ar-rel { margin-top: 96px; }
   .ar-rel h2 { margin: 0 0 32px; font-family: var(--font-display); font-weight: 500; font-size: 34px; color: var(--text-heading); }
   .ar-rel-g { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 32px; }
+  /* Картки «Читайте також»: ті самі правила, що в списку статей (там вони оголошені лише на своїй сторінці) */
+  .ar-rel .al-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--surface-card); border: 1px solid var(--border-hairline); border-radius: 4px; overflow: hidden; box-shadow: var(--shadow-1); transition: transform 240ms var(--ease-standard), box-shadow 240ms var(--ease-standard); }
+  .ar-rel .al-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-3); color: inherit; }
+  .ar-rel .al-cimg { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .ar-rel .al-cb { flex: 1; padding: 24px 24px 28px; display: flex; flex-direction: column; }
+  .ar-rel .al-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 13px; color: #4A3927; }
+  .ar-rel .al-meta span:last-child { white-space: nowrap; }
+  .ar-rel .al-ct { margin: 14px 0 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(22px, 2.4vw, 26px); line-height: 1.25; color: var(--text-heading); text-wrap: balance; }
 </style>
 <script>
   // Індикатор читання і підсвічування розділу в змісті
