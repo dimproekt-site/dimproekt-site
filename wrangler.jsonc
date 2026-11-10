@@ -6,6 +6,9 @@
     "enabled": true
   },
   "main": "dist/_worker.js/index.js",
+  // Сайт відкривається лише через dimproekt.com: адреси *.workers.dev не вмикаємо
+  "workers_dev": false,
+  "preview_urls": false,
   "compatibility_flags": [
     "global_fetch_strictly_public",
     "nodejs_compat"
