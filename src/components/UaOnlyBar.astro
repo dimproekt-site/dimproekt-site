@@ -19,15 +19,19 @@
   button:hover { background: rgba(63, 44, 27, 0.08); }
 </style>
 
-<script>
-  const bar = document.getElementById('ua-only-bar');
-  let lang: string | null = null;
-  let closed = false;
-  try { lang = localStorage.getItem('dp-lang'); } catch {}
-  try { closed = sessionStorage.getItem('dp-uaonly-closed') === '1'; } catch {}
-  if (bar && lang === 'en' && !closed) bar.hidden = false;
-  document.getElementById('ua-only-close')?.addEventListener('click', () => {
-    if (bar) bar.hidden = true;
-    try { sessionStorage.setItem('dp-uaonly-closed', '1'); } catch {}
-  });
+<script is:inline>
+  // Інлайн-скрипт одразу після розмітки: плашка з'являється до першого малювання сторінки,
+  // тому не зсуває вміст (CLS). Модульний скрипт виконувався б пізніше й штовхав сторінку вниз.
+  (function () {
+    var bar = document.getElementById('ua-only-bar');
+    var lang = null, closed = false;
+    try { lang = localStorage.getItem('dp-lang'); } catch (e) {}
+    try { closed = sessionStorage.getItem('dp-uaonly-closed') === '1'; } catch (e) {}
+    if (bar && lang === 'en' && !closed) bar.hidden = false;
+    var btn = document.getElementById('ua-only-close');
+    if (btn) btn.addEventListener('click', function () {
+      if (bar) bar.hidden = true;
+      try { sessionStorage.setItem('dp-uaonly-closed', '1'); } catch (e) {}
+    });
+  })();
 </script>
