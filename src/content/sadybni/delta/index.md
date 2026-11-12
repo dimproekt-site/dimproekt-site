@@ -14,9 +14,9 @@ intro: "Каркасний будинок A-frame: виразний трикут
 area: 137.6
 living_area: 96.85
 build_area: 91.42
-floors_above: 2
+floors_above: 3
 floors_below: 0
-floors_detail: 2 + мансарда
+floors_detail: "3"
 dims: 8 × 11,5 м
 bedrooms: 3
 bathrooms: 2
