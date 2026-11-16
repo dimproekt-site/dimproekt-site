@@ -1,7 +1,7 @@
 ---
 title: Добробут 148
 url_slug: dobrobut-148
-order: 8
+order: 9
 stage: robochyi
 for_sale: true
 price: 24900

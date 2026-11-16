@@ -1,7 +1,7 @@
 ---
 title: TERRA 75
 url_slug: terra-75
-order: 7
+order: 8
 stage: robochyi
 for_sale: true
 price: 18900

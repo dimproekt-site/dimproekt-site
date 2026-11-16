@@ -1,7 +1,7 @@
 ---
 title: БУЗКОВИЙ ДІМ 91
 url_slug: buzkovyi-dim-91
-order: 9
+order: 10
 stage: robochyi
 for_sale: true
 price: 22900

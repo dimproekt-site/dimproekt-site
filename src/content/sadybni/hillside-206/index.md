@@ -1,7 +1,7 @@
 ---
 title: HILLSIDE 206
 url_slug: hillside-206
-order: 2
+order: 3
 stage: robochyi
 for_sale: true
 price: 37900

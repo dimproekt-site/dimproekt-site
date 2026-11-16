@@ -1,7 +1,7 @@
 ---
 title: ЯБЛУНЕВИЙ ДВІР 85
 url_slug: yablunevyi-dvir-85
-order: 11
+order: 12
 stage: robochyi
 for_sale: true
 price: 17900

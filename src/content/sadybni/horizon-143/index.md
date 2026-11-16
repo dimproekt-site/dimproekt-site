@@ -1,7 +1,7 @@
 ---
 title: HORIZON 143
 url_slug: horizon-143
-order: 3
+order: 4
 stage: robochyi
 for_sale: true
 price: 26900

@@ -1,7 +1,7 @@
 ---
 title: OASIS 206
 url_slug: oasis
-order: 16
+order: 17
 stage: robochyi
 for_sale: true
 price: 34900

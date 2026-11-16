@@ -1,7 +1,7 @@
 ---
 title: AVANT-1
 url_slug: avant-1
-order: 17
+order: 18
 stage: eskizny
 for_sale: true
 price: 16900

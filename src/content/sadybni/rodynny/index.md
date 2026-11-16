@@ -1,7 +1,7 @@
 ---
 title: Родинний 184
 url_slug: rodynny
-order: 20
+order: 21
 stage: robochyi
 for_sale: true
 price: 31900
