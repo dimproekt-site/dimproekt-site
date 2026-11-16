@@ -1,7 +1,7 @@
 ---
 title: DELTA 138
 url_slug: delta
-order: 18
+order: 19
 stage: eskizny
 for_sale: true
 price: 13900

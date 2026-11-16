@@ -1,7 +1,7 @@
 ---
 title: Родинний дім 127
 url_slug: rodynnydim
-order: 15
+order: 16
 stage: robochyi
 for_sale: true
 price: 25900

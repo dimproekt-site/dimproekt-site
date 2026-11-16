@@ -1,7 +1,7 @@
 ---
 title: Садиба Лаванда 100
 url_slug: sadyba-lavanda-100
-order: 10
+order: 11
 stage: robochyi
 for_sale: true
 price: 19900

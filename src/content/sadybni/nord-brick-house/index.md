@@ -1,7 +1,7 @@
 ---
 title: Nord Brick House
 url_slug: nord-brick-house
-order: 5
+order: 6
 stage: eskizny
 for_sale: true
 price: 10900

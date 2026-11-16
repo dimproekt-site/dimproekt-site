@@ -1,7 +1,7 @@
 ---
 title: MILA House 170
 url_slug: mila-house-170
-order: 4
+order: 5
 stage: robochyi
 for_sale: true
 price: 33900
